@@ -1,0 +1,122 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  FREELANCER
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String?
+  email     String   @unique
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  freelancerProfile FreelancerProfile?
+  bookings          Booking[]
+  reviews           Review[]
+}
+
+model FreelancerProfile {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  bio       String?
+  skills    String?
+  category  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courses      Course[]
+  availability Availability[]
+  bookings     Booking[]
+}
+
+model Course {
+  id           String   @id @default(uuid())
+  title        String
+  description  String
+  price        Float
+  freelancerId String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  freelancer FreelancerProfile @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
+  bookings   Booking[]
+  reviews    Review[]
+
+  @@index([freelancerId])
+}
+
+model Availability {
+  id           String   @id @default(uuid())
+  freelancerId String
+  dayOfWeek    Int // 0-6 (Sun-Sat)
+  startTime    String // "09:00"
+  endTime      String // "17:00"
+  slotDuration Int // minutes
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  freelancer FreelancerProfile @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
+
+  @@unique([freelancerId, dayOfWeek]) // нэг өдөрт нэг л availability rule (хялбар хувилбар)
+  @@index([freelancerId])
+}
+
+model Booking {
+  id           String        @id @default(uuid())
+  userId       String
+  courseId     String
+  freelancerId String
+  startAt      DateTime
+  endAt        DateTime
+  status       BookingStatus @default(PENDING)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  user       User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course     Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  freelancer FreelancerProfile @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
+
+  @@index([freelancerId])
+  @@index([courseId])
+  @@index([startAt])
+  @@index([endAt])
+  @@index([userId])
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  userId    String
+  courseId  String
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId]) // нэг хэрэглэгч нэг курсэд 1 л review
+  @@index([courseId])
+}
