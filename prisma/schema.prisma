@@ -17,7 +17,14 @@ enum Role {
   USER
   FREELANCER
 }
-
+enum Category {
+  Дизайн
+  ХӨГЖҮҮЛЭГЧ
+  Хэл_сурах
+  Маркетинг
+  Фитнес
+  Ерөнхий_эрдэм
+}
 enum BookingStatus {
   PENDING
   CONFIRMED
@@ -57,6 +64,7 @@ model Course {
   title        String
   description  String
   price        Float
+  category     Category   // 👈 ШИНЭ
   freelancerId String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -66,6 +74,7 @@ model Course {
   reviews    Review[]
 
   @@index([freelancerId])
+  @@index([category]) // 👈 filter хурдлуулах
 }
 
 model Availability {
