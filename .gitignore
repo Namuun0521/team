@@ -35,9 +35,13 @@ yarn-error.log*
 
 # vercel
 .vercel
+.package-lock.json
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
 
 /app/generated/prisma
+
+# clerk configuration (can include secrets)
+/.clerk/
