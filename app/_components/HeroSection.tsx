@@ -18,7 +18,7 @@ export const HeroSection = () => {
                 эзэмшээрэй.
               </p>
 
-              <button className="mt-8 rounded-lg bg-blue-600 px-6 py-3 text-white font-medium hover:bg-blue-700">
+              <button className="mt-8 rounded-lg bg-white px-6 py-3 text-blue-700 font-medium hover:bg-blue-50">
                 Хичээл хайх
               </button>
             </div>

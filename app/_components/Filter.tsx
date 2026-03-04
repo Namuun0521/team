@@ -1,28 +1,44 @@
 "use client";
 
-import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-const CATEGORIES = [
-  "Бүгд",
-  "Ерөнхий эрдэм",
-  "Маркетинг",
-  "Фитнес",
-  "Дизайн",
-  "Хэл сурах",
-  "Код бичих",
-  "Зураг",
-];
+const CATEGORY_MAP: Record<string, string | null> = {
+  Бүгд: null,
+  Дизайн: "Дизайн",
+  Хөгжүүлэгч: "Хөгжүүлэгч",
+  "Хэл сурах": "Хэл_сурах",
+  Маркетинг: "Маркетинг",
+  Фитнес: "Фитнес",
+  "Ерөнхий эрдэм": "Ерөнхий_эрдэм",
+};
+
+const categories = Object.keys(CATEGORY_MAP);
 
 export const Filter = () => {
+  const router = useRouter();
   const [active, setActive] = useState("Бүгд");
 
+  const handleClick = (category: string) => {
+    setActive(category);
+
+    const apiCategory = CATEGORY_MAP[category];
+
+    if (!apiCategory) {
+      router.push("/courses");
+      return;
+    }
+
+    router.push(`/courses?category=${apiCategory}`);
+  };
+
   return (
-    <div className="w-full ">
+    <div className="w-full">
       <div className="mx-auto max-w-6xl px-4 py-3">
         <div className="flex items-center gap-3 overflow-x-auto">
-          {CATEGORIES.map((item) => (
-            <button key={item} onClick={() => setActive(item)}>
+          {categories.map((item) => (
+            <button key={item} onClick={() => handleClick(item)}>
               <Badge
                 className={`cursor-pointer rounded-full px-5 py-2 text-sm transition
                 ${

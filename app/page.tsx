@@ -1,70 +1,16 @@
-import { Footer } from "./_components/Footer";
-import { Header } from "./_components/Header";
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
 import { HeroSection } from "./_components/HeroSection";
 
 type Course = {
   id: string;
   category: string;
   title: string;
-  teacher: string;
-  rating: number;
-  pricePerHour: number;
-  image?: string; // optional
+  description?: string | null;
+  price: number; // API чинь price гэж буцааж байгаа
+  freelancer?: { user?: { name?: string | null } | null } | null;
 };
-
-const suggestedCourses: Course[] = [
-  {
-    id: "1",
-    category: "КОД БИЧИХ",
-    title: "ReactJS болон Tailwind CSS ашиглан веб сайт хийх нь",
-    teacher: "Бат-Эрдэнэ",
-    rating: 4.9,
-    pricePerHour: 45000,
-  },
-  {
-    id: "2",
-    category: "МАРКЕТИНГ",
-    title: "Social media контент бэлтгэх мастер класс",
-    teacher: "Номин",
-    rating: 5.0,
-    pricePerHour: 35000,
-  },
-  {
-    id: "3",
-    category: "ФИТНЕС",
-    title: "Гэрээр хийх йог болон бясалгал",
-    teacher: "Туяа",
-    rating: 4.8,
-    pricePerHour: 20000,
-  },
-  {
-    id: "4",
-    category: "ИНЖЕНЕР",
-    title: "AutoCAD 2D/3D анхан шатны сургалт",
-    teacher: "Болд",
-    rating: 4.7,
-    pricePerHour: 50000,
-  },
-];
-
-const newCourses: Course[] = [
-  {
-    id: "5",
-    category: "ДИЗАЙН",
-    title: "Figma ашиглан App-ны UI/UX дизайн гаргах",
-    teacher: "Сараа",
-    rating: 4.9,
-    pricePerHour: 40000,
-  },
-  {
-    id: "6",
-    category: "ХЭЛ СУРАХ",
-    title: "Англи хэлний ярианы дадлага (Intermediate)",
-    teacher: "Сараа",
-    rating: 5.0,
-    pricePerHour: 25000,
-  },
-];
 
 function formatMNT(n: number) {
   return n.toLocaleString("mn-MN");
@@ -73,12 +19,11 @@ function formatMNT(n: number) {
 const CourseCard = ({ c }: { c: Course }) => {
   return (
     <div className="w-[240px] shrink-0 overflow-hidden rounded-xl border bg-white shadow-sm transition hover:shadow-md">
-      {/* image placeholder */}
       <div className="h-[130px] bg-gradient-to-br from-gray-100 to-gray-200" />
 
       <div className="p-4">
         <span className="inline-flex rounded-full bg-blue-50 px-2 py-1 text-[10px] font-semibold text-blue-700">
-          {c.category}
+          {c.category?.replaceAll("_", " ")}
         </span>
 
         <h3 className="mt-2 line-clamp-2 text-sm font-semibold text-gray-900">
@@ -89,18 +34,18 @@ const CourseCard = ({ c }: { c: Course }) => {
           <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-gray-100">
             👤
           </span>
-          <span>{c.teacher}</span>
+          <span>{c.freelancer?.user?.name ?? "Нэргүй багш"}</span>
         </div>
 
         <div className="mt-3 flex items-center justify-between text-xs">
           <div className="flex items-center gap-1 text-gray-700">
             <span className="text-yellow-500">★</span>
-            <span className="font-medium">{c.rating.toFixed(1)}</span>
+            <span className="font-medium">4.9</span>
           </div>
 
           <div className="text-right">
             <div className="text-sm font-semibold text-blue-700">
-              {formatMNT(c.pricePerHour)}₮/цаг
+              {formatMNT(c.price)}₮
             </div>
           </div>
         </div>
@@ -109,7 +54,15 @@ const CourseCard = ({ c }: { c: Course }) => {
   );
 };
 
-const CourseRow = ({ title, items }: { title: string; items: Course[] }) => {
+const CourseRow = ({
+  title,
+  items,
+  emptyText = "Хичээл олдсонгүй",
+}: {
+  title: string;
+  items: Course[];
+  emptyText?: string;
+}) => {
   return (
     <section className="mt-8">
       <div className="mb-4 flex items-center justify-between">
@@ -119,11 +72,17 @@ const CourseRow = ({ title, items }: { title: string; items: Course[] }) => {
         </button>
       </div>
 
-      <div className="flex gap-4 overflow-x-auto pb-2">
-        {items.map((c) => (
-          <CourseCard key={c.id} c={c} />
-        ))}
-      </div>
+      {items.length === 0 ? (
+        <div className="rounded-xl border bg-white p-10 text-center text-sm text-gray-500">
+          {emptyText}
+        </div>
+      ) : (
+        <div className="flex gap-4 overflow-x-auto pb-2">
+          {items.map((c) => (
+            <CourseCard key={c.id} c={c} />
+          ))}
+        </div>
+      )}
     </section>
   );
 };
@@ -160,20 +119,53 @@ const CTA = () => {
 };
 
 export default function Home() {
+  const [allCourses, setAllCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(true);
+
+    fetch("/api/courses")
+      .then(async (res) => {
+        const data = await res.json();
+        // API нь array буцаана гэж үзэв
+        setAllCourses(Array.isArray(data) ? data : (data?.courses ?? []));
+      })
+      .catch(() => setAllCourses([]))
+      .finally(() => setLoading(false));
+  }, []);
+
+  // Одоогоор: suggested/new гэж тусдаа endpoint байхгүй тул
+  // 1 data-гаа 2 хэсэг болгон хуваая (дараа нь API-гаа салгахад амар)
+  const suggestedCourses = useMemo(() => allCourses.slice(0, 6), [allCourses]);
+  const newCourses = useMemo(() => allCourses.slice(6, 12), [allCourses]);
+
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
       <HeroSection />
 
       <main className="mx-auto max-w-6xl px-4 py-6">
-        <CourseRow
-          title="Санал болгож буй хичээлүүд"
-          items={suggestedCourses}
-        />
-        <CourseRow title="Шинээр нэмэгдсэн үйлчилгээнүүд" items={newCourses} />
+        {loading ? (
+          <div className="rounded-xl border bg-white p-10 text-center text-sm text-gray-500">
+            Ачааллаж байна...
+          </div>
+        ) : (
+          <>
+            <CourseRow
+              title="Санал болгож буй хичээлүүд"
+              items={suggestedCourses}
+              emptyText="Санал болгож буй хичээл олдсонгүй"
+            />
+            <CourseRow
+              title="Шинээр нэмэгдсэн үйлчилгээнүүд"
+              items={newCourses}
+              emptyText="Шинэ хичээл олдсонгүй"
+            />
+          </>
+        )}
+
         <CTA />
       </main>
-      <Footer />
     </div>
   );
 }
