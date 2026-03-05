@@ -41,10 +41,14 @@ export const Header = () => {
           </a>
 
           <Show when="signed-out">
-            <SignInButton />
+            <SignInButton>
+              <button className="rounded-lg bg-gray-100 px-4 py-2">
+                Нэвтрэх
+              </button>
+            </SignInButton>
             <SignUpButton>
-              <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
-                Sign Up
+              <button className="rounded-lg bg-blue-600 px-4 py-2 text-white">
+                Бүртгүүлэх
               </button>
             </SignUpButton>
           </Show>
