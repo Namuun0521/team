@@ -2,10 +2,10 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { CoursesGrid } from "../_components/CoursesGrid";
-import { CoursesToolbar } from "../_components/CoursesToolbar";
-import { CoursesSidebar } from "../_components/CoursesSidebar";
-import { CoursesPageSkeleton } from "../_components/CoursePageSkeleton";
+import { CoursesGrid } from "../../_components/CoursesGrid";
+import { CoursesToolbar } from "../../_components/CoursesToolbar";
+import { CoursesSidebar } from "../../_components/CoursesSidebar";
+import { CoursesPageSkeleton } from "../../_components/CoursePageSkeleton";
 
 type Course = {
   id: string;
