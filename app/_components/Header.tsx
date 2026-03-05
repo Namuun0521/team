@@ -1,5 +1,13 @@
 import { Search } from "lucide-react";
 import { Filter } from "./Filter";
+import {
+  ClerkProvider,
+  Show,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+} from "@clerk/nextjs";
+import BecomeFreelancerButton from "./BecomeFreelancerButton";
 
 export const Header = () => {
   return (
@@ -32,13 +40,18 @@ export const Header = () => {
             Бидний тухай
           </a>
 
-          <button className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
-            Freelancer болох
-          </button>
-
-          <button className="rounded-lg bg-gray-100 px-4 py-2 text-gray-700 hover:bg-gray-200">
-            Нэвтрэх
-          </button>
+          <Show when="signed-out">
+            <SignInButton />
+            <SignUpButton>
+              <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
+                Sign Up
+              </button>
+            </SignUpButton>
+          </Show>
+          <Show when="signed-in">
+            <UserButton />
+            <BecomeFreelancerButton />
+          </Show>
         </div>
       </div>
 
