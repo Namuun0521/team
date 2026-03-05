@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { CoursesGrid } from "../_components/CoursesGrid";
 import { CoursesToolbar } from "../_components/CoursesToolbar";
 import { CoursesSidebar } from "../_components/CoursesSidebar";
+import { CoursesPageSkeleton } from "../_components/CoursePageSkeleton";
 
 type Course = {
   id: string;
@@ -24,7 +25,7 @@ const SUBCATS: Record<string, string[]> = {
   ],
   Маркетинг: ["SMM", "Контент", "SEO", "Брэндинг"],
   Фитнес: ["Йог", "Бясалгал", "Хүч", "Кардио"],
-  Хөгжүүлэгч: ["Frontend", "Backend", "Mobile", "AI/ML"],
+  ХӨГЖҮҮЛЭГЧ: ["Frontend", "Backend", "Mobile", "AI/ML"],
   Ерөнхий_эрдэм: ["Математик", "Физик", "Хими", "Биологи"],
   Хэл_сурах: ["Англи", "Япон", "Солонгос", "Хятад"],
 };
@@ -39,7 +40,6 @@ export default function CoursesPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // UI states
   const [activeSub, setActiveSub] = useState<string | null>(null);
   const [sort, setSort] = useState<Sort>("new");
 
@@ -96,14 +96,10 @@ export default function CoursesPage() {
     if (sort === "priceAsc") arr.sort((a, b) => a.price - b.price);
     if (sort === "priceDesc") arr.sort((a, b) => b.price - a.price);
 
-    // activeSub filter (дараа нь бодитоор хийнэ)
-    // одоогоор UI л, data дээр subcategory байхгүй тул шүүхгүй.
-
     return arr;
   }, [courses, sort, activeSub]);
 
-  if (loading)
-    return <div className="mx-auto max-w-6xl px-4 py-10">Loading...</div>;
+  if (loading) return <CoursesPageSkeleton />;
 
   return (
     <div className="min-h-screen bg-gray-50">

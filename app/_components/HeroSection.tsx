@@ -1,6 +1,14 @@
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 export const HeroSection = () => {
+  const router = useRouter();
   return (
     <section className="py-10">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+      />
       <div className="mx-auto max-w-6xl px-4">
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-teal-700 to-teal-500">
           <div className="relative z-10 flex items-center justify-between px-12 py-16">
@@ -18,7 +26,10 @@ export const HeroSection = () => {
                 эзэмшээрэй.
               </p>
 
-              <button className="mt-8 rounded-lg bg-white px-6 py-3 text-blue-700 font-medium hover:bg-blue-50">
+              <button
+                onClick={() => router.push("/courses")}
+                className="mt-8 rounded-lg bg-white px-6 py-3 text-blue-700 font-medium hover:bg-blue-50"
+              >
                 Хичээл хайх
               </button>
             </div>

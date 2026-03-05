@@ -8,7 +8,7 @@ type Course = {
   category: string;
   title: string;
   description?: string | null;
-  price: number; // API чинь price гэж буцааж байгаа
+  price: number;
   freelancer?: { user?: { name?: string | null } | null } | null;
 };
 
@@ -128,15 +128,13 @@ export default function Home() {
     fetch("/api/courses")
       .then(async (res) => {
         const data = await res.json();
-        // API нь array буцаана гэж үзэв
+
         setAllCourses(Array.isArray(data) ? data : (data?.courses ?? []));
       })
       .catch(() => setAllCourses([]))
       .finally(() => setLoading(false));
   }, []);
 
-  // Одоогоор: suggested/new гэж тусдаа endpoint байхгүй тул
-  // 1 data-гаа 2 хэсэг болгон хуваая (дараа нь API-гаа салгахад амар)
   const suggestedCourses = useMemo(() => allCourses.slice(0, 6), [allCourses]);
   const newCourses = useMemo(() => allCourses.slice(6, 12), [allCourses]);
 

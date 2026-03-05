@@ -55,7 +55,6 @@ export const CoursesSidebar = ({
         })}
       </div>
 
-      {/* UI-only (дараа нь жинхэнэ filter болгоно) */}
       <div className="mt-8">
         <h4 className="text-sm font-semibold text-gray-900">Үнийн хүрээ (₮)</h4>
         <div className="mt-4">

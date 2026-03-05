@@ -7,7 +7,7 @@ import { useState } from "react";
 const CATEGORY_MAP: Record<string, string | null> = {
   Бүгд: null,
   Дизайн: "Дизайн",
-  Хөгжүүлэгч: "Хөгжүүлэгч",
+  Хөгжүүлэгч: "ХӨГЖҮҮЛЭГЧ",
   "Хэл сурах": "Хэл_сурах",
   Маркетинг: "Маркетинг",
   Фитнес: "Фитнес",
@@ -26,7 +26,7 @@ export const Filter = () => {
     const apiCategory = CATEGORY_MAP[category];
 
     if (!apiCategory) {
-      router.push("/courses");
+      router.push("/");
       return;
     }
 
