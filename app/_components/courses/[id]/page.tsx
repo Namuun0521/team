@@ -13,7 +13,6 @@ async function getCourse(id: string): Promise<Course | null> {
     cache: "no-store",
   });
 
-  // course байхгүй бол API 404 буцаалаа гэж үзье
   if (res.status === 404) {
     return null;
   }
@@ -34,7 +33,6 @@ export default async function CourseDetailPage({
   const { id } = await params;
   const course = await getCourse(id);
 
-  // course олдохгүй бол Next.js-ийн not-found page руу явна
   if (!course) {
     notFound();
   }

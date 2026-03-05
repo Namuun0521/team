@@ -12,7 +12,7 @@ const mockCourse = {
     "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop",
   hourlyPrice: 25000,
   instructor: {
-    name: "Бат-Эрдэнэ",
+    name: "Номин-Эрдэнэ",
     role: "Ахлах дизайнер",
     experience: "5+ жил",
     rating: 4.9,

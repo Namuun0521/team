@@ -11,6 +11,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 type Props = {
   hourlyPrice: number;
@@ -57,6 +68,7 @@ export function BookingCard({ hourlyPrice }: Props) {
             <SelectValue placeholder="Цаг сонгох" />
           </SelectTrigger>
           <SelectContent>
+            <SelectItem value="0.5">30 минут</SelectItem>
             <SelectItem value="1">1 цаг</SelectItem>
             <SelectItem value="2">2 цаг (Зөвлөмж)</SelectItem>
             <SelectItem value="3">3 цаг</SelectItem>
@@ -72,10 +84,28 @@ export function BookingCard({ hourlyPrice }: Props) {
         </span>
       </div>
 
-      <Button className="h-14 w-full rounded-2xl text-lg font-semibold bg-blue-600 text-white hover:bg-blue-700">
-        <CalendarIcon className="mr-2 h-5 w-5" />
-        Захиалах
-      </Button>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button className="h-14 w-full rounded-2xl text-lg font-semibold bg-blue-600 text-white hover:bg-blue-700">
+            <CalendarIcon className="mr-2 h-5 w-5" />
+            Захиалах
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Захиалга баталгаажуулах</AlertDialogTitle>
+            <AlertDialogDescription>
+              Та энэ захиалгыг илгээх гэж байна.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Цуцлах</AlertDialogCancel>
+            <AlertDialogAction className="bg-blue-600 hover:bg-blue-700 text-white font-semibold">
+              Тийм, захиалах
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <div className="rounded-2xl border bg-slate-50 p-4">
         <p className="font-semibold text-slate-800">Баталгаат төлбөр</p>
