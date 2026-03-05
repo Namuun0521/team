@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "clerk": {
+      "source": "clerk/skills",
+      "sourceType": "github",
+      "computedHash": "164da1b41b67248232e9076cbd8774d74e1d063be5dfaf25827eff6ecdc490e0"
+    }
+  }
+}
