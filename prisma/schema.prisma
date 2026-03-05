@@ -17,7 +17,15 @@ enum Role {
   USER
   FREELANCER
 }
-
+enum Category {
+  Дизайн
+  ХӨГЖҮҮЛЭГЧ
+  Хэл_сурах
+  Маркетинг
+  Фитнес
+  Ерөнхий_эрдэм
+  Бусад
+}
 enum BookingStatus {
   PENDING
   CONFIRMED
@@ -57,6 +65,7 @@ model Course {
   title        String
   description  String
   price        Float
+  category     Category   
   freelancerId String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -66,21 +75,22 @@ model Course {
   reviews    Review[]
 
   @@index([freelancerId])
+  @@index([category]) 
 }
 
 model Availability {
   id           String   @id @default(uuid())
   freelancerId String
-  dayOfWeek    Int // 0-6 (Sun-Sat)
-  startTime    String // "09:00"
-  endTime      String // "17:00"
-  slotDuration Int // minutes
+  dayOfWeek    Int 
+  startTime    String 
+  endTime      String 
+  slotDuration Int 
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
   freelancer FreelancerProfile @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
 
-  @@unique([freelancerId, dayOfWeek]) // нэг өдөрт нэг л availability rule (хялбар хувилбар)
+  @@unique([freelancerId, dayOfWeek]) 
   @@index([freelancerId])
 }
 
@@ -117,6 +127,6 @@ model Review {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, courseId]) // нэг хэрэглэгч нэг курсэд 1 л review
+  @@unique([userId, courseId]) 
   @@index([courseId])
 }
