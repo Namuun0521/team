@@ -13,7 +13,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <Suspense>
-        <html lang="en">
+        <html lang="mn">
           <body>
             <StepProvider>{children}</StepProvider>
             <Toaster />
