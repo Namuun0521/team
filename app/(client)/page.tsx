@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { HeroSection } from "./_components/HeroSection";
+import { HeroSection } from "../_components/HeroSection";
 
 type Course = {
   id: string;
