@@ -14,7 +14,7 @@ import {
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import {
   Form,
   FormControl,
@@ -28,13 +28,12 @@ import { Button } from "@/components/ui/button";
 import { StepContext } from "@/lib/type";
 import Link from "next/link";
 import { toast } from "sonner";
+
 const schema = z.object({
   name: z.string().min(2, "Нэр оруулна уу"),
   phone: z.string().regex(/^\+?\d{8}$/, "Утасны дугаар буруу"),
   email: z.string().email("И-мэйл буруу"),
-  ProfileImage: z
-    .any()
-    .refine((file) => file instanceof File, "Зураг оруулна уу"),
+  ProfileImage: z.any().optional(),
   bio: z.string().min(10, "Bio дор хаяж 10 тэмдэгт байна"),
   skills: z.array(z.string()).min(1, "Хамгийн багадаа 1 ур чадвар сонгоно уу"),
 });
@@ -42,54 +41,84 @@ const schema = z.object({
 type schemaType = z.infer<typeof schema>;
 
 export const Container = () => {
-  const { data, handleBack, setData } = useContext(StepContext);
-  const [loading, setLoading] = useState(false);
-  const [preview, setPreview] = useState<string | null>(
-    data.ProfileImage ? URL.createObjectURL(data.ProfileImage) : null,
-  );
+  const { data, handleBack } = useContext(StepContext);
   const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
+  const [preview, setPreview] = useState<string | null>(null);
+
+  const saved =
+    typeof window !== "undefined"
+      ? localStorage.getItem("freelancerForm")
+      : null;
+
+  const savedData = saved ? JSON.parse(saved) : null;
 
   const form = useForm<schemaType>({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: data.name,
-      phone: data.phone,
-      email: data.email,
-      ProfileImage: data.ProfileImage,
-      bio: data.bio,
-      skills: data.skills ?? [],
+      name: savedData?.name ?? data.name,
+      phone: savedData?.phone ?? data.phone,
+      email: savedData?.email ?? data.email,
+      bio: savedData?.bio ?? data.bio,
+      skills: savedData?.skills ?? data.skills ?? [],
     },
   });
 
-  const onSubmit = (values: schemaType) => {
+  useEffect(() => {
+    const subscription = form.watch((value) => {
+      const draft = {
+        name: value.name,
+        phone: value.phone,
+        email: value.email,
+        bio: value.bio,
+        skills: value.skills,
+      };
+
+      localStorage.setItem("freelancerForm", JSON.stringify(draft));
+    });
+
+    return () => subscription.unsubscribe();
+  }, [form]);
+
+  const onSubmit = async (values: schemaType) => {
+    if (!preview) {
+      toast.error("Зураг заавал оруулна уу");
+      return;
+    }
+
     setLoading(true);
 
-    setData((prev) => ({
-      ...prev,
-      name: values.name,
-      phone: values.phone,
-      email: values.email,
-      ProfileImage: values.ProfileImage,
-      bio: values.bio,
-      skills: values.skills,
-    }));
+    await fetch("/api/freelancers/profile", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: "123",
+        bio: values.bio,
+        skills: values.skills.join(","),
+        category: values.skills[0],
+        phone: values.phone,
+        imageUrl: preview,
+      }),
+    });
 
     toast.success("Амжилттай!", {
       description: "Таны freelancer profile үүслээ.",
     });
 
     setTimeout(() => {
-      setLoading(false);
       router.push("/freelancer/profile");
-    }, 1200);
+    }, 1000);
   };
 
   return (
-    <div className="flex flex-col gap-12">
+    <div className="flex flex-col w-183.5 gap-12">
       <Form {...form}>
         <form className="space-y-12" onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="flex flex-col items-center gap-8">
-            <div className="flex flex-col gap-4 w-full justify-center items-center">
+          <div className="flex flex-col items-center justify-center gap-8">
+            <div className="flex flex-col gap-4 w-183.5 justify-center items-center">
               <FormField
                 control={form.control}
                 name="ProfileImage"
@@ -99,14 +128,20 @@ export const Container = () => {
                       <div className="relative w-32 h-32">
                         <Input
                           type="file"
+                          accept="image/png, image/jpeg"
                           className="absolute flex justify-center w-32 h-32 inset-0 opacity-0 cursor-pointer"
                           onChange={(e) => {
                             const file = e.target.files?.[0];
                             if (!file) return;
 
-                            setPreview(URL.createObjectURL(file));
+                            const reader = new FileReader();
 
-                            field.onChange(file);
+                            reader.onloadend = () => {
+                              const base64 = reader.result as string;
+                              setPreview(base64);
+                            };
+
+                            reader.readAsDataURL(file);
                           }}
                         />
 
@@ -134,7 +169,7 @@ export const Container = () => {
               </p>
             </div>
 
-            <div className="flex gap-8.5">
+            <div className="flex gap-6">
               <div>
                 <FormField
                   control={form.control}
@@ -157,7 +192,6 @@ export const Container = () => {
                             color="#94A3B8"
                             size={16}
                           />
-
                           <Input
                             placeholder="Таны бүтэн нэр"
                             {...field}
@@ -194,7 +228,6 @@ export const Container = () => {
                             color="#94A3B8"
                             size={16}
                           />
-
                           <Input
                             placeholder="9911XXXX"
                             {...field}
@@ -209,7 +242,6 @@ export const Container = () => {
                 />
               </div>
             </div>
-
             <FormField
               control={form.control}
               name="email"
@@ -244,31 +276,34 @@ export const Container = () => {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="bio"
+              render={({ field }) => (
+                <FormItem className="flex flex-col w-183.5 gap-2">
+                  <div className="flex gap-2">
+                    <p className="font-semibold text-sm text-[#334155]">
+                      Өөрийн тухай (Bio)
+                    </p>
+                    <span className="font-semibold text-sm text-red-500">
+                      *
+                    </span>
+                  </div>
+
+                  <FormControl>
+                    <Textarea
+                      placeholder="Өөрийн туршлага, ур чадварын талаар товч танилцуулна уу..."
+                      className="w-183.5"
+                      {...field}
+                    />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
-          <FormField
-            control={form.control}
-            name="bio"
-            render={({ field }) => (
-              <FormItem className="flex flex-col gap-2">
-                <div className="flex gap-2">
-                  <p className="font-semibold text-sm text-[#334155]">
-                    Өөрийн тухай (Bio)
-                  </p>
-                  <span className="font-semibold text-sm text-red-500">*</span>
-                </div>
 
-                <FormControl>
-                  <Textarea
-                    placeholder="Өөрийн туршлага, ур чадварын талаар товч танилцуулна уу..."
-                    className="w-183.5"
-                    {...field}
-                  />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <SkillSelect form={form} />
 
           <div className="flex items-center justify-between">
@@ -279,8 +314,12 @@ export const Container = () => {
               </p>
             </Link>
 
-            <Button className="bg-[#135BEC]" type="submit" disabled={loading}>
-              {loading ? "Loading..." : "Дараах"}
+            <Button
+              className="bg-[#135BEC] hover:bg-blue-100"
+              type="submit"
+              disabled={loading}
+            >
+              {loading ? "Шилжүүлж байна..." : "Дараах"}
               <ChevronRight />
             </Button>
           </div>
