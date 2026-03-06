@@ -1,4 +1,7 @@
 import { Mail, Phone, MapPin, Globe, AtSign, Play } from "lucide-react";
+import { Router } from "lucide-react";
+
+import { use } from "react";
 
 export const Footer = () => {
   return (
