@@ -51,6 +51,8 @@ model FreelancerProfile {
   bio       String?
   skills    String?
   category  String?
+  phone     String?        // шинэ
+  imageUrl  String?        // profile зураг
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -65,7 +67,8 @@ model Course {
   title        String
   description  String
   price        Float
-  category     Category   
+  category     Category
+  imageUrl     String?   // 👈 course cover image
   freelancerId String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -75,7 +78,7 @@ model Course {
   reviews    Review[]
 
   @@index([freelancerId])
-  @@index([category]) 
+  @@index([category])
 }
 
 model Availability {
