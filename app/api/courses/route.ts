@@ -21,9 +21,7 @@ export async function GET(req: NextRequest) {
       freelancer: {
         select: {
           user: {
-            select: {
-              name: true,
-            },
+            select: { name: true },
           },
         },
       },
@@ -34,4 +32,23 @@ export async function GET(req: NextRequest) {
   });
 
   return NextResponse.json(courses);
+}
+
+export async function POST(req: NextRequest) {
+  const body = await req.json();
+
+  const { title, description, price, category, imageUrl, freelancerId } = body;
+
+  const course = await prisma.course.create({
+    data: {
+      title,
+      description,
+      price: Number(price),
+      category,
+      imageUrl,
+      freelancerId,
+    },
+  });
+
+  return NextResponse.json(course);
 }
