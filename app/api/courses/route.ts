@@ -22,9 +22,7 @@ export async function GET(req: NextRequest) {
       freelancer: {
         select: {
           user: {
-            select: {
-              name: true,
-            },
+            select: { name: true },
           },
         },
       },
