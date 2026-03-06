@@ -5,15 +5,17 @@ import { Container } from "./Container";
 
 export const HomePage = () => {
   return (
-    <div className="w-full h-full py-8 flex bg-blue-50 justify-center items-center">
-      <Card className="w-200 h-fit px-6">
-        <CardTitle className="flex">
-          <Title />
-        </CardTitle>
-        <CardContent>
-          <Container />
-        </CardContent>
-      </Card>
+    <div className="flex w-full min-h-screen">
+      <div className="w-full min-h-screen py-8 flex bg-blue-50 justify-center items-start">
+        <Card className="w-200 py-6 h-fit">
+          <CardTitle className="flex px-8">
+            <Title />
+          </CardTitle>
+          <CardContent className="flex p-0 items-center justify-center">
+            <Container />
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };

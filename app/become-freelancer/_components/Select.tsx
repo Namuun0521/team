@@ -9,27 +9,37 @@ import {
 } from "@/components/ui/form";
 import { useState } from "react";
 
-const options = [
-  "График Дизайн",
-  "UI/UX",
-  "Социал Маркетинг",
-  "Web Development",
-  "SEO",
-];
+const CATEGORY_MAP: Record<string, string | null> = {
+  Дизайн: "Дизайн",
+  Хөгжүүлэгч: "ХӨГЖҮҮЛЭГЧ",
+  "Хэл сурах": "Хэл_сурах",
+  Маркетинг: "Маркетинг",
+  Фитнес: "Фитнес",
+  "Ерөнхий эрдэм": "Ерөнхий_эрдэм",
+  Бусад: "Бусад",
+};
 
 export const SkillSelect = ({ form }: any) => {
+  const skillsList = Object.keys(CATEGORY_MAP);
+  const [open, setOpen] = useState(false); // ✔ энд байх ёстой
+
   return (
     <FormField
       control={form.control}
       name="skills"
       render={({ field }) => {
         const skills = field.value || [];
-        const [open, setOpen] = useState(false);
 
         const addSkill = (skill: string) => {
           if (!skills.includes(skill)) {
             field.onChange([...skills, skill]);
+
+            const category = CATEGORY_MAP[skill];
+            if (category) {
+              form.setValue("category", category);
+            }
           }
+
           setOpen(false);
         };
 
@@ -38,7 +48,7 @@ export const SkillSelect = ({ form }: any) => {
         };
 
         return (
-          <FormItem className="flex flex-col gap-2 border-b border-b-[#F1F5F9] pb-16">
+          <FormItem className="flex flex-col w-183.5 gap-2 border-b border-b-[#F1F5F9] pb-16">
             <div className="flex gap-2">
               <p className="font-semibold text-sm text-[#334155]">
                 Ур чадварууд
@@ -50,7 +60,7 @@ export const SkillSelect = ({ form }: any) => {
               <div className="relative w-full">
                 <div
                   onClick={() => setOpen(!open)}
-                  className="border rounded-md min-h-12 flex items-center flex-wrap gap-2 p-2 cursor-text"
+                  className="border rounded-md min-h-12 w-183.5 flex items-center flex-wrap gap-2 p-2 cursor-text"
                 >
                   {skills.map((skill: string) => (
                     <div
@@ -76,7 +86,7 @@ export const SkillSelect = ({ form }: any) => {
 
                 {open && (
                   <div className="absolute top-full left-0 w-full bg-white border rounded-md shadow-md mt-1 z-10">
-                    {options.map((skill) => (
+                    {skillsList.map((skill) => (
                       <div
                         key={skill}
                         onClick={() => addSkill(skill)}
