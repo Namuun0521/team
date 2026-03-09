@@ -20,11 +20,8 @@ export default function ProfilePage() {
 
   console.log("PROFILE DATA", profile);
 
-  // if (!profile) return null;
-
   return (
     <div className="bg-blue-50 flex flex-col h-fit">
-      <p>hi</p>
       <div className="h-full w-full justify-center flex gap-4 py-8">
         <div>
           <Card className="flex p-0 w-[320px] h-152.25">
