@@ -2,7 +2,6 @@ import { CourseHero } from "@/app/_components/course-detail/course-hero";
 import { InstructorCard } from "@/app/_components/course-detail/instructor-card";
 import { LearningPoints } from "@/app/_components/course-detail/learning-points";
 import { BookingCard } from "@/app/_components/course-detail/booking-card";
-
 const mockCourse = {
   id: "1",
   title: "UX/UI Дизайн анхан шатны хичээл",
