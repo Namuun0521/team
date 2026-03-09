@@ -5,11 +5,12 @@ import { Card } from "@/components/ui/card";
 import { BadgeCheck, Mail, Phone, UserSearch } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-
+  const router = useRouter();
   useEffect(() => {
     const data = localStorage.getItem("freelancerProfile");
     if (data) {
@@ -80,14 +81,16 @@ export default function ProfilePage() {
             </div>
           </Card>
           <div className="flex mt-24 justify-end">
-            <Link href={"/"}>
-              <Button
-                className="flex bg-[#135BEC] hover:bg-blue-100 w-fit justify-center cursor-pointer"
-                disabled={loading}
-              >
-                {loading ? "Шилжүүлж байна..." : "Хичээл үүсгэх"}
-              </Button>
-            </Link>
+            <Button
+              className="flex bg-[#135BEC] hover:bg-blue-100 w-fit justify-center cursor-pointer"
+              disabled={loading}
+              onClick={() => {
+                setLoading(true);
+                router.push("/create-course");
+              }}
+            >
+              {loading ? "Шилжүүлж байна..." : "Хичээл үүсгэх"}
+            </Button>
           </div>
         </div>
       </div>
