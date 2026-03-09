@@ -2,10 +2,10 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { CoursesGrid } from "../../_components/CoursesGrid";
 import { CoursesToolbar } from "../../_components/CoursesToolbar";
 import { CoursesSidebar } from "../../_components/CoursesSidebar";
-import { CoursesPageSkeleton } from "../../_components/CoursePageSkeleton";
 
 type Course = {
   id: string;
@@ -51,7 +51,7 @@ export default function CoursesPage() {
       ? `/api/courses?category=${encodeURIComponent(category)}`
       : "/api/courses";
 
-    fetch(url)
+    const fetchData = fetch(url)
       .then(async (res) => {
         const data = await res.json();
 
@@ -61,9 +61,11 @@ export default function CoursesPage() {
           return;
         }
 
-        if (Array.isArray(data)) setCourses(data);
-        else if (Array.isArray(data?.courses)) setCourses(data.courses);
-        else {
+        if (Array.isArray(data)) {
+          setCourses(data);
+        } else if (Array.isArray(data?.courses)) {
+          setCourses(data.courses);
+        } else {
           setCourses([]);
           setError("API буруу форматтай дата буцаалаа");
         }
@@ -71,8 +73,13 @@ export default function CoursesPage() {
       .catch(() => {
         setCourses([]);
         setError("Network алдаа гарлаа");
-      })
-      .finally(() => setLoading(false));
+      });
+
+    const minDelay = new Promise((resolve) => setTimeout(resolve, 1500));
+
+    Promise.all([fetchData, minDelay]).finally(() => {
+      setLoading(false);
+    });
   }, [category]);
 
   const heading = useMemo(() => {
@@ -99,7 +106,18 @@ export default function CoursesPage() {
     return arr;
   }, [courses, sort, activeSub]);
 
-  if (loading) return <CoursesPageSkeleton />;
+  if (loading) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50">
+        <div className="h-[420px] w-[420px]">
+          <DotLottieReact src="/loading.lottie" loop autoplay speed={0.6} />
+        </div>
+        <p className="-mt-8 text-sm text-gray-500">
+          Хичээлүүдийг ачааллаж байна...
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
