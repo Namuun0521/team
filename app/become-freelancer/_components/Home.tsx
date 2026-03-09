@@ -6,7 +6,7 @@ import { Container } from "./Container";
 export const HomePage = () => {
   return (
     <div className="flex w-full min-h-screen">
-      <div className="w-full min-h-screen py-8 flex bg-blue-50 justify-center items-start">
+      <div className="w-full min-h-screen py-8 flex  justify-center items-start">
         <Card className="w-200 py-6 h-fit">
           <CardTitle className="flex px-8">
             <Title />
