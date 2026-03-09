@@ -36,49 +36,46 @@ useEffect(() => {
     .catch(err => console.error("Fetch categories алдаа:", err));
 }, []);
 
-  const handleImageUpload = async (file: File) => {
-    setUploading(true);
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
+const handleImageUpload = (file: File) => {
+  if (!file) return;
 
-      const res = await fetch("/api/upload-image", { method: "POST", body: formData });
-      const data = await res.json();
+  setUploading(true);
 
-      if (!res.ok) throw new Error(data.error || "Upload failed");
+  const preview = URL.createObjectURL(file);
+  setImageUrl(preview);
 
-      setImageUrl(data.url);
-    } catch (err: any) {
-      alert("Зураг upload хийхэд алдаа гарлаа: " + err.message);
-    } finally {
-      setUploading(false);
-    }
-  };
+  setTimeout(() => {
+    setUploading(false);
+  }, 500);
+};
 
-  const handleSubmit = async () => {
-    if (!title || !category || !price || !description || !imageUrl) {
-      alert("Бүх талбарыг бөглөнө үү");
-      return;
-    }
+const handleSubmit = async () => {
+  if (!title || !category || !price || !description || !imageUrl) {
+    alert("Бүх талбарыг бөглөнө үү");
+    return;
+  }
 
-    setLoading(true);
-    try {
-      const res = await fetch("/api/courses", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, description, price: Number(price), category, imageUrl, freelancerId })
-      });
+  setLoading(true);
 
-      if (!res.ok) throw new Error("Course creation failed");
+  try {
+    // fake submit (backend дуудахгүй)
+    console.log({
+      title,
+      category,
+      price,
+      description,
+      imageUrl,
+    });
 
-      alert("Хичээл амжилттай нэмэгдлээ");
-      router.push("/courses");
-    } catch (err: any) {
-      alert("Алдаа гарлаа: " + err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+    alert("Хичээл амжилттай нэмэгдлээ");
+
+    router.push("/course-details[id]");
+  } catch (err: any) {
+    alert("Алдаа гарлаа: " + err.message);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="bg-[#F5F7FB] min-h-screen py-[40px]">
@@ -125,7 +122,7 @@ useEffect(() => {
               <label className="border-2 border-dashed border-[#CBD5F5] rounded-[12px] h-[160px] flex flex-col items-center justify-center text-center cursor-pointer bg-[#F8FAFF]">
                 <ImagePlus className="w-[28px] h-[28px] text-[#135BEC]" />
                 <span className="mt-[8px] text-[16px] font-medium">Зураг оруулах</span>
-                <span className="text-[14px] text-[#64748B]">PNG, JPG, WEBP (макс. 5MB)</span>
+                <span className="text-[14px] text-[#64748B]">PNG, JPG, WEBP (макс. 4MB)</span>
                 <input type="file" accept="image/*" className="hidden" onChange={e => e.target.files && handleImageUpload(e.target.files[0])} />
               </label>
               {uploading && <p className="text-sm mt-2">Upload хийж байна...</p>}
