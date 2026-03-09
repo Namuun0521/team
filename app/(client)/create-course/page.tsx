@@ -21,7 +21,6 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
-  const freelancerId = "profile_id";
 
 useEffect(() => {
   fetch("/api/categories")
@@ -58,7 +57,6 @@ const handleSubmit = async () => {
   setLoading(true);
 
   try {
-    // fake submit (backend дуудахгүй)
     console.log({
       title,
       category,
@@ -69,7 +67,7 @@ const handleSubmit = async () => {
 
     alert("Хичээл амжилттай нэмэгдлээ");
 
-    router.push("/course-details[id]");
+    router.push("/course-details/[id]");
   } catch (err: any) {
     alert("Алдаа гарлаа: " + err.message);
   } finally {
@@ -78,7 +76,7 @@ const handleSubmit = async () => {
 };
 
   return (
-    <div className="bg-[#F5F7FB] min-h-screen py-[40px]">
+    <div className="bg-[#FFF] min-h-screen py-[40px]">
       <div className="max-w-[768px] mx-auto flex flex-col gap-[32px]">
         <div className="text-[14px] text-[#94A3B8]">Профайл үүсгэх {" > "} Баталгаажуулалт {" > "}
           <span className="text-[#135BEC] font-medium"> Хичээл оруулах</span>
@@ -97,13 +95,21 @@ const handleSubmit = async () => {
             </div>
 
             <div className="flex gap-[24px] mb-[20px]">
-              <div className="flex-1">
-                <p className="text-[14px] font-semibold mb-[6px] text-[#64748b]">АНГИЛАЛ</p>
-                <Select onValueChange={setCategory}>
-                  <SelectTrigger className="h-[56px] rounded-[12px] w-[339px]"><SelectValue placeholder="Сонгох..." /></SelectTrigger>
-                  <SelectContent>{categories.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}</SelectContent>
-                </Select>
-              </div>
+            <div className="flex-1">
+              <p className="text-[14px] font-semibold mb-[6px] text-[#64748b]">АНГИЛАЛ</p>
+              <Select value={category} onValueChange={setCategory}>
+            <SelectTrigger className="h-[56px] rounded-[12px] w-[339px]">
+          <SelectValue placeholder="Сонгох..." />
+         </SelectTrigger>
+          <SelectContent>
+            {categories.map(c => (
+                <SelectItem key={c.id} value={c.id}>
+              {c.name}
+            </SelectItem>
+           ))}
+         </SelectContent>
+           </Select>
+            </div>
               <div className="flex-1">
                 <p className="text-[14px] font-semibold mb-[6px] text-[#64748b]">НЭГ ЦАГИЙН ҮНЭ (₮)</p>
                 <div className="relative"><span className="absolute left-[12px] top-[16px] text-[#64748B]">₮</span>
@@ -142,7 +148,7 @@ const handleSubmit = async () => {
 
         <div className="bg-[#EEF2FF] rounded-[12px] p-[24px] text-[14px] flex gap-[14px]">
           <OctagonAlert className="w-[20px] h-[20px]" color="#135BEC" />
-          <span><b>Зөвлөгөө:</b> Хичээлийн гарчиг болон тайлбар нь тодорхой, ойлгомжтой байх тусам суралцагчдын анхаарлыг
+        <span><b>Зөвлөгөө:</b> Хичээлийн гарчиг болон тайлбар нь тодорхой, ойлгомжтой байх тусам суралцагчдын анхаарлыг
 татах магадлал 40% илүү байдаг. Мөн чанартай зураг ашиглахаа мартуузай.</span>
         </div>
       </div>
