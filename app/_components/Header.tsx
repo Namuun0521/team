@@ -30,13 +30,13 @@ export const Header = () => {
         </div>
 
         <div className="flex items-center gap-6 text-sm font-medium">
-          <a href="#" className="hover:text-blue-600">
+          <a href="/" className="hover:text-blue-600">
             Нүүр
           </a>
           <a href="#" className="hover:text-blue-600">
             Ангилал
           </a>
-          <a href="#" className="hover:text-blue-600">
+          <a href="/about" className="hover:text-blue-600">
             Бидний тухай
           </a>
 
