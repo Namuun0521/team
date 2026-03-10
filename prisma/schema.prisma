@@ -17,6 +17,7 @@ enum Role {
   USER
   FREELANCER
 }
+
 enum Category {
   Дизайн
   ХӨГЖҮҮЛЭГЧ
@@ -26,6 +27,7 @@ enum Category {
   Ерөнхий_эрдэм
   Бусад
 }
+
 enum BookingStatus {
   PENDING
   CONFIRMED
@@ -51,8 +53,8 @@ model FreelancerProfile {
   bio       String?
   skills    String?
   category  String?
-  phone     String?        // шинэ
-  imageUrl  String?        // profile зураг
+  phone     String? // шинэ
+  imageUrl  String? // profile зураг
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -68,7 +70,7 @@ model Course {
   description  String
   price        Float
   category     Category
-  imageUrl     String?   
+  imageUrl     String?
   freelancerId String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -84,16 +86,16 @@ model Course {
 model Availability {
   id           String   @id @default(uuid())
   freelancerId String
-  dayOfWeek    Int 
-  startTime    String 
-  endTime      String 
-  slotDuration Int 
+  dayOfWeek    Int
+  startTime    String
+  endTime      String
+  slotDuration Int
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
   freelancer FreelancerProfile @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
 
-  @@unique([freelancerId, dayOfWeek]) 
+  @@unique([freelancerId, dayOfWeek])
   @@index([freelancerId])
 }
 
@@ -130,6 +132,6 @@ model Review {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, courseId]) 
+  @@unique([userId, courseId])
   @@index([courseId])
 }
