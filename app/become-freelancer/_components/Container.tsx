@@ -28,7 +28,7 @@ import { Button } from "@/components/ui/button";
 import { StepContext } from "@/lib/type";
 import Link from "next/link";
 import { toast } from "sonner";
-
+import { useUser } from "@clerk/nextjs";
 const schema = z.object({
   name: z.string().min(2, "Нэр оруулна уу"),
   phone: z.string().regex(/^\+?\d{8}$/, "Утасны дугаар буруу"),
@@ -46,7 +46,7 @@ export const Container = () => {
 
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
-
+  const { user } = useUser();
   const saved =
     typeof window !== "undefined"
       ? localStorage.getItem("freelancerForm")
@@ -91,11 +91,9 @@ export const Container = () => {
 
     await fetch("/api/freelancers/profile", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        userId: "123",
+        userId: user?.id,
         bio: values.bio,
         skills: values.skills.join(","),
         category: values.skills[0],

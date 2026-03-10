@@ -6,17 +6,26 @@ import { BadgeCheck, Mail, Phone, UserSearch } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
+import { useUser } from "@clerk/nextjs";
 export default function ProfilePage() {
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { user } = useUser();
   useEffect(() => {
-    const data = localStorage.getItem("freelancerProfile");
-    if (data) {
-      setProfile(JSON.parse(data));
-    }
-  }, []);
+    const fetchProfile = async () => {
+      if (!user) return;
+
+      const res = await fetch(`/api/freelancers/profile?userId=${user.id}`);
+      const data = await res.json();
+
+      console.log("PROFILE DATA", data);
+
+      setProfile(data);
+    };
+
+    fetchProfile();
+  }, [user]);
 
   console.log("PROFILE DATA", profile);
 
