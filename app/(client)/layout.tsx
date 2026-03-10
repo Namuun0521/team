@@ -12,13 +12,9 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <Suspense>
-        <html lang="mn">
-          <body>
-            <Header />
-            {children}
-            <Footer />
-          </body>
-        </html>
+        <Header />
+        {children}
+        <Footer />
       </Suspense>
     </ClerkProvider>
   );
