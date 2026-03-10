@@ -43,15 +43,19 @@ export const Header = () => {
             <div className="hidden items-center gap-4 lg:flex">
               <Button
                 variant="link"
-                onClick={() => router.push("/courses")}
+                onClick={() => router.push("/")}
                 className="transition duration-200 hover:scale-105 hover:text-blue-600"
               >
                 Нүүр
               </Button>
 
-              <a href="#" className="hover:text-blue-600">
+              <Button
+                variant="link"
+                onClick={() => router.push("/about")}
+                className="transition duration-200 hover:scale-105 hover:text-blue-600"
+              >
                 Бидний тухай
-              </a>
+              </Button>
 
               {!isSignedIn && (
                 <>
