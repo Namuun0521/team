@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
         title: true,
         description: true,
         price: true,
-        imageUrl: true,
+        imageUrl: true || null,
         category: true,
         freelancer: {
           select: {
