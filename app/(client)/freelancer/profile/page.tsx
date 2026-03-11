@@ -4,19 +4,33 @@ import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { BadgeCheck, Mail, Phone, UserSearch } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+
   const router = useRouter();
+  const { user } = useUser();
+
   useEffect(() => {
-    const data = localStorage.getItem("freelancerProfile");
-    if (data) {
-      setProfile(JSON.parse(data));
-    }
-  }, []);
+    const fetchProfile = async () => {
+      if (!user) return;
+
+      const res = await fetch(`/api/freelancers/profile?userId=${user.id}`);
+
+      if (!res.ok) {
+        console.error("Profile fetch error");
+        return;
+      }
+
+      const data = await res.json();
+      setProfile(data);
+    };
+
+    fetchProfile();
+  }, [user]);
 
   console.log("PROFILE DATA", profile);
 
@@ -24,23 +38,21 @@ export default function ProfilePage() {
     <div className=" flex flex-col h-fit">
       <div className="h-full w-full justify-center flex gap-4 py-8">
         <div>
-          <Card className="flex p-0 w-[320px] h-152.25">
-            {profile?.imageUrl && (
-              <img
-                src={profile.imageUrl}
-                className="w-79.5 h-79.5 rounded-lg"
-              />
-            )}
+          <Card className="flex p-0 w-[320px] m-0 h-152.25 flex-col">
+            <img
+              src={profile?.imageUrl || user?.imageUrl}
+              className="w-79.5 h-79.5 rounded-lg object-cover"
+            />
 
-            <div className="px-4 flex flex-col gap-2">
+            <div className="px-4 flex flex-col gap-2 py-4">
               <h1 className="font-bold text-2xl mb-4 py-2 border-b">
-                {profile?.name}
+                {user?.fullName}
               </h1>
 
-              <p className="font-medium flex items-center gap-2 text-sm text-[#334155]">
+              <span className="font-medium flex items-center gap-2 text-sm text-[#334155]">
                 <Mail size={16} color="#135BEC" />
-                <span>{profile?.email}</span>
-              </p>
+                {user?.primaryEmailAddress?.emailAddress}
+              </span>
 
               <p className="font-medium flex items-center gap-2 text-sm text-[#334155]">
                 <Phone size={16} color="#135BEC" />
@@ -67,8 +79,9 @@ export default function ProfilePage() {
               <BadgeCheck color="#135BEC" />
               <span>Ур чадвар</span>
             </h1>
+
             <div className="flex flex-wrap gap-2">
-              {profile?.skills?.map((skill: string) => (
+              {profile?.skills?.split(",").map((skill: string) => (
                 <Button
                   key={skill}
                   className="items-center gap-1 bg-blue-50 hover:bg-blue-100 font-semibold border-blue-100 border text-[#135BEC] px-3 py-1 rounded-full text-sm"
@@ -78,6 +91,7 @@ export default function ProfilePage() {
               ))}
             </div>
           </Card>
+
           <div className="flex mt-24 justify-end">
             <Button
               className="flex bg-[#135BEC] hover:bg-blue-100 w-fit justify-center cursor-pointer"
