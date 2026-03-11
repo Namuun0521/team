@@ -10,6 +10,7 @@ type Course = {
   title: string;
   description?: string | null;
   price: number;
+  imageUrl?: string | null;
   freelancer?: { user?: { name?: string | null } | null } | null;
 };
 
@@ -58,6 +59,7 @@ const CourseCard = ({ c }: { c: Course }) => {
 const CourseRow = ({
   title,
   items,
+
   emptyText = "Хичээл олдсонгүй",
 }: {
   title: string;
@@ -106,7 +108,7 @@ export default function Home() {
   }, []);
 
   const suggestedCourses = useMemo(() => allCourses.slice(0, 6), [allCourses]);
-  const newCourses = useMemo(() => allCourses.slice(6, 12), [allCourses]);
+  const newCourses = useMemo(() => allCourses.slice(0, 6), [allCourses]);
 
   return (
     <div className="min-h-screen bg-gray-50">
