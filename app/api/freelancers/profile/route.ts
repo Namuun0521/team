@@ -6,10 +6,21 @@ export async function POST(req: NextRequest) {
 
   const { userId, bio, skills, category, phone, imageUrl } = body;
 
+  let user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!user) {
+    user = await prisma.user.create({
+      data: {
+        id: userId,
+        email: `${userId}@temp.com`,
+      },
+    });
+  }
+
   const profile = await prisma.freelancerProfile.upsert({
-    where: {
-      userId,
-    },
+    where: { userId },
     update: {
       bio,
       skills,
@@ -28,4 +39,25 @@ export async function POST(req: NextRequest) {
   });
 
   return NextResponse.json(profile);
+}
+
+export async function GET(req: NextRequest) {
+  try {
+    const userId = req.nextUrl.searchParams.get("userId");
+
+    if (!userId) {
+      return NextResponse.json({ error: "userId required" }, { status: 400 });
+    }
+
+    const profile = await prisma.freelancerProfile.findUnique({
+      where: {
+        userId: userId,
+      },
+    });
+
+    return NextResponse.json(profile);
+  } catch (error) {
+    console.error("GET PROFILE ERROR:", error);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
 }

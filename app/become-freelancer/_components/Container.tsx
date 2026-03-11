@@ -43,7 +43,6 @@ type schemaType = z.infer<typeof schema>;
 export const Container = () => {
   const { data, handleBack } = useContext(StepContext);
   const router = useRouter();
-
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const { user } = useUser();
@@ -94,6 +93,7 @@ export const Container = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         userId: user?.id,
+        email: user?.primaryEmailAddress?.emailAddress,
         bio: values.bio,
         skills: values.skills.join(","),
         category: values.skills[0],
