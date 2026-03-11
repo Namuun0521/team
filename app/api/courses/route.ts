@@ -36,65 +36,60 @@
 // }
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { Category } from "@prisma/client";
 
-export async function POST(req: NextRequest) {
+function isValidCategory(value: string): value is Category {
+  return Object.values(Category).includes(value as Category);
+}
+
+export async function GET(req: NextRequest) {
   try {
-    const { userId } = await auth();
-    if (!userId) {
-      return NextResponse.json(
-        { error: "Нэвтрэх шаардлагатай" },
-        { status: 401 },
-      );
+    const searchParams = req.nextUrl.searchParams;
+    const categoryParam = searchParams.get("category");
+
+    let category: Category | undefined;
+
+    if (categoryParam) {
+      if (!isValidCategory(categoryParam)) {
+        return NextResponse.json(
+          { error: "Invalid category" },
+          { status: 400 },
+        );
+      }
+      category = categoryParam;
     }
 
-    // Clerk userId-аар FreelancerProfile шууд хайх
-    const profile = await prisma.freelancerProfile.findUnique({
-      where: { userId },
-      include: { user: true },
-    });
-
-    if (!profile) {
-      return NextResponse.json(
-        { error: "Зөвхөн фрилансер хичээл үүсгэх боломжтой" },
-        { status: 403 },
-      );
-    }
-
-    const body = await req.json();
-    const { title, description, price, category, imageUrl } = body;
-
-    if (!title || !description || !price || !category) {
-      return NextResponse.json(
-        { error: "Бүх талбарыг бөглөнө үү" },
-        { status: 400 },
-      );
-    }
-
-    const numericPrice = parseFloat(price);
-    if (isNaN(numericPrice) || numericPrice <= 0) {
-      return NextResponse.json(
-        { error: "Үнэ зөв оруулна уу" },
-        { status: 400 },
-      );
-    }
-
-    const course = await prisma.course.create({
-      data: {
-        title,
-        description,
-        price: numericPrice,
-        category,
-        imageUrl: imageUrl || null,
-        freelancerId: profile.id,
+    const courses = await prisma.course.findMany({
+      where: {
+        ...(category && { category }),
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        price: true,
+        imageUrl: true,
+        category: true,
+        freelancer: {
+          select: {
+            user: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
       },
     });
 
-    return NextResponse.json(course, { status: 201 });
+    return NextResponse.json(courses);
   } catch (error) {
-    console.error("Course creation error:", error);
+    console.error("GET /api/courses error:", error);
     return NextResponse.json(
-      { error: "Хичээл үүсгэхэд алдаа гарлаа" },
+      { error: "Дотоод серверийн алдаа" },
       { status: 500 },
     );
   }
