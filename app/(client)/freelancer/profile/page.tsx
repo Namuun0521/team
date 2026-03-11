@@ -35,7 +35,7 @@ export default function ProfilePage() {
   console.log("PROFILE DATA", profile);
 
   return (
-    <div className="flex flex-col h-fit">
+    <div className=" flex flex-col h-fit">
       <div className="h-full w-full justify-center flex gap-4 py-8">
         <div>
           <Card className="flex p-0 w-[320px] m-0 h-152.25 flex-col">
