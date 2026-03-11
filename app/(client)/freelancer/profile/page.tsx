@@ -129,7 +129,7 @@ export default function ProfilePage() {
     const fetchProfile = async () => {
       if (!user) return;
 
-      const res = await fetch("/api/freelancers/profile?userId=" + user.id);
+      const res = await fetch(`/api/freelancers/profile?userId=${user.id}`);
 
       if (!res.ok) {
         console.error("Profile fetch error");

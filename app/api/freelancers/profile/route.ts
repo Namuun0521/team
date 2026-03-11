@@ -87,6 +87,19 @@ export async function POST(req: NextRequest) {
     });
   }
 
+  let user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!user) {
+    user = await prisma.user.create({
+      data: {
+        id: userId,
+        email: `${userId}@temp.com`,
+      },
+    });
+  }
+
   const profile = await prisma.freelancerProfile.upsert({
     where: { userId },
     update: { bio, skills, category, phone, imageUrl },
