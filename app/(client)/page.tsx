@@ -36,7 +36,7 @@ const CourseCard = ({ c }: { c: Course }) => {
           <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-gray-100">
             👤
           </span>
-          <span>{c.freelancer?.user?.name ?? "Нэргүй багш"}</span>
+          <span>{c.freelancer?.user?.name ?? "Freelancer"}</span>
         </div>
 
         <div className="mt-3 flex items-center justify-between text-xs">
