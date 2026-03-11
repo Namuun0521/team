@@ -6,8 +6,6 @@ import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { CoursesGrid } from "../../_components/CoursesGrid";
 import { CoursesToolbar } from "../../_components/CoursesToolbar";
 import { CoursesSidebar } from "../../_components/CoursesSidebar";
-import { CourseCard } from "@/app/_components/Course-Card";
-import { CourseSection } from "@/app/_components/Course-Section";
 
 type Course = {
   id: string;
@@ -157,7 +155,6 @@ export default function CoursesPage() {
                 Энэ ангилалд хичээл олдсонгүй.
               </p>
             )}
-            <CourseSection />
           </section>
         </div>
       </div>
