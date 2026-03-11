@@ -146,15 +146,10 @@ export default function Home() {
       <main className="mx-auto max-w-6xl px-4 py-6">
         {loading ? (
           <div className="rounded-xl border bg-white p-10 text-center text-sm text-gray-500">
-            Ачааллаж байна...
+            Ачааллаж байна...s
           </div>
         ) : (
           <>
-            <CourseRow
-              title="Санал болгож буй хичээлүүд"
-              items={suggestedCourses}
-              emptyText="Санал болгож буй хичээл олдсонгүй"
-            />
             <CourseRow
               title="Шинээр нэмэгдсэн үйлчилгээнүүд"
               items={newCourses}
