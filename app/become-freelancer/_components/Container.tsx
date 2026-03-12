@@ -93,6 +93,7 @@ export const Container = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         userId: user?.id,
+        name: values.name, //zassan
         email: user?.primaryEmailAddress?.emailAddress,
         bio: values.bio,
         skills: values.skills.join(","),
