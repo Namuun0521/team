@@ -4,8 +4,9 @@ import { prisma } from "@/app/lib/prisma";
 
 export async function POST() {
   const { userId } = await auth();
-  if (!userId)
+  if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
   const u = await currentUser();
   const email = u?.emailAddresses?.[0]?.emailAddress;
