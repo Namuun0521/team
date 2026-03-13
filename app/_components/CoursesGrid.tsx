@@ -59,7 +59,7 @@ export const CoursesGrid = ({ courses }: Props) => {
                   👤
                 </span>
                 <span className="truncate">
-                  {c.freelancer?.user?.name ?? "Нэргүй багш"}
+                  {c.freelancer?.user?.name || "Нэргүй хэрэглэгч"}
                 </span>
               </div>
 
