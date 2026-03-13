@@ -671,7 +671,7 @@ export default function CreateCoursePage() {
       if (!res.ok) throw new Error(data.error || "Алдаа гарлаа");
 
       alert("Хичээл амжилттай үүсгэгдлээ! Та одоо Freelancer боллоо!");
-      window.location.href = "/course-details/" + data.id;
+      router.push("/course-details/" + data.id);
     } catch (err: any) {
       setError(err.message);
     } finally {

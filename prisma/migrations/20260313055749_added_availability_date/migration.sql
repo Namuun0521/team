@@ -2,6 +2,9 @@
 CREATE TYPE "Role" AS ENUM ('USER', 'FREELANCER');
 
 -- CreateEnum
+CREATE TYPE "Category" AS ENUM ('Дизайн', 'ХӨГЖҮҮЛЭГЧ', 'Хэл_сурах', 'Маркетинг', 'Фитнес', 'Ерөнхий_эрдэм', 'Бусад');
+
+-- CreateEnum
 CREATE TYPE "BookingStatus" AS ENUM ('PENDING', 'CONFIRMED', 'CANCELLED');
 
 -- CreateTable
@@ -23,6 +26,8 @@ CREATE TABLE "FreelancerProfile" (
     "bio" TEXT,
     "skills" TEXT,
     "category" TEXT,
+    "phone" TEXT,
+    "imageUrl" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -35,6 +40,8 @@ CREATE TABLE "Course" (
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "price" DOUBLE PRECISION NOT NULL,
+    "category" "Category" NOT NULL,
+    "imageUrl" TEXT,
     "freelancerId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -91,6 +98,9 @@ CREATE UNIQUE INDEX "FreelancerProfile_userId_key" ON "FreelancerProfile"("userI
 
 -- CreateIndex
 CREATE INDEX "Course_freelancerId_idx" ON "Course"("freelancerId");
+
+-- CreateIndex
+CREATE INDEX "Course_category_idx" ON "Course"("category");
 
 -- CreateIndex
 CREATE INDEX "Availability_freelancerId_idx" ON "Availability"("freelancerId");
