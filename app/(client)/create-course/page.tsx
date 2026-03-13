@@ -670,8 +670,7 @@ export default function CreateCoursePage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Алдаа гарлаа");
 
-      alert("Хичээл амжилттай үүсгэгдлээ! Та одоо Freelancer боллоо!");
-      window.location.href = "/course-details/" + data.id;
+      window.location.href = "/set-availability?courseId=" + data.id;
     } catch (err: any) {
       setError(err.message);
     } finally {
