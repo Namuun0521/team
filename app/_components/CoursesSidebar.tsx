@@ -14,7 +14,7 @@ export const CoursesSidebar = ({
   onSelectSub,
 }: Props) => {
   return (
-    <aside className="rounded-xl bg-white p-5 shadow-sm">
+    <aside className="self-start h-fit rounded-xl bg-white p-5 shadow-sm">
       <h3 className="text-sm font-semibold text-gray-900">Дэд ангилал</h3>
 
       <div className="mt-4 space-y-2">
