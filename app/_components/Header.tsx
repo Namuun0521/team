@@ -8,6 +8,7 @@ import BecomeFreelancerButton from "./BecomeFreelancerButton";
 import { MobileSidebar } from "./MobileSidebar";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { NotificationDialog } from "./NotificationDialog";
 
 export const Header = () => {
   const [open, setOpen] = useState(false);
@@ -52,14 +53,11 @@ export const Header = () => {
               >
                 Бидний тухай
               </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => router.push("/courses")}
-                className="transition duration-200 hover:scale-110"
-              >
-                <Bell className="h-5 w-5 text-gray-500" />
-              </Button>
+              {isSignedIn && (
+                <>
+                  <NotificationDialog />
+                </>
+              )}
 
               {!isSignedIn && (
                 <>
@@ -78,7 +76,15 @@ export const Header = () => {
               )}
               {isSignedIn && (
                 <>
-                  <UserButton />
+                  <UserButton>
+                    <UserButton.MenuItems>
+                      <UserButton.Link
+                        label="Миний хичээлүүд"
+                        labelIcon={<span>📚</span>}
+                        href="/freelancer/profile"
+                      />
+                    </UserButton.MenuItems>
+                  </UserButton>
                   <BecomeFreelancerButton />
                 </>
               )}
