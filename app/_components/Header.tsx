@@ -20,6 +20,8 @@ import { NotificationDialog } from "./NotificationDialog";
 import { useRouter } from "next/navigation";
 import { NotificationDialog } from "./NotificationDialog";
 import SearchPage from "../search/page";
+import Link from "next/link";
+import { ShoppingCart } from "lucide-react";
 
 >>>>>>> f8770c4 (cs)
 import SearchPage from "../search/page";
@@ -106,10 +108,20 @@ export const Header = ({ cartCount }: HeaderProps) => {
               </Button>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
               {isSignedIn && <NotificationDialog />}
 
 =======
 >>>>>>> 4d6320f (headerfix)
+=======
+              <Link
+                href="/shopping-cart"
+                className="flex items-center gap-2 rounded-lg px-3 py-2 hover:bg-slate-100"
+              >
+                <ShoppingCart className="h-5 w-5" />
+              </Link>
+
+>>>>>>> 0d1ab52 (update header)
               {!isSignedIn && (
                 <>
                   <SignInButton>
