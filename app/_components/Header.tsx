@@ -39,7 +39,6 @@ export const Header = ({ cartCount }: HeaderProps) => {
               </div>
               <span>Freelancer.mn</span>
             </div>
-
             <SearchPage />
 
             <div className="hidden items-center gap-4 lg:flex">
@@ -67,6 +66,38 @@ export const Header = ({ cartCount }: HeaderProps) => {
                   </span>
                 )}
               </Link>
+            </div>
+            <div className="hidden items-center gap-4 lg:flex">
+              <Button
+                variant="link"
+                onClick={() => router.push("/")}
+                className="transition duration-200 hover:scale-105 hover:text-blue-600"
+              >
+                Нүүр
+              </Button>
+              <Button
+                variant="link"
+                onClick={() => router.push("/about")}
+                className="transition duration-200 hover:scale-105 hover:text-blue-600"
+              >
+                Бидний тухай
+              </Button>
+              <Link href="/shopping-cart" className="relative inline-block">
+                <ShoppingCart />
+                {cartCount > 0 && (
+                  <span className="absolute -right-2 -top-2 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1 text-xs text-white">
+                    {cartCount > 99 ? "99+" : cartCount}
+                  </span>
+                )}
+              </Link>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => router.push("/courses")}
+                className="transition duration-200 hover:scale-110"
+              >
+                <Bell className="h-5 w-5 text-gray-500" />
+              </Button>
 
               {isSignedIn && <NotificationDialog />}
 
