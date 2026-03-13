@@ -12,6 +12,8 @@ import { MobileSidebar } from "./MobileSidebar";
 import { Button } from "@/components/ui/button";
 import { NotificationDialog } from "./NotificationDialog";
 import SearchPage from "../search/page";
+import Link from "next/link";
+import { ShoppingCart } from "lucide-react";
 
 type HeaderProps = {
   cartCount: number;
