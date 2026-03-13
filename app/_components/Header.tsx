@@ -14,7 +14,13 @@ import { Filter } from "./Filter";
 import BecomeFreelancerButton from "./BecomeFreelancerButton";
 import { MobileSidebar } from "./MobileSidebar";
 import { Button } from "@/components/ui/button";
+<<<<<<< HEAD
 import { NotificationDialog } from "./NotificationDialog";
+=======
+import { useRouter } from "next/navigation";
+import { NotificationDialog } from "./NotificationDialog";
+
+>>>>>>> f8770c4 (cs)
 import SearchPage from "../search/page";
 
 type HeaderProps = {
@@ -120,7 +126,10 @@ export const Header = ({ cartCount }: HeaderProps) => {
                       />
                     </UserButton.MenuItems>
                   </UserButton>
+<<<<<<< HEAD
 
+=======
+>>>>>>> f8770c4 (cs)
                   <BecomeFreelancerButton />
                 </>
               )}
