@@ -77,7 +77,7 @@ export function BookingCard({ hourlyPrice }: Props) {
             </CardContent>
             <CardFooter className="border-t bg-card">
               <FieldGroup>
-                <Field>
+                {/* <Field>
                   <FieldLabel htmlFor="time-from">Start Time</FieldLabel>
                   <InputGroup>
                     <InputGroupInput
@@ -106,7 +106,7 @@ export function BookingCard({ hourlyPrice }: Props) {
                       <Clock2Icon className="text-muted-foreground" />
                     </InputGroupAddon>
                   </InputGroup>
-                </Field>
+                </Field> */}
               </FieldGroup>
             </CardFooter>
           </Card>
