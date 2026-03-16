@@ -14,8 +14,14 @@ import BecomeFreelancerButton from "./BecomeFreelancerButton";
 import { MobileSidebar } from "./MobileSidebar";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+<<<<<<< HEAD
 import { NotificationDialog } from "./NotificationDialog";
+=======
+<<<<<<< HEAD
+>>>>>>> 8f2272a (t)
 import SearchPage from "../search/page";
+=======
+>>>>>>> c3c602c (t)
 import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
 
@@ -109,6 +115,7 @@ export const Header = () => {
           </div>{" "}
         </div>
 
+<<<<<<< HEAD
         <div className="relative w-[400px]">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
           <input
@@ -152,6 +159,10 @@ export const Header = () => {
             <UserButton />
             <BecomeFreelancerButton />
           </Show>
+=======
+        <div className="hidden lg:block">
+          <Filter />
+>>>>>>> c3c602c (t)
         </div>
       </div>
     </>
