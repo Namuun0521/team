@@ -55,7 +55,9 @@ export default function ShoppingCartPage() {
       });
 
       if (!res.ok) {
-        throw new Error("Failed to fetch cart");
+        const errorText = await res.text();
+        console.error("Cart fetch error:", res.status, errorText);
+        throw new Error(`Failed to fetch cart: ${res.status}`);
       }
 
       const data: CartItem[] = await res.json();
