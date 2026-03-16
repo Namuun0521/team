@@ -24,8 +24,6 @@ import { NotificationDialog } from "./NotificationDialog";
 
 >>>>>>> 9b54fd5 (Shoppingcartadded+Notifybar)
 import SearchPage from "../search/page";
-import Link from "next/link";
-import { ShoppingCart } from "lucide-react";
 
 import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
@@ -98,13 +96,6 @@ export const Header = ({ cartCount }: HeaderProps) => {
                   </span>
                 )}
 >>>>>>> 9b54fd5 (Shoppingcartadded+Notifybar)
-              </Link>
-
-              <Link
-                href="/shopping-cart"
-                className="flex items-center gap-2 rounded-lg px-3 py-2 hover:bg-slate-100"
-              >
-                <ShoppingCart className="h-5 w-5" />
               </Link>
 
               {!isSignedIn && (
