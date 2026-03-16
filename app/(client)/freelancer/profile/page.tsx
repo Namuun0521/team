@@ -258,7 +258,6 @@ export default function ProfilePage() {
 
         const data = await res.json();
 
-        // Profile олдоогүй бол become-freelancer руу шилжүүлэх
         if (!data) {
           router.replace("/become-freelancer");
           return;
