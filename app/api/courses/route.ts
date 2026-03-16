@@ -24,13 +24,6 @@ export async function GET(req: NextRequest) {
       category = categoryParam;
     }
 
-  
-  const validCategories = ["web", "design", "marketing"];
-  if (category && !validCategories.includes(category)) {
-    return NextResponse.json({ message: "Invalid category" }, { status: 400 });
-  }
-
-
     const courses = await prisma.course.findMany({
       where: category ? { category } : {},
       orderBy: { createdAt: "desc" },
