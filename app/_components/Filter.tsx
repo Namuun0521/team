@@ -12,6 +12,7 @@ const CATEGORY_MAP: Record<string, string | null> = {
   Маркетинг: "Маркетинг",
   Фитнес: "Фитнес",
   "Ерөнхий эрдэм": "Ерөнхий_эрдэм",
+  Бусад: "Бусад",
 };
 
 const categories = Object.keys(CATEGORY_MAP);

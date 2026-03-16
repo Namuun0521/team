@@ -146,7 +146,7 @@ export const NotificationDialog = () => {
                   {item.status === "accepted" && (
                     <div className="mt-3">
                       <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
-                        Зөвшөөрсөн
+                        tolbor huleegdej baina
                       </span>
                     </div>
                   )}

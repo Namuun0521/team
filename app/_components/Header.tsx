@@ -40,6 +40,7 @@ export const Header = ({ cartCount }: HeaderProps) => {
   const [open, setOpen] = useState(false);
   const { isSignedIn } = useUser();
   const router = useRouter();
+  const [isFreelancer, setIsFreelancer] = useState(true);
   return (
     <>
       <MobileSidebar open={open} setOpen={setOpen} />
