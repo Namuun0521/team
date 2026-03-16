@@ -16,10 +16,7 @@ export default function RootLayout({
       <Suspense>
         <html lang="mn">
           <body>
-            <StepProvider>
-              {children}
-              <SecondFooter />
-            </StepProvider>
+            <StepProvider>{children}</StepProvider>
             <Toaster />
           </body>
         </html>
