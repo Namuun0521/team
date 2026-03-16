@@ -5,6 +5,7 @@ import { auth } from "@clerk/nextjs/server";
 export async function POST(req: NextRequest) {
   try {
     const { userId } = await auth();
+
     if (!userId) {
       return NextResponse.json(
         { error: "Нэвтрэх шаардлагатай" },
@@ -13,23 +14,26 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { courseId } = body;
 
-    if (!courseId) {
-      return NextResponse.json({ error: "Хичээл сонгоно уу" }, { status: 400 });
+    const { courseId, freelancerId, startAt, endAt } = body;
+
+    if (!courseId || !freelancerId || !startAt || !endAt) {
+      return NextResponse.json(
+        { error: "Мэдээлэл дутуу байна" },
+        { status: 400 },
+      );
     }
 
     const course = await prisma.course.findUnique({
       where: { id: courseId },
-      include: { freelancer: true },
     });
 
     if (!course) {
       return NextResponse.json({ error: "Хичээл олдсонгүй" }, { status: 404 });
     }
 
-    // Find or create user by Clerk userId
-    let dbUser = await prisma.user.findFirst({
+    // Clerk user -> DB user
+    let dbUser = await prisma.user.findUnique({
       where: { id: userId },
     });
 
@@ -42,16 +46,28 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const now = new Date();
-    const endAt = new Date(now.getTime() + 60 * 60 * 1000);
+    // 🔒 Double booking protection
+    const existing = await prisma.booking.findFirst({
+      where: {
+        freelancerId,
+        startAt: new Date(startAt),
+      },
+    });
+
+    if (existing) {
+      return NextResponse.json(
+        { error: "Энэ цаг аль хэдийн захиалагдсан байна" },
+        { status: 409 },
+      );
+    }
 
     const booking = await prisma.booking.create({
       data: {
         userId: dbUser.id,
-        courseId: course.id,
-        freelancerId: course.freelancerId,
-        startAt: now,
-        endAt: endAt,
+        courseId,
+        freelancerId,
+        startAt: new Date(startAt),
+        endAt: new Date(endAt),
         status: "PENDING",
       },
     });
@@ -59,6 +75,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(booking, { status: 201 });
   } catch (error) {
     console.error("Booking error:", error);
+
     return NextResponse.json(
       { error: "Захиалга үүсгэхэд алдаа гарлаа" },
       { status: 500 },
