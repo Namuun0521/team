@@ -16,6 +16,8 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
 import SearchPage from "../search/page";
+import Link from "next/link";
+import { ShoppingCart } from "lucide-react";
 
 import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
@@ -77,6 +79,13 @@ export const Header = ({ cartCount }: HeaderProps) => {
                     {cartCount > 99 ? "99+" : cartCount}
                   </span>
                 )}
+              </Link>
+
+              <Link
+                href="/shopping-cart"
+                className="flex items-center gap-2 rounded-lg px-3 py-2 hover:bg-slate-100"
+              >
+                <ShoppingCart className="h-5 w-5" />
               </Link>
 
               {!isSignedIn && (
