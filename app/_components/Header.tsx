@@ -101,6 +101,10 @@ export const Header = ({ cartCount }: HeaderProps) => {
 
               {isSignedIn && <NotificationDialog />}
 
+              {/* NOTIFICATION */}
+              {isSignedIn && <NotificationDialog />}
+
+              {/* AUTH */}
               {!isSignedIn && (
                 <>
                   <SignInButton>

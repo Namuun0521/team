@@ -1,12 +1,17 @@
 "use client";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useEffect, useMemo, useState } from "react";
 import { Bell, BellRing, Check, Inbox, Loader2, X } from "lucide-react";
 =======
 import { useMemo, useState } from "react";
 import { Bell, BellRing, Check, X } from "lucide-react";
 >>>>>>> f8770c4 (cs)
+=======
+import { useEffect, useMemo, useState } from "react";
+import { Bell, BellRing, Check, Inbox, Loader2, X } from "lucide-react";
+>>>>>>> 9af3928 (cs)
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -17,6 +22,7 @@ import {
 } from "@/components/ui/dialog";
 
 type NotificationItem = {
+<<<<<<< HEAD
 <<<<<<< HEAD
   id: string;
   isRead: boolean;
@@ -64,10 +70,45 @@ export const NotificationDialog = () => {
   requestedDate: string;
   requestedTime: string;
   status: "pending" | "accepted" | "rejected";
+=======
+  id: string;
+>>>>>>> 9af3928 (cs)
   isRead: boolean;
+  booking: {
+    id: string;
+    startAt: string;
+    status: string;
+    course: {
+      id: string;
+      title: string;
+    };
+    user: {
+      id: string;
+      name: string | null;
+      email: string | null;
+    };
+  };
 };
 
+function formatDateTime(date: string) {
+  const d = new Date(date);
+
+  return (
+    d.toLocaleDateString("mn-MN", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }) +
+    " " +
+    d.toLocaleTimeString("mn-MN", {
+      hour: "2-digit",
+      minute: "2-digit",
+    })
+  );
+}
+
 export const NotificationDialog = () => {
+<<<<<<< HEAD
   const [notifications, setNotifications] = useState<NotificationItem[]>([
     {
       id: 1,
@@ -89,6 +130,11 @@ export const NotificationDialog = () => {
     },
   ]);
 >>>>>>> f8770c4 (cs)
+=======
+  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [processingId, setProcessingId] = useState<string | null>(null);
+>>>>>>> 9af3928 (cs)
 
   const unreadCount = useMemo(
     () => notifications.filter((n) => !n.isRead).length,
@@ -96,6 +142,9 @@ export const NotificationDialog = () => {
   );
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9af3928 (cs)
   const fetchNotifications = async () => {
     try {
       setLoading(true);
@@ -120,6 +169,7 @@ export const NotificationDialog = () => {
     } finally {
       setLoading(false);
     }
+<<<<<<< HEAD
   };
 
   useEffect(() => {
@@ -201,6 +251,73 @@ export const NotificationDialog = () => {
       ),
     );
 >>>>>>> f8770c4 (cs)
+=======
+  };
+
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+
+  const handleAccept = async (notificationId: string) => {
+    try {
+      setProcessingId(notificationId);
+
+      const res = await fetch(`/api/notifications/${notificationId}/accept`, {
+        method: "PATCH",
+      });
+
+      const text = await res.text();
+
+      if (!res.ok) {
+        console.error(text);
+        throw new Error("accept failed");
+      }
+
+      setNotifications((prev) =>
+        prev.map((n) =>
+          n.id === notificationId
+            ? {
+                ...n,
+                isRead: true,
+                booking: {
+                  ...n.booking,
+                  status: "ACCEPTED",
+                },
+              }
+            : n,
+        ),
+      );
+    } catch (error) {
+      console.error(error);
+      alert("Зөвшөөрөхөд алдаа гарлаа");
+    } finally {
+      setProcessingId(null);
+    }
+  };
+
+  const handleReject = async (notificationId: string) => {
+    try {
+      setProcessingId(notificationId);
+
+      const res = await fetch(`/api/notifications/${notificationId}/reject`, {
+        method: "DELETE",
+      });
+
+      const text = await res.text();
+
+      if (!res.ok) {
+        console.error(text);
+        throw new Error("reject failed");
+      }
+
+      setNotifications((prev) => prev.filter((n) => n.id !== notificationId));
+    } catch (error) {
+      console.error(error);
+      alert("Татгалзахад алдаа гарлаа");
+    } finally {
+      setProcessingId(null);
+    }
+>>>>>>> 9af3928 (cs)
   };
 
   return (
