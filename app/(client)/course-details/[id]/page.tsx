@@ -223,7 +223,7 @@ export default function CourseDetailPage() {
               </div>
 
               <Button variant="outline" className="rounded-xl" asChild>
-                <Link href={`/freelancerId/${course.freelancer.id}`}>
+                <Link href={`/freelancers/${course.freelancer.id}`}>
                   Профайл үзэх
                 </Link>
               </Button>
