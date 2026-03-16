@@ -10,27 +10,24 @@ export async function GET() {
       return NextResponse.json([], { status: 200 });
     }
 
-const bookings = await prisma.booking.findMany({
-  where: {
-    userId,
-    status: "PENDING",
-  },
-  include: {
-    course: {
+    const bookings = await prisma.booking.findMany({
+      where: { userId },
       include: {
-        freelancer: {
+        course: {
           include: {
-            user: true,
+            freelancer: {
+              include: {
+                user: true,
+              },
+            },
+            reviews: true,
           },
         },
-        reviews: true,
       },
-    },
-  },
-  orderBy: {
-    createdAt: "desc",
-  },
-});
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
 
     const cartItems = bookings.map((booking) => ({
       id: booking.id,
@@ -79,13 +76,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-const existing = await prisma.booking.findFirst({
-  where: {
-    userId,
-    courseId,
-    status: "PENDING",
-  },
-});
+    const existing = await prisma.booking.findFirst({
+      where: {
+        userId,
+        courseId,
+      },
+    });
 
     if (existing) {
       return NextResponse.json(
