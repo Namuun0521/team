@@ -28,7 +28,6 @@ export const Header = ({ cartCount }: HeaderProps) => {
       <div className="w-full border-b bg-white">
         <div className="mx-auto max-w-7xl px-4 py-3">
           <div className="flex items-center gap-6">
-            {/* MOBILE MENU */}
             <button className="lg:hidden" onClick={() => setOpen(true)}>
               <Menu className="h-6 w-6" />
             </button>
@@ -62,12 +61,9 @@ export const Header = ({ cartCount }: HeaderProps) => {
                 Бидний тухай
               </Button>
 
-              {/* NOTIFICATION */}
-              {isSignedIn && <NotificationDialog />}
-
               {/* CART */}
               <Link href="/shopping-cart" className="relative">
-                <ShoppingCart className="h-5 w-5" />
+                <ShoppingCart />
 
                 {cartCount > 0 && (
                   <span className="absolute -right-2 -top-2 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1 text-xs text-white">
@@ -75,6 +71,9 @@ export const Header = ({ cartCount }: HeaderProps) => {
                   </span>
                 )}
               </Link>
+
+              {/* NOTIFICATION */}
+              {isSignedIn && <NotificationDialog />}
 
               {/* AUTH */}
               {!isSignedIn && (
@@ -114,8 +113,7 @@ export const Header = ({ cartCount }: HeaderProps) => {
         </div>
       </div>
 
-      {/* CATEGORY FILTER */}
-      <div className="hidden lg:block">
+      <div className="hidden lg:block bg-white border-b">
         <Filter />
       </div>
     </>
