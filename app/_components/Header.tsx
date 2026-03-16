@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, ShoppingCart } from "lucide-react";
+import { Menu, ShoppingCart, Bell } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs";
