@@ -63,11 +63,11 @@ export function RecommendedCourses({ courses }: Props) {
 
               <div className="mt-2 flex items-center gap-2">
                 <span className="text-3xl font-bold text-slate-900">
-                  ${course.price.toFixed(2)}
+                  ₮{course.price.toFixed(2)}
                 </span>
                 {course.originalPrice && (
                   <span className="text-lg text-slate-400 line-through">
-                    ${course.originalPrice.toFixed(2)}
+                    ₮{course.originalPrice.toFixed(2)}
                   </span>
                 )}
               </div>

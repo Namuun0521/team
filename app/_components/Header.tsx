@@ -59,14 +59,11 @@ export const Header = ({ cartCount }: HeaderProps) => {
                 Бидний тухай
               </Button>
 
-              <Link
-                href="/shopping-cart"
-                className="relative flex items-center gap-2 rounded-lg px-3 py-2 hover:bg-slate-100"
-              >
-                <ShoppingCart className="h-5 w-5" />
+              <Link href="/shopping-cart" className="relative inline-block">
+                <ShoppingCart />
                 {cartCount > 0 && (
-                  <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
-                    {cartCount}
+                  <span className="absolute -right-2 -top-2 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1 text-xs text-white">
+                    {cartCount > 99 ? "99+" : cartCount}
                   </span>
                 )}
               </Link>
