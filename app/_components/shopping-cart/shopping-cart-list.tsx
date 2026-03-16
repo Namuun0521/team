@@ -114,12 +114,12 @@ export function ShoppingCartList({ cartItems, onRemove, removingId }: Props) {
 
                 <div className="mt-3 text-right">
                   <p className="text-3xl font-bold text-blue-700">
-                    ${course.price.toFixed(2)}
+                    ₮{course.price.toFixed(2)}
                   </p>
 
                   {course.originalPrice && (
                     <p className="text-lg text-slate-400 line-through">
-                      ${course.originalPrice.toFixed(2)}
+                      ₮{course.originalPrice.toFixed(2)}
                     </p>
                   )}
                 </div>

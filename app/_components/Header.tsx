@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { useState } from "react";
 import { Filter } from "./Filter";
 import {
@@ -14,14 +14,16 @@ import BecomeFreelancerButton from "./BecomeFreelancerButton";
 import { MobileSidebar } from "./MobileSidebar";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-<<<<<<< HEAD
+
 import SearchPage from "../search/page";
-=======
->>>>>>> c3c602c (t)
+
 import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
+type HeaderProps = {
+  cartCount: number;
+};
 
-export const Header = () => {
+export const Header = ({ cartCount }: HeaderProps) => {
   const [open, setOpen] = useState(false);
   const { isSignedIn } = useUser();
   const router = useRouter();
@@ -68,12 +70,13 @@ export const Header = () => {
               >
                 Бидний тухай
               </Button>
-
-              <Link
-                href="/shopping-cart"
-                className="flex items-center gap-2 rounded-lg px-3 py-2 hover:bg-slate-100"
-              >
-                <ShoppingCart className="h-5 w-5" />
+              <Link href="/shopping-cart" className="relative inline-block">
+                <ShoppingCart />
+                {cartCount > 0 && (
+                  <span className="absolute -right-2 -top-2 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1 text-xs text-white">
+                    {cartCount > 99 ? "99+" : cartCount}
+                  </span>
+                )}
               </Link>
 
               {!isSignedIn && (
@@ -102,54 +105,8 @@ export const Header = () => {
           </div>
         </div>
 
-<<<<<<< HEAD
-        <div className="relative w-[400px]">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Хайх..."
-            className="w-full rounded-lg bg-gray-100 py-2 pl-10 pr-4 outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-        <div className="flex items-center gap-6 text-sm font-medium">
-          <a href="/" className="hover:text-blue-600">
-            Нүүр
-          </a>
-          <a href="#" className="hover:text-blue-600">
-            Ангилал
-          </a>
-          <a href="/about" className="hover:text-blue-600">
-            Бидний тухай
-          </a>
-
-          <Link
-            href="/shopping-cart"
-            className="flex items-center gap-2 rounded-lg px-3 py-2 hover:bg-slate-100"
-          >
-            <ShoppingCart className="h-5 w-5" />
-          </Link>
-
-          <Show when="signed-out">
-            <SignInButton>
-              <button className="rounded-lg bg-gray-100 px-4 py-2">
-                Нэвтрэх
-              </button>
-            </SignInButton>
-            <SignUpButton>
-              <button className="rounded-lg bg-blue-600 px-4 py-2 text-white">
-                Бүртгүүлэх
-              </button>
-            </SignUpButton>
-          </Show>
-          <Show when="signed-in">
-            <UserButton />
-            <BecomeFreelancerButton />
-          </Show>
-=======
         <div className="hidden lg:block">
           <Filter />
->>>>>>> c3c602c (t)
         </div>
       </div>
     </>
