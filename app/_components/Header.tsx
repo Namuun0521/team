@@ -1,16 +1,29 @@
 "use client";
 
-import { Search, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { useState } from "react";
 import { Filter } from "./Filter";
-import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs";
+import {
+  Show,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+  useUser,
+} from "@clerk/nextjs";
 import BecomeFreelancerButton from "./BecomeFreelancerButton";
 import { MobileSidebar } from "./MobileSidebar";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+
 import SearchPage from "../search/page";
 
-export const Header = () => {
+import Link from "next/link";
+import { ShoppingCart } from "lucide-react";
+type HeaderProps = {
+  cartCount: number;
+};
+
+export const Header = ({ cartCount }: HeaderProps) => {
   const [open, setOpen] = useState(false);
   const { isSignedIn } = useUser();
   const router = useRouter();
@@ -57,6 +70,14 @@ export const Header = () => {
               >
                 Бидний тухай
               </Button>
+              <Link href="/shopping-cart" className="relative inline-block">
+                <ShoppingCart />
+                {cartCount > 0 && (
+                  <span className="absolute -right-2 -top-2 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1 text-xs text-white">
+                    {cartCount > 99 ? "99+" : cartCount}
+                  </span>
+                )}
+              </Link>
 
               {!isSignedIn && (
                 <>
