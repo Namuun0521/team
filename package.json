@@ -12,8 +12,12 @@
   "dependencies": {
     "@clerk/nextjs": "^7.0.1",
     "@hookform/resolvers": "^5.2.2",
+<<<<<<< HEAD
     "@lottiefiles/dotlottie-react": "^0.18.3",
     "@prisma/adapter-pg": "^7.4.2",
+=======
+    "@lottiefiles/dotlottie-react": "^0.18.6",
+>>>>>>> c4c10ad (booking system feature)
     "@prisma/client": "^6.19.2",
     "@vercel/blob": "^2.3.1",
     "class-variance-authority": "^0.7.1",

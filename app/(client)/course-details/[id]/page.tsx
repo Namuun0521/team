@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Loader2, Star, UserRound, CheckCircle2 } from "lucide-react";
+import { Loader2, Star, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
 
@@ -42,14 +42,13 @@ function formatPrice(n: number) {
 
 export default function CourseDetailPage() {
   const params = useParams();
+  const router = useRouter();
   const id = params.id as string;
   const { user } = useUser();
 
   const [course, setCourse] = useState<CourseData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [booking, setBooking] = useState(false);
-  const [booked, setBooked] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -78,31 +77,12 @@ export default function CourseDetailPage() {
     fetchCourse();
   }, [id]);
 
-  const handleBook = async () => {
+  const handleBook = () => {
     if (!course) return;
 
-    setBooking(true);
-    try {
-      const res = await fetch("/api/bookings", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ courseId: course.id }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data?.error || "Алдаа");
-      }
-
-      setBooked(true);
-    } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Захиалга илгээхэд алдаа гарлаа";
-      alert(message);
-    } finally {
-      setBooking(false);
-    }
+    router.push(
+      `/freelancer/${course.freelancer.id}/booking?courseId=${course.id}`,
+    );
   };
 
   if (loading) {
@@ -135,17 +115,22 @@ export default function CourseDetailPage() {
   const rating = course.avgRating || 4.9;
   const reviewCount = course._count.reviews;
   const categoryLabel = CAT_LABEL[course.category] || course.category;
+
   const fallbackImg =
     "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop";
+
   const heroImage = course.imageUrl || fallbackImg;
+
   const skillLabel = course.freelancer.skills
     ? course.freelancer.skills.split(",")[0]
     : "Мэргэжилтэн";
+
   const isOwner = user?.id === course.freelancer.userId;
 
   return (
     <div className="min-h-screen bg-[#f8f8fb]">
       <div className="mx-auto max-w-4xl px-4 py-8">
+        {/* Breadcrumb */}
         <div className="mb-6 text-sm text-[#94A3B8]">
           <Link href="/" className="hover:text-blue-600">
             Нүүр
@@ -159,54 +144,55 @@ export default function CourseDetailPage() {
         </div>
 
         <div className="space-y-8">
+          {/* HERO */}
           <div className="relative min-h-[340px] overflow-hidden rounded-3xl">
             <img
               src={heroImage}
               alt={course.title}
               className="absolute inset-0 h-full w-full object-cover"
             />
+
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-            <div className="relative z-10 flex min-h-[340px] h-full flex-col justify-end p-8 text-white">
+
+            <div className="relative z-10 flex min-h-[340px] flex-col justify-end p-8 text-white">
               <span className="mb-4 inline-flex w-fit rounded-full bg-blue-600/80 px-4 py-1.5 text-xs font-semibold tracking-wide">
                 {categoryLabel}
               </span>
-              <h1 className="max-w-2xl text-3xl font-bold leading-tight md:text-4xl">
+
+              <h1 className="max-w-2xl text-3xl font-bold md:text-4xl">
                 {course.title}
               </h1>
             </div>
           </div>
 
+          {/* PRICE + BOOK */}
           <div className="flex items-center justify-between rounded-2xl border bg-white p-6 shadow-sm">
             <div>
               <p className="text-sm text-slate-500">Нэг цагийн үнэ</p>
+
               <p className="mt-1 text-3xl font-bold text-blue-600">
                 {formatPrice(course.price)}₮
               </p>
             </div>
+
             {isOwner ? (
               <span className="rounded-xl bg-slate-100 px-5 py-2.5 text-sm font-semibold text-slate-500">
                 Миний хичээл
               </span>
-            ) : booked ? (
-              <div className="flex items-center gap-2 font-semibold text-green-600">
-                <CheckCircle2 className="h-5 w-5" />
-                Захиалга илгээгдлээ!
-              </div>
             ) : (
               <Button
                 onClick={handleBook}
-                disabled={booking}
                 className="h-12 rounded-xl bg-[#135BEC] px-8 text-base font-semibold text-white hover:bg-[#0f4fd4]"
               >
-                {booking && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {booking ? "Илгээж байна..." : "Захиалах"}
+                Цаг сонгох
               </Button>
             )}
           </div>
 
+          {/* INSTRUCTOR */}
           <div className="rounded-2xl border bg-white p-6 shadow-sm">
             <div className="flex items-center gap-4">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-blue-100">
+              <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-blue-100">
                 {course.freelancer.imageUrl ? (
                   <img
                     src={course.freelancer.imageUrl}
@@ -217,30 +203,37 @@ export default function CourseDetailPage() {
                   <UserRound className="h-8 w-8 text-blue-400" />
                 )}
               </div>
+
               <div className="flex-1">
                 <h2 className="text-xl font-bold text-slate-900">
                   {instructorName}
                 </h2>
+
                 <p className="text-sm text-slate-500">{skillLabel}</p>
+
                 <div className="mt-1 flex items-center gap-2 text-sm text-slate-600">
                   <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+
                   <span className="font-semibold">{rating}</span>
+
                   <span className="text-slate-400">
                     ({reviewCount} үнэлгээ)
                   </span>
                 </div>
               </div>
+
               <Button variant="outline" className="rounded-xl" asChild>
                 <Link href={`/freelancers/${course.freelancer.id}`}>
-                  <UserRound className="mr-2 h-4 w-4" />
                   Профайл үзэх
                 </Link>
               </Button>
             </div>
           </div>
 
+          {/* DESCRIPTION */}
           <div className="rounded-2xl border bg-white p-6 shadow-sm">
             <h3 className="mb-4 text-xl font-bold text-slate-900">Тайлбар</h3>
+
             <p className="whitespace-pre-line text-lg leading-8 text-slate-600">
               {course.description}
             </p>
