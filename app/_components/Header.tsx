@@ -28,8 +28,9 @@ type HeaderProps = {
 export const Header = ({ cartCount }: HeaderProps) => {
   const [open, setOpen] = useState(false);
   const { isSignedIn, user } = useUser();
-  const isFreelancer = user?.publicMetadata?.isFreelancer as boolean;
   const router = useRouter();
+
+  const isFreelancer = user?.publicMetadata?.role === "FREELANCER";
 
   return (
     <>
@@ -76,9 +77,7 @@ export const Header = ({ cartCount }: HeaderProps) => {
                 )}
               </Link>
 
-              
-
-              {isSignedIn && <NotificationDialog />}
+              {isSignedIn && isFreelancer && <NotificationDialog />}
 
               {!isSignedIn && (
                 <>
