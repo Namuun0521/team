@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Clock, CalendarCheck, Loader2, CheckCircle2 } from "lucide-react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 
 type Availability = {
   id: string;
@@ -48,6 +48,7 @@ export default function AvailabilityBooking({
   courseId: string;
 }) {
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const [availability, setAvailability] = useState<Availability[]>([]);
   const [loading, setLoading] = useState(true);
@@ -71,7 +72,6 @@ export default function AvailabilityBooking({
     setBooking(true);
 
     const [dayOfWeek, time] = selectedSlot.split("-");
-
     const startAt = new Date();
     const [hour, minute] = time.split(":");
 
@@ -99,6 +99,7 @@ export default function AvailabilityBooking({
         throw new Error("Booking алдаа");
       }
 
+      router.refresh();
       setSuccess(true);
     } catch {
       alert("Захиалга илгээхэд алдаа гарлаа");

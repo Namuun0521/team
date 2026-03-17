@@ -101,15 +101,11 @@ export function ShoppingCartList({ cartItems, onRemove, removingId }: Props) {
                   disabled={removingId === item.id}
                   className="text-sm font-medium text-blue-600 hover:underline disabled:opacity-50"
                 >
-                  {removingId === item.id ? "Removing..." : "Remove"}
+                  {removingId === item.id ? "Устгаж байна..." : "Устгах"}
                 </button>
 
                 <button className="text-sm font-medium text-blue-600 hover:underline">
                   Save for Later
-                </button>
-
-                <button className="text-sm font-medium text-blue-600 hover:underline">
-                  Move to Wishlist
                 </button>
 
                 <div className="mt-3 text-right">

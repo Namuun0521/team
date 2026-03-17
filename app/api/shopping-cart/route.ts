@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
 
     if (!courseId) {
       return NextResponse.json(
-        { error: "Course сонгоно уу" },
+        { error: "Та үйлчилгээгээ сонгоно уу" },
         { status: 400 }
       );
     }
@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
 
     if (!course) {
       return NextResponse.json(
-        { error: "Course олдсонгүй" },
+        { error: "Таны үйлчилгээ олдсонгүй" },
         { status: 404 }
       );
     }
@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
 
     if (existing) {
       return NextResponse.json(
-        { error: "Already in cart" },
+        { error: "Таны сагсанд аль хэдийн орсон байна." },
         { status: 409 }
       );
     }

@@ -5,6 +5,7 @@ import { Footer } from "../_components/Footer";
 import { Suspense } from "react";
 import { auth } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
+import { Toaster } from "sonner";
 
 export default async function RootLayout({
   children,
@@ -21,6 +22,7 @@ export default async function RootLayout({
       <Suspense>
         <Header cartCount={cartCount} />
         {children}
+        <Toaster richColors position="top-right" />
         <Footer />
       </Suspense>
     </ClerkProvider>

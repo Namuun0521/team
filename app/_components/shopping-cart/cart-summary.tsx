@@ -81,7 +81,7 @@ export function CartSummary({ total, originalTotal }: Props) {
         disabled={!allowed || checking}
         className="mt-6 w-full rounded-xl bg-blue-600 px-6 py-4 text-lg font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-400"
       >
-        {checking ? "Шалгаж байна..." : "Proceed to Checkout →"}
+        {checking ? "Шалгаж байна..." : "Захиалга баталгаажуулах"}
       </button>
 
       {message && <p className="mt-3 text-sm text-red-500">{message}</p>}

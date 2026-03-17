@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ShoppingCartList } from "@/app/_components/shopping-cart/shopping-cart-list";
 import { CartSummary } from "@/app/_components/shopping-cart/cart-summary";
 import { RecommendedCourses } from "@/app/_components/shopping-cart/recommended-courses";
+import { useRouter } from "next/navigation";
 
 export interface Review {
   id: string;
@@ -91,12 +92,15 @@ export default function ShoppingCartPage() {
       }
 
       setCartItems((prev) => prev.filter((item) => item.id !== itemId));
+      router.refresh();
     } catch (error) {
       console.error(error);
     } finally {
       setRemovingId(null);
     }
   };
+
+  const router = useRouter();
 
   const total = useMemo(() => {
     return cartItems.reduce((sum, item) => sum + item.course.price, 0);
@@ -123,7 +127,7 @@ export default function ShoppingCartPage() {
   return (
     <main className="mx-auto max-w-7xl px-6 py-10">
       <h1 className="mb-10 text-5xl font-bold tracking-tight text-slate-900">
-        Shopping Cart
+        Таны сагс
       </h1>
 
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_340px]">
