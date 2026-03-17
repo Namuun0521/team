@@ -5,7 +5,6 @@ import { Menu, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs";
-
 import { Filter } from "./Filter";
 import BecomeFreelancerButton from "./BecomeFreelancerButton";
 import { MobileSidebar } from "./MobileSidebar";
@@ -35,14 +34,12 @@ export const Header = ({ cartCount }: HeaderProps) => {
   return (
     <>
       <MobileSidebar open={open} setOpen={setOpen} />
-
       <div className="w-full border-b bg-white">
         <div className="mx-auto max-w-7xl px-4 py-3">
           <div className="flex items-center gap-6">
             <button className="lg:hidden" onClick={() => setOpen(true)}>
               <Menu className="h-6 w-6" />
             </button>
-
             <div className="flex items-center gap-2 text-lg font-semibold text-blue-600 sm:text-xl">
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100">
                 ★
@@ -60,7 +57,6 @@ export const Header = ({ cartCount }: HeaderProps) => {
               >
                 Нүүр
               </Button>
-
               <Button
                 variant="link"
                 onClick={() => router.push("/about")}
@@ -77,7 +73,7 @@ export const Header = ({ cartCount }: HeaderProps) => {
                 )}
               </Link>
 
-              {isSignedIn && isFreelancer && <NotificationDialog />}
+              {isSignedIn && <NotificationDialog />}
 
               {!isSignedIn && (
                 <>
@@ -86,7 +82,6 @@ export const Header = ({ cartCount }: HeaderProps) => {
                       Нэвтрэх
                     </button>
                   </SignInButton>
-
                   <SignUpButton>
                     <button className="rounded-lg bg-blue-600 px-4 py-2 text-white">
                       Бүртгүүлэх
@@ -106,7 +101,6 @@ export const Header = ({ cartCount }: HeaderProps) => {
                       />
                     </UserButton.MenuItems>
                   </UserButton>
-
                   <BecomeFreelancerButton />
                 </>
               )}
@@ -114,7 +108,6 @@ export const Header = ({ cartCount }: HeaderProps) => {
           </div>
         </div>
       </div>
-
       <div className="hidden border-b bg-white lg:block">
         <Filter />
       </div>

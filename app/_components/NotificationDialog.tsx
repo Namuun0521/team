@@ -32,7 +32,6 @@ type NotificationItem = {
 
 function formatDateTime(date: string) {
   const d = new Date(date);
-
   return (
     d.toLocaleDateString("mn-MN", {
       year: "numeric",
@@ -48,8 +47,9 @@ function formatDateTime(date: string) {
 }
 
 export const NotificationDialog = () => {
+  const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [processingId, setProcessingId] = useState<string | null>(null);
 
   const unreadCount = useMemo(
@@ -60,19 +60,13 @@ export const NotificationDialog = () => {
   const fetchNotifications = async () => {
     try {
       setLoading(true);
-
-      const res = await fetch("/api/notifications", {
-        cache: "no-store",
-      });
-
+      const res = await fetch("/api/notifications", { cache: "no-store" });
       const text = await res.text();
-
       if (!res.ok) {
         console.error("Notification API error:", text);
         setNotifications([]);
         return;
       }
-
       const data = JSON.parse(text);
       setNotifications(Array.isArray(data) ? data : []);
     } catch (error) {
@@ -83,35 +77,29 @@ export const NotificationDialog = () => {
     }
   };
 
+  // Dialog нээгдэх үед л fetch хийнэ — mount үед биш
   useEffect(() => {
-    fetchNotifications();
-  }, []);
+    if (open) fetchNotifications();
+  }, [open]);
 
   const handleAccept = async (notificationId: string) => {
     try {
       setProcessingId(notificationId);
-
       const res = await fetch(`/api/notifications/${notificationId}/accept`, {
         method: "PATCH",
       });
-
-      const text = await res.text();
-
       if (!res.ok) {
+        const text = await res.text();
         console.error(text);
         throw new Error("accept failed");
       }
-
       setNotifications((prev) =>
         prev.map((n) =>
           n.id === notificationId
             ? {
                 ...n,
                 isRead: true,
-                booking: {
-                  ...n.booking,
-                  status: "ACCEPTED",
-                },
+                booking: { ...n.booking, status: "ACCEPTED" },
               }
             : n,
         ),
@@ -127,18 +115,14 @@ export const NotificationDialog = () => {
   const handleReject = async (notificationId: string) => {
     try {
       setProcessingId(notificationId);
-
       const res = await fetch(`/api/notifications/${notificationId}/reject`, {
         method: "DELETE",
       });
-
-      const text = await res.text();
-
       if (!res.ok) {
+        const text = await res.text();
         console.error(text);
         throw new Error("reject failed");
       }
-
       setNotifications((prev) => prev.filter((n) => n.id !== notificationId));
     } catch (error) {
       console.error(error);
@@ -149,7 +133,7 @@ export const NotificationDialog = () => {
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon" className="relative">
           {unreadCount > 0 ? (
@@ -157,7 +141,6 @@ export const NotificationDialog = () => {
           ) : (
             <Bell className="h-5 w-5 text-gray-500" />
           )}
-
           {unreadCount > 0 && (
             <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
               {unreadCount}
@@ -195,19 +178,15 @@ export const NotificationDialog = () => {
                   item.booking.user.name ||
                   item.booking.user.email ||
                   "Хэрэглэгч";
-
                 return (
                   <div key={item.id} className="rounded-xl border p-4">
                     <p className="text-sm text-gray-500">Шинэ захиалга</p>
-
                     <p className="font-semibold">
                       {studentName} таны хичээлийг захиалах хүсэлт илгээсэн
                     </p>
-
                     <p className="text-sm text-gray-600">
                       {item.booking.course.title}
                     </p>
-
                     <p className="text-sm text-gray-500">
                       {formatDateTime(item.booking.startAt)}
                     </p>
@@ -220,17 +199,24 @@ export const NotificationDialog = () => {
                           disabled={processingId === item.id}
                           className="bg-blue-600 text-white"
                         >
-                          <Check className="mr-1 h-4 w-4" />
+                          {processingId === item.id ? (
+                            <Loader2 className="mr-1 h-4 w-4 animate-spin" />
+                          ) : (
+                            <Check className="mr-1 h-4 w-4" />
+                          )}
                           Зөвшөөрөх
                         </Button>
-
                         <Button
                           size="sm"
                           variant="outline"
                           onClick={() => handleReject(item.id)}
                           disabled={processingId === item.id}
                         >
-                          <X className="mr-1 h-4 w-4" />
+                          {processingId === item.id ? (
+                            <Loader2 className="mr-1 h-4 w-4 animate-spin" />
+                          ) : (
+                            <X className="mr-1 h-4 w-4" />
+                          )}
                           Татгалзах
                         </Button>
                       </div>
