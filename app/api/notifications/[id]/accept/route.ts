@@ -1,10 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
-<<<<<<< HEAD
 import { BookingStatus } from "@prisma/client";
-=======
->>>>>>> 9af3928 (cs)
 
 export async function PATCH(
   req: Request,
@@ -21,7 +18,6 @@ export async function PATCH(
       );
     }
 
-<<<<<<< HEAD
     const freelancerProfile = await prisma.freelancerProfile.findFirst({
       where: { userId },
       select: { id: true },
@@ -34,8 +30,6 @@ export async function PATCH(
       );
     }
 
-=======
->>>>>>> 9af3928 (cs)
     const notification = await prisma.notification.findUnique({
       where: { id },
     });
