@@ -32,6 +32,7 @@ enum BookingStatus {
   PENDING
   CONFIRMED
   CANCELLED
+  PAID
 }
 
 model User {
@@ -110,6 +111,7 @@ model Booking {
   isApproved   Boolean       @default(false)
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
+  notifications Notification[]
 
   user       User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   course     Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
@@ -135,4 +137,18 @@ model Review {
 
   @@unique([userId, courseId])
   @@index([courseId])
+}
+
+model Notification {
+  id           String   @id @default(uuid())
+  freelancerId String
+  bookingId    String
+  type         String
+  isRead       Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  booking Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  @@index([freelancerId])
+  @@index([bookingId])
 }

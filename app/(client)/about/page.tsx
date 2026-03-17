@@ -1,3 +1,6 @@
+import { BriefcaseBusiness } from "lucide-react";
+import { Handshake, Zap } from "lucide-react";
+
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 via-white to-white">
@@ -50,7 +53,7 @@ export default function AboutPage() {
         <div className="grid gap-6 md:grid-cols-3">
           <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
             <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100 text-xl text-blue-600">
-              💼
+              <BriefcaseBusiness className="h-6 w-6" />
             </div>
             <h3 className="mb-2 text-xl font-semibold text-gray-900">Боломж</h3>
             <p className="leading-7 text-gray-600">
@@ -61,7 +64,7 @@ export default function AboutPage() {
 
           <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
             <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100 text-xl text-blue-600">
-              ⚡
+              <Zap className="h-6 w-6" />
             </div>
             <h3 className="mb-2 text-xl font-semibold text-gray-900">Хурд</h3>
             <p className="leading-7 text-gray-600">
@@ -72,7 +75,7 @@ export default function AboutPage() {
 
           <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
             <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100 text-xl text-blue-600">
-              🤝
+              <Handshake className="h-6 w-6" />
             </div>
             <h3 className="mb-2 text-xl font-semibold text-gray-900">
               Найдвартай байдал

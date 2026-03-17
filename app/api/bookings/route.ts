@@ -71,6 +71,14 @@ export async function POST(req: NextRequest) {
         status: "PENDING",
       },
     });
+    await prisma.notification.create({
+      data: {
+        freelancerId,
+        bookingId: booking.id,
+        type: "BOOKING_REQUEST",
+        isRead: false,
+      },
+    });
 
     return NextResponse.json(booking, { status: 201 });
   } catch (error) {

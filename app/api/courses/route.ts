@@ -7,9 +7,11 @@ function isValidCategory(value: string): value is Category {
   return Object.values(Category).includes(value as Category);
 }
 
+
 export async function GET(req: NextRequest) {
   try {
     const categoryParam = req.nextUrl.searchParams.get("category");
+
 
     let category: Category | undefined;
     if (categoryParam) {

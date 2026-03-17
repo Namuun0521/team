@@ -4,6 +4,7 @@ import "./globals.css";
 import { Suspense } from "react";
 import { StepProvider } from "./become-freelancer/_components/Provider";
 import { Toaster } from "@/components/ui/sonner";
+import { SecondFooter } from "./_components/SecondFooter";
 
 export default function RootLayout({
   children,
