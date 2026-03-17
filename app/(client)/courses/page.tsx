@@ -109,7 +109,7 @@ export default function CoursesPage() {
   if (loading) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50">
-        <div className="h-[420px] w-[420px]">
+        <div className="h-105 w-105">
           <DotLottieReact src="/loading.lottie" loop autoplay speed={0.6} />
         </div>
         <p className="-mt-8 text-sm text-gray-500">
