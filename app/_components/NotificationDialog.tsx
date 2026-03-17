@@ -1,17 +1,7 @@
 "use client";
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 import { useEffect, useMemo, useState } from "react";
 import { Bell, BellRing, Check, Inbox, Loader2, X } from "lucide-react";
-=======
-import { useMemo, useState } from "react";
-import { Bell, BellRing, Check, X } from "lucide-react";
->>>>>>> f8770c4 (cs)
-=======
-import { useEffect, useMemo, useState } from "react";
-import { Bell, BellRing, Check, Inbox, Loader2, X } from "lucide-react";
->>>>>>> 9af3928 (cs)
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -22,8 +12,6 @@ import {
 } from "@/components/ui/dialog";
 
 type NotificationItem = {
-<<<<<<< HEAD
-<<<<<<< HEAD
   id: string;
   isRead: boolean;
   booking: {
@@ -63,88 +51,12 @@ export const NotificationDialog = () => {
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [processingId, setProcessingId] = useState<string | null>(null);
-=======
-  id: number;
-  studentName: string;
-  courseTitle: string;
-  requestedDate: string;
-  requestedTime: string;
-  status: "pending" | "accepted" | "rejected";
-=======
-  id: string;
->>>>>>> 9af3928 (cs)
-  isRead: boolean;
-  booking: {
-    id: string;
-    startAt: string;
-    status: string;
-    course: {
-      id: string;
-      title: string;
-    };
-    user: {
-      id: string;
-      name: string | null;
-      email: string | null;
-    };
-  };
-};
-
-function formatDateTime(date: string) {
-  const d = new Date(date);
-
-  return (
-    d.toLocaleDateString("mn-MN", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    }) +
-    " " +
-    d.toLocaleTimeString("mn-MN", {
-      hour: "2-digit",
-      minute: "2-digit",
-    })
-  );
-}
-
-export const NotificationDialog = () => {
-<<<<<<< HEAD
-  const [notifications, setNotifications] = useState<NotificationItem[]>([
-    {
-      id: 1,
-      studentName: "Тэмүүлэн",
-      courseTitle: "UX/UI дизайн хичээл",
-      requestedDate: "2026-03-15",
-      requestedTime: "15:00",
-      status: "pending",
-      isRead: false,
-    },
-    {
-      id: 2,
-      studentName: "Тэмүүлэн",
-      courseTitle: "UX/UI дизайн хичээл",
-      requestedDate: "2026-03-15",
-      requestedTime: "15:00",
-      status: "pending",
-      isRead: false,
-    },
-  ]);
->>>>>>> f8770c4 (cs)
-=======
-  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [processingId, setProcessingId] = useState<string | null>(null);
->>>>>>> 9af3928 (cs)
 
   const unreadCount = useMemo(
     () => notifications.filter((n) => !n.isRead).length,
     [notifications],
   );
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 9af3928 (cs)
   const fetchNotifications = async () => {
     try {
       setLoading(true);
@@ -169,7 +81,6 @@ export const NotificationDialog = () => {
     } finally {
       setLoading(false);
     }
-<<<<<<< HEAD
   };
 
   useEffect(() => {
@@ -235,89 +146,6 @@ export const NotificationDialog = () => {
     } finally {
       setProcessingId(null);
     }
-=======
-  const handleAccept = (id: number) => {
-    setNotifications((prev) =>
-      prev.map((n) =>
-        n.id === id ? { ...n, status: "accepted", isRead: true } : n,
-      ),
-    );
-  };
-
-  const handleReject = (id: number) => {
-    setNotifications((prev) =>
-      prev.map((n) =>
-        n.id === id ? { ...n, status: "rejected", isRead: true } : n,
-      ),
-    );
->>>>>>> f8770c4 (cs)
-=======
-  };
-
-  useEffect(() => {
-    fetchNotifications();
-  }, []);
-
-  const handleAccept = async (notificationId: string) => {
-    try {
-      setProcessingId(notificationId);
-
-      const res = await fetch(`/api/notifications/${notificationId}/accept`, {
-        method: "PATCH",
-      });
-
-      const text = await res.text();
-
-      if (!res.ok) {
-        console.error(text);
-        throw new Error("accept failed");
-      }
-
-      setNotifications((prev) =>
-        prev.map((n) =>
-          n.id === notificationId
-            ? {
-                ...n,
-                isRead: true,
-                booking: {
-                  ...n.booking,
-                  status: "ACCEPTED",
-                },
-              }
-            : n,
-        ),
-      );
-    } catch (error) {
-      console.error(error);
-      alert("Зөвшөөрөхөд алдаа гарлаа");
-    } finally {
-      setProcessingId(null);
-    }
-  };
-
-  const handleReject = async (notificationId: string) => {
-    try {
-      setProcessingId(notificationId);
-
-      const res = await fetch(`/api/notifications/${notificationId}/reject`, {
-        method: "DELETE",
-      });
-
-      const text = await res.text();
-
-      if (!res.ok) {
-        console.error(text);
-        throw new Error("reject failed");
-      }
-
-      setNotifications((prev) => prev.filter((n) => n.id !== notificationId));
-    } catch (error) {
-      console.error(error);
-      alert("Татгалзахад алдаа гарлаа");
-    } finally {
-      setProcessingId(null);
-    }
->>>>>>> 9af3928 (cs)
   };
 
   return (
@@ -338,16 +166,11 @@ export const NotificationDialog = () => {
         </Button>
       </DialogTrigger>
 
-<<<<<<< HEAD
       <DialogContent className="sm:max-w-[620px]">
-=======
-      <DialogContent>
->>>>>>> f8770c4 (cs)
         <DialogHeader>
           <DialogTitle>Захиалгын мэдэгдэл</DialogTitle>
         </DialogHeader>
 
-<<<<<<< HEAD
         <div className="h-[420px] overflow-y-auto pr-2">
           {loading ? (
             <div className="flex h-full items-center justify-center">
@@ -420,51 +243,19 @@ export const NotificationDialog = () => {
                         </span>
                       </div>
                     )}
+
+                    {item.booking.status === "REJECTED" && (
+                      <div className="mt-3">
+                        <span className="rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700">
+                          Хүсэлт татгалзсан
+                        </span>
+                      </div>
+                    )}
                   </div>
                 );
               })}
             </div>
           )}
-=======
-        <div className="space-y-4">
-          {notifications.map((item) => (
-            <div key={item.id} className="rounded-xl border p-4">
-              <p className="text-sm text-gray-500">Шинэ захиалга</p>
-
-              <p className="font-semibold">
-                {item.studentName} таны хичээлийг захиалах хүсэлт илгээсэн
-              </p>
-
-              <p className="text-sm text-gray-600">{item.courseTitle}</p>
-
-              <p className="text-sm text-gray-500">
-                {item.requestedDate} {item.requestedTime}
-              </p>
-
-              {item.status === "pending" && (
-                <div className="mt-3 flex gap-2">
-                  <Button
-                    size="sm"
-                    onClick={() => handleAccept(item.id)}
-                    className="bg-blue-600 text-white"
-                  >
-                    <Check className="mr-1 h-4 w-4 " />
-                    Зөвшөөрөх
-                  </Button>
-
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => handleReject(item.id)}
-                  >
-                    <X className="mr-1 h-4 w-4" />
-                    Татгалзах
-                  </Button>
-                </div>
-              )}
-            </div>
-          ))}
->>>>>>> f8770c4 (cs)
         </div>
       </DialogContent>
     </Dialog>
