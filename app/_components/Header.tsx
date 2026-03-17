@@ -16,14 +16,6 @@ type HeaderProps = {
   cartCount: number;
 };
 
-import SearchPage from "../search/page";
-
-import Link from "next/link";
-import { ShoppingCart } from "lucide-react";
-type HeaderProps = {
-  cartCount: number;
-};
-
 export const Header = ({ cartCount }: HeaderProps) => {
   const [open, setOpen] = useState(false);
   const { isSignedIn, user } = useUser();
@@ -35,8 +27,8 @@ export const Header = ({ cartCount }: HeaderProps) => {
     <>
       <MobileSidebar open={open} setOpen={setOpen} />
       <div className="w-full border-b bg-white">
-        <div className="mx-auto max-w-7xl px-4 py-3">
-          <div className="flex items-center gap-6">
+        <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-8">
             <button className="lg:hidden" onClick={() => setOpen(true)}>
               <Menu className="h-6 w-6" />
             </button>
@@ -64,6 +56,7 @@ export const Header = ({ cartCount }: HeaderProps) => {
               >
                 Бидний тухай
               </Button>
+
               <Link href="/shopping-cart" className="relative inline-block">
                 <ShoppingCart />
                 {cartCount > 0 && (
@@ -73,7 +66,7 @@ export const Header = ({ cartCount }: HeaderProps) => {
                 )}
               </Link>
 
-              {isSignedIn && <NotificationDialog />}
+              {isSignedIn && isFreelancer && <NotificationDialog />}
 
               {!isSignedIn && (
                 <>
@@ -107,9 +100,10 @@ export const Header = ({ cartCount }: HeaderProps) => {
             </div>
           </div>
         </div>
-      </div>
-      <div className="hidden border-b bg-white lg:block">
-        <Filter />
+
+        <div className="hidden lg:block">
+          <Filter />
+        </div>
       </div>
     </>
   );
