@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
+import { BookingStatus } from "@prisma/client";
 
 export async function PATCH(
   req: Request,
@@ -17,6 +18,18 @@ export async function PATCH(
       );
     }
 
+    const freelancerProfile = await prisma.freelancerProfile.findFirst({
+      where: { userId },
+      select: { id: true },
+    });
+
+    if (!freelancerProfile) {
+      return NextResponse.json(
+        { error: "Freelancer profile олдсонгүй" },
+        { status: 404 },
+      );
+    }
+
     const notification = await prisma.notification.findUnique({
       where: { id },
     });
@@ -28,14 +41,14 @@ export async function PATCH(
       );
     }
 
-    if (notification.freelancerId !== userId) {
+    if (notification.freelancerId !== freelancerProfile.id) {
       return NextResponse.json({ error: "Хандах эрхгүй" }, { status: 403 });
     }
 
     await prisma.booking.update({
       where: { id: notification.bookingId },
       data: {
-        status: "CONFIRMED",
+        status: BookingStatus.CONFIRMED,
       },
     });
 
@@ -50,7 +63,10 @@ export async function PATCH(
   } catch (error) {
     console.error("Notification accept error:", error);
     return NextResponse.json(
-      { error: "Зөвшөөрөхөд алдаа гарлаа" },
+      {
+        error: "Зөвшөөрөхөд алдаа гарлаа",
+        detail: error instanceof Error ? error.message : String(error),
+      },
       { status: 500 },
     );
   }

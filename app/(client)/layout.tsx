@@ -13,9 +13,21 @@ export default async function RootLayout({
 }) {
   const { userId } = await auth();
 
-  const cartCount = userId
-    ? await prisma.booking.count({ where: { userId, status: "PENDING" } })
-    : 0;
+  let cartCount = 0;
+
+  if (userId) {
+    try {
+      cartCount = await prisma.booking.count({
+        where: {
+          userId,
+          status: "PENDING",
+        },
+      });
+    } catch (error) {
+      console.error("cartCount error:", error);
+      cartCount = 0;
+    }
+  }
   return (
     <ClerkProvider>
       <Suspense>
