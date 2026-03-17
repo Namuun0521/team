@@ -38,12 +38,17 @@ export const Header = ({ cartCount }: HeaderProps) => {
               <Menu className="h-6 w-6" />
             </button>
 
-            <div className="flex items-center gap-2 text-lg font-semibold text-blue-600 sm:text-xl">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100">
+            <Link
+              href="/"
+              className="group flex items-center gap-2 rounded-lg px-2 py-1 text-lg font-semibold text-blue-600 transition hover:bg-slate-100 sm:text-xl"
+            >
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 transition group-hover:bg-blue-200">
                 ★
               </div>
-              <span>Freelancer.mn</span>
-            </div>
+              <span className="transition group-hover:text-blue-700">
+                Freelancer.mn
+              </span>
+            </Link>
 
             {/* <div className="relative hidden lg:block lg:w-[360px] xl:w-[400px]">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
@@ -54,11 +59,11 @@ export const Header = ({ cartCount }: HeaderProps) => {
               />
             </div> */}
             <SearchPage />
-            <div className="hidden items-center gap-4 lg:flex">
+            <div className="hidden items-center gap-3 lg:flex">
               <Button
                 variant="link"
                 onClick={() => router.push("/")}
-                className="transition duration-200 hover:scale-105 hover:text-blue-600"
+                className="transition duration-200 hover:scale-105 hover:text-blue-600 text-lg font-medium"
               >
                 Нүүр
               </Button>
@@ -66,11 +71,14 @@ export const Header = ({ cartCount }: HeaderProps) => {
               <Button
                 variant="link"
                 onClick={() => router.push("/about")}
-                className="transition duration-200 hover:scale-105 hover:text-blue-600"
+                className="transition duration-200 hover:scale-105 hover:text-blue-600 text-lg font-medium"
               >
                 Бидний тухай
               </Button>
-              <Link href="/shopping-cart" className="relative inline-block">
+              <Link
+                href="/shopping-cart"
+                className="relative inline-block p-2 rounded-full hover:bg-gray-100 transition"
+              >
                 <ShoppingCart />
                 {cartCount > 0 && (
                   <span className="absolute -right-2 -top-2 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1 text-xs text-white">

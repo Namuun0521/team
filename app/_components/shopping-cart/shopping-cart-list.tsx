@@ -99,13 +99,9 @@ export function ShoppingCartList({ cartItems, onRemove, removingId }: Props) {
                 <button
                   onClick={() => onRemove(item.id)}
                   disabled={removingId === item.id}
-                  className="text-sm font-medium text-blue-600 hover:underline disabled:opacity-50"
+                  className="text-sm font-2xl text-blue-600 hover:underline disabled:opacity-50"
                 >
-                  {removingId === item.id ? "Устгаж байна..." : "Устгах"}
-                </button>
-
-                <button className="text-sm font-medium text-blue-600 hover:underline">
-                  Save for Later
+                  {removingId === item.id ? "Цуцалж байна..." : "Цуцлах"}
                 </button>
 
                 <div className="mt-3 text-right">
