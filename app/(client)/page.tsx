@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { HeroSection } from "../_components/HeroSection";
-import { useRouter } from "next/router";
 
 type Course = {
   id: string;
@@ -19,9 +19,18 @@ function formatMNT(n: number) {
 }
 
 const CourseCard = ({ c }: { c: Course }) => {
+  const router = useRouter();
+
   return (
-    <div className="w-[240px] shrink-0 overflow-hidden rounded-xl border bg-white shadow-sm transition hover:shadow-md">
-      <div className="h-[130px] bg-gradient-to-br from-gray-100 to-gray-200" />
+    <div
+      onClick={() => router.push(`/course-details/${c.id}`)}
+      className="w-60 cursor-pointer shrink-0 overflow-hidden rounded-xl border bg-white shadow-sm transition hover:shadow-md"
+    >
+      {c.imageUrl ? (
+        <img src={c.imageUrl} className="h-32.5 w-full object-cover" />
+      ) : (
+        <div className="h-32.5 bg-linear-to-br from-gray-100 to-gray-200" />
+      )}
 
       <div className="p-4">
         <span className="inline-flex rounded-full bg-blue-50 px-2 py-1 text-[10px] font-semibold text-blue-700">
@@ -59,18 +68,23 @@ const CourseCard = ({ c }: { c: Course }) => {
 const CourseRow = ({
   title,
   items,
-
   emptyText = "Хичээл олдсонгүй",
 }: {
   title: string;
   items: Course[];
   emptyText?: string;
 }) => {
+  const router = useRouter();
+
   return (
     <section className="mt-8">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-lg font-bold text-gray-900">{title}</h2>
-        <button className="text-sm font-medium text-blue-600 hover:text-blue-700">
+
+        <button
+          className="text-sm font-medium cursor-pointer text-blue-600 hover:text-blue-700"
+          onClick={() => router.push("/courses")}
+        >
           Бүгдийг үзэх →
         </button>
       </div>
@@ -100,14 +114,12 @@ export default function Home() {
     fetch("/api/courses")
       .then(async (res) => {
         const data = await res.json();
-
         setAllCourses(Array.isArray(data) ? data : (data?.courses ?? []));
       })
       .catch(() => setAllCourses([]))
       .finally(() => setLoading(false));
   }, []);
 
-  const suggestedCourses = useMemo(() => allCourses.slice(0, 6), [allCourses]);
   const newCourses = useMemo(() => allCourses.slice(0, 6), [allCourses]);
 
   return (
@@ -117,7 +129,7 @@ export default function Home() {
       <main className="mx-auto max-w-6xl px-4 py-6">
         {loading ? (
           <div className="rounded-xl border bg-white p-10 text-center text-sm text-gray-500">
-            Ачааллаж байна...s
+            Ачааллаж байна...
           </div>
         ) : (
           <>
