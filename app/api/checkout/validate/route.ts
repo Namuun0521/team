@@ -27,7 +27,9 @@ export async function GET() {
       });
     }
 
-    const allApproved = bookings.every((booking) => booking.isApproved === true);
+    const allApproved = bookings.every(
+      (booking) => booking.isApproved === true,
+    );
 
     if (!allApproved) {
       return NextResponse.json({

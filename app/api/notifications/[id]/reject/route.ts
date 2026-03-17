@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 
 export async function DELETE(
@@ -7,44 +6,41 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { userId } = await auth();
     const { id } = await params;
-
-    if (!userId) {
-      return NextResponse.json(
-        { error: "Нэвтрэх шаардлагатай" },
-        { status: 401 },
-      );
-    }
 
     const notification = await prisma.notification.findUnique({
       where: { id },
+      include: {
+        booking: true,
+      },
     });
 
     if (!notification) {
       return NextResponse.json(
-        { error: "Мэдэгдэл олдсонгүй" },
+        { error: "Notification not found" },
         { status: 404 },
       );
     }
 
-    if (notification.freelancerId !== userId) {
-      return NextResponse.json({ error: "Хандах эрхгүй" }, { status: 403 });
-    }
-
-    await prisma.booking.delete({
-      where: { id: notification.bookingId },
+    await prisma.booking.update({
+      where: { id: notification.booking.id },
+      data: {
+        status: "CANCELLED",
+      },
     });
 
-    await prisma.notification.delete({
+    await prisma.notification.update({
       where: { id },
+      data: {
+        isRead: true,
+      },
     });
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Notification reject error:", error);
+    console.error("Reject error:", error);
     return NextResponse.json(
-      { error: "Татгалзахад алдаа гарлаа" },
+      { error: "Reject хийхэд алдаа гарлаа" },
       { status: 500 },
     );
   }
