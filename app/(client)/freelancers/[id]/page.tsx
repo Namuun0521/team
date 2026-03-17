@@ -32,6 +32,7 @@ export default function FreelancerPage() {
   const [loading, setLoading] = useState(true);
 
   const displayName = profile?.user?.name || user?.fullName || "Нэргүй";
+
   useEffect(() => {
     if (!id) return;
 
@@ -92,7 +93,7 @@ export default function FreelancerPage() {
 
               <span className="font-medium flex items-center gap-2 text-sm text-[#334155]">
                 <Mail size={16} color="#135BEC" />
-                {user?.primaryEmailAddress?.emailAddress}
+                {profile?.clerkEmail}
               </span>
 
               <p className="font-medium flex items-center gap-2 text-sm text-[#334155]">
