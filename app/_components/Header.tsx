@@ -17,6 +17,14 @@ type HeaderProps = {
   cartCount: number;
 };
 
+import SearchPage from "../search/page";
+
+import Link from "next/link";
+import { ShoppingCart } from "lucide-react";
+type HeaderProps = {
+  cartCount: number;
+};
+
 export const Header = ({ cartCount }: HeaderProps) => {
   const [open, setOpen] = useState(false);
   const { isSignedIn, user } = useUser();
@@ -59,7 +67,6 @@ export const Header = ({ cartCount }: HeaderProps) => {
               >
                 Бидний тухай
               </Button>
-
               <Link href="/shopping-cart" className="relative inline-block">
                 <ShoppingCart />
                 {cartCount > 0 && (
@@ -68,6 +75,8 @@ export const Header = ({ cartCount }: HeaderProps) => {
                   </span>
                 )}
               </Link>
+
+              
 
               {isSignedIn && <NotificationDialog />}
 
