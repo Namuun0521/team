@@ -32,6 +32,7 @@ enum BookingStatus {
   PENDING
   CONFIRMED
   CANCELLED
+  PAID
 }
 
 model User {

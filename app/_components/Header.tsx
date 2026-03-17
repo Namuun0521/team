@@ -66,7 +66,7 @@ export const Header = ({ cartCount }: HeaderProps) => {
                 )}
               </Link>
 
-              {isSignedIn && isFreelancer && <NotificationDialog />}
+              {isSignedIn && <NotificationDialog />}
 
               {!isSignedIn && (
                 <>
