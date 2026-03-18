@@ -109,13 +109,14 @@ model Booking {
   endAt        DateTime
   status       BookingStatus @default(PENDING)
   isApproved   Boolean       @default(false)
+  paymentStatus String        @default("UNPAID")
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 
   user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   course        Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
   freelancer    FreelancerProfile @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
-  notifications Notification[] // ⬅️ ЭНИЙГ НЭМ
+  notifications Notification[]
 
   @@index([freelancerId])
   @@index([courseId])
