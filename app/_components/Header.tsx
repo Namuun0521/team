@@ -114,25 +114,16 @@
 // };
 "use client";
 
-import { Menu, Bell } from "lucide-react";
+import { Menu, Bell, ShoppingCart, User, BookOpen } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Filter } from "./Filter";
-import {
-  Show,
-  SignInButton,
-  SignUpButton,
-  UserButton,
-  useUser,
-} from "@clerk/nextjs";
+import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs";
 import BecomeFreelancerButton from "./BecomeFreelancerButton";
 import { MobileSidebar } from "./MobileSidebar";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-
 import SearchPage from "../search/page";
-
 import Link from "next/link";
-import { ShoppingCart } from "lucide-react";
 
 type HeaderProps = {
   cartCount: number;
@@ -145,7 +136,6 @@ export const Header = ({ cartCount }: HeaderProps) => {
   const [isFreelancer, setIsFreelancer] = useState(false);
   const [notificationCount, setNotificationCount] = useState(0);
 
-  // Check user role and fetch notification count
   useEffect(() => {
     if (!isSignedIn) {
       setIsFreelancer(false);
@@ -153,16 +143,19 @@ export const Header = ({ cartCount }: HeaderProps) => {
       return;
     }
 
-    // Check if user is freelancer
     fetch("/api/me")
       .then((res) => res.json())
       .then((data) => {
-        if (data?.role === "FREELANCER") {
-          setIsFreelancer(true);
+        const freelancer = data?.role === "FREELANCER";
+        setIsFreelancer(freelancer);
+
+        if (freelancer) {
           fetchNotificationCount();
         }
       })
-      .catch(() => {});
+      .catch(() => {
+        setIsFreelancer(false);
+      });
   }, [isSignedIn]);
 
   const fetchNotificationCount = async () => {
@@ -175,13 +168,12 @@ export const Header = ({ cartCount }: HeaderProps) => {
     }
   };
 
-  // Refresh notification count every 30 seconds if user is freelancer
   useEffect(() => {
     if (!isFreelancer) return;
 
     const interval = setInterval(() => {
       fetchNotificationCount();
-    }, 30000); // 30 seconds
+    }, 30000);
 
     return () => clearInterval(interval);
   }, [isFreelancer]);
@@ -223,9 +215,8 @@ export const Header = ({ cartCount }: HeaderProps) => {
                 Бидний тухай
               </Button>
 
-              {/* Shopping Cart */}
               <Link href="/shopping-cart" className="relative inline-block">
-                <ShoppingCart className="h-6 w-6 text-gray-700 hover:text-blue-600 transition" />
+                <ShoppingCart className="h-6 w-6 text-gray-700 transition hover:text-blue-600" />
                 {cartCount > 0 && (
                   <span className="absolute -right-2 -top-2 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1 text-xs text-white">
                     {cartCount > 99 ? "99+" : cartCount}
@@ -233,16 +224,15 @@ export const Header = ({ cartCount }: HeaderProps) => {
                 )}
               </Link>
 
-              {/* Notification Bell - only for freelancers */}
               {isFreelancer && (
                 <button
                   onClick={() => router.push("/notifications")}
                   className="relative inline-block"
                   aria-label="Notifications"
                 >
-                  <Bell className="h-6 w-6 text-gray-700 hover:text-blue-600 transition" />
+                  <Bell className="h-6 w-6 text-gray-700 transition hover:text-blue-600" />
                   {notificationCount > 0 && (
-                    <span className="absolute -right-2 -top-2 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-blue-600 px-1 text-xs font-semibold text-white animate-pulse">
+                    <span className="absolute -right-2 -top-2 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-blue-600 px-1 text-xs font-semibold text-white">
                       {notificationCount > 99 ? "99+" : notificationCount}
                     </span>
                   )}
@@ -267,7 +257,23 @@ export const Header = ({ cartCount }: HeaderProps) => {
 
               {isSignedIn && (
                 <>
-                  <UserButton />
+                  <UserButton>
+                    {isFreelancer && (
+                      <UserButton.MenuItems>
+                        <UserButton.Link
+                          label="Profile үзэх"
+                          href="/freelancer/profile"
+                          labelIcon={<User className="h-4 w-4" />}
+                        />
+                        <UserButton.Link
+                          label="Миний хичээлүүд"
+                          href="/my-courses"
+                          labelIcon={<BookOpen className="h-4 w-4" />}
+                        />
+                      </UserButton.MenuItems>
+                    )}
+                  </UserButton>
+
                   <BecomeFreelancerButton />
                 </>
               )}

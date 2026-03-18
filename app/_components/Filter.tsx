@@ -1,8 +1,7 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 const CATEGORY_MAP: Record<string, string | null> = {
   Бүгд: null,
@@ -12,6 +11,7 @@ const CATEGORY_MAP: Record<string, string | null> = {
   Маркетинг: "Маркетинг",
   Фитнес: "Фитнес",
   "Ерөнхий эрдэм": "Ерөнхий_эрдэм",
+  Бусад: "Бусад",
 };
 
 const categories = Object.keys(CATEGORY_MAP);
@@ -23,11 +23,12 @@ type FilterProps = {
 
 export const Filter = ({ vertical = false, onSelect }: FilterProps) => {
   const router = useRouter();
-  const [active, setActive] = useState("Бүгд");
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const currentCategory = searchParams.get("category");
 
   const handleClick = (category: string) => {
-    setActive(category);
-
     const apiCategory = CATEGORY_MAP[category];
 
     if (!apiCategory) {
@@ -38,6 +39,15 @@ export const Filter = ({ vertical = false, onSelect }: FilterProps) => {
 
     router.push(`/courses?category=${apiCategory}`);
     onSelect?.();
+  };
+
+  const isActive = (item: string) => {
+    const apiCategory = CATEGORY_MAP[item];
+
+    if (item === "Бүгд") return false;
+    if (pathname !== "/courses") return false;
+
+    return currentCategory === apiCategory;
   };
 
   return (
@@ -60,12 +70,12 @@ export const Filter = ({ vertical = false, onSelect }: FilterProps) => {
                 className={`cursor-pointer text-sm transition ${
                   vertical
                     ? `w-full justify-start rounded-xl px-4 py-3 ${
-                        active === item
+                        isActive(item)
                           ? "border border-blue-300 bg-blue-100 text-blue-600"
                           : "border border-gray-200 bg-white text-gray-700 hover:bg-gray-100"
                       }`
                     : `${
-                        active === item
+                        isActive(item)
                           ? "border border-blue-300 bg-blue-100 text-blue-600"
                           : "border border-gray-200 bg-white text-gray-700 hover:bg-gray-100"
                       } rounded-full px-5 py-2`
