@@ -8,13 +8,19 @@ export default function CheckoutPage() {
       try {
         console.log(" Starting checkout...");
 
-        //  энд confirmed booking-уудаа авах хэрэгтэй
-        const res = await fetch("/api/checkout-data");
+        const res = await fetch("/api/checkout-data", {
+          method: "GET",
+          credentials: "include",
+        });
+
         const data = await res.json();
         console.log(" Checkout data:", data);
 
+        if (!res.ok) return;
+
         const checkoutRes = await fetch("/api/checkout", {
           method: "POST",
+          credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
