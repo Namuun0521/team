@@ -61,15 +61,30 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const booking = await prisma.booking.create({
-      data: {
-        userId: dbUser.id,
-        courseId,
-        freelancerId,
-        startAt: new Date(startAt),
-        endAt: new Date(endAt),
-        status: "PENDING",
-      },
+    // ✅ Booking + Notification хамт үүсгэх (transaction)
+    const booking = await prisma.$transaction(async (tx) => {
+      const newBooking = await tx.booking.create({
+        data: {
+          userId: dbUser.id,
+          courseId,
+          freelancerId,
+          startAt: new Date(startAt),
+          endAt: new Date(endAt),
+          status: "PENDING",
+        },
+      });
+
+      // 🔔 Notification үүсгэх
+      await tx.notification.create({
+        data: {
+          freelancerId,
+          bookingId: newBooking.id,
+          message: `"${course.title}" хичээлд шинэ захиалга ирлээ`,
+          isRead: false,
+        },
+      });
+
+      return newBooking;
     });
 
     return NextResponse.json(booking, { status: 201 });
