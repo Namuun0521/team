@@ -5,6 +5,7 @@ import { ShoppingCartList } from "@/app/_components/shopping-cart/shopping-cart-
 import { CartSummary } from "@/app/_components/shopping-cart/cart-summary";
 import { RecommendedCourses } from "@/app/_components/shopping-cart/recommended-courses";
 import { useRouter } from "next/navigation";
+import { EmptyCart } from "@/app/_components/shopping-cart/empty-cart";
 
 export interface Review {
   id: string;
@@ -121,6 +122,28 @@ export default function ShoppingCartPage() {
         </h1>
         <p className="text-muted-foreground">Loading cart...</p>
       </div>
+    );
+  }
+  if (loading) {
+    return (
+      <div className="mx-auto max-w-7xl px-6 py-10">
+        <h1 className="mb-8 text-5xl font-bold text-slate-900">
+          Shopping Cart
+        </h1>
+        <p className="text-muted-foreground">Loading cart...</p>
+      </div>
+    );
+  }
+
+  if (!cartItems.length) {
+    return (
+      <main className="mx-auto max-w-7xl px-6 py-10">
+        <h1 className="mb-10 text-5xl font-bold tracking-tight text-slate-900">
+          Shopping Cart
+        </h1>
+
+        <EmptyCart />
+      </main>
     );
   }
 
