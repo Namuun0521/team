@@ -1,117 +1,174 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-type DayPoint = {
-  day: string;
-  value: number;
-};
-
-function formatDay(date: Date) {
-  return date.toISOString().slice(5, 10); // MM-DD
-}
-
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
+
     const days = Number(searchParams.get("days") ?? 7);
+    const search = searchParams.get("search") ?? "";
 
     const fromDate = new Date();
-    fromDate.setDate(fromDate.getDate() - days + 1);
-    fromDate.setHours(0, 0, 0, 0);
+    fromDate.setDate(fromDate.getDate() - days);
 
-    const [totalUsers, totalFreelancers, totalCourses, bookings, newUsers] =
+    const [totalUsers, totalFreelancers, totalCourses] =
       await Promise.all([
         prisma.user.count(),
         prisma.freelancerProfile.count(),
         prisma.course.count(),
-        prisma.booking.findMany({
-          where: {
-            createdAt: {
-              gte: fromDate,
-            },
-          },
-          include: {
-            course: true,
-          },
-          orderBy: {
-            createdAt: "asc",
-          },
-        }),
-        prisma.user.findMany({
-          where: {
-            createdAt: {
-              gte: fromDate,
-            },
-          },
-          select: {
-            createdAt: true,
-          },
-          orderBy: {
-            createdAt: "asc",
-          },
-        }),
       ]);
 
-    const confirmedBookings = bookings.filter(
-      (b) => b.status === "CONFIRMED"
+    const bookings = await prisma.booking.findMany({
+      where: {
+        status: "CONFIRMED",
+        createdAt: {
+          gte: fromDate,
+        },
+        ...(search && {
+          user: {
+            name: {
+              contains: search,
+              mode: "insensitive",
+            },
+          },
+        }),
+      },
+      select: {
+        id: true,
+        status: true,
+        createdAt: true,
+        course: {
+          select: {
+            price: true,
+          },
+        },
+      },
+    });
+
+    const totalRevenue = bookings.reduce(
+      (sum, b) => sum + (b.course?.price ?? 0),
+      0
     );
 
-    const totalRevenue = confirmedBookings.reduce((sum, booking) => {
-      return sum + booking.course.price;
-    }, 0);
-
-    const pendingBookings = bookings.filter((b) => b.status === "PENDING").length;
-    const confirmedCount = bookings.filter((b) => b.status === "CONFIRMED").length;
-    const cancelledCount = bookings.filter((b) => b.status === "CANCELLED").length;
-
     const revenueMap: Record<string, number> = {};
-    const usersMap: Record<string, number> = {};
 
-    for (const booking of confirmedBookings) {
-      const key = formatDay(new Date(booking.createdAt));
-      revenueMap[key] = (revenueMap[key] ?? 0) + booking.course.price;
-    }
+    bookings.forEach((b) => {
+      const day = new Date(b.createdAt)
+        .toLocaleDateString("en-CA")
+        .slice(5);
 
-    for (const user of newUsers) {
-      const key = formatDay(new Date(user.createdAt));
-      usersMap[key] = (usersMap[key] ?? 0) + 1;
-    }
+      revenueMap[day] =
+        (revenueMap[day] ?? 0) + (b.course?.price ?? 0);
+    });
 
-    const revenueByDay: DayPoint[] = [];
-    const newUsersByDay: DayPoint[] = [];
-
+    const revenueByDay = [];
     for (let i = days - 1; i >= 0; i--) {
       const d = new Date();
       d.setDate(d.getDate() - i);
-      const key = formatDay(d);
+
+      const key = d.toLocaleDateString("en-CA").slice(5);
 
       revenueByDay.push({
         day: key,
         value: revenueMap[key] ?? 0,
       });
+    }
+
+    const users = await prisma.user.findMany({
+      where: {
+        createdAt: {
+          gte: fromDate,
+        },
+      },
+      select: { createdAt: true },
+    });
+
+    const userMap: Record<string, number> = {};
+
+    users.forEach((u) => {
+      const day = new Date(u.createdAt)
+        .toLocaleDateString("en-CA")
+        .slice(5);
+
+      userMap[day] = (userMap[day] ?? 0) + 1;
+    });
+
+    const newUsersByDay = [];
+    for (let i = days - 1; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+
+      const key = d.toLocaleDateString("en-CA").slice(5);
 
       newUsersByDay.push({
         day: key,
-        value: usersMap[key] ?? 0,
+        value: userMap[key] ?? 0,
       });
     }
+
+    const paidBookings = await prisma.booking.findMany({
+      where: {
+        status: "CONFIRMED",
+        createdAt: {
+          gte: fromDate,
+        },
+      },
+      select: {
+        id: true,
+        createdAt: true,
+        user: {
+          select: {
+            name: true,
+          },
+        },
+        freelancer: {
+          select: {
+            user: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+        course: {
+          select: {
+            title: true,
+            price: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: 10,
+    });
+
+    const formattedBookings = paidBookings.map((b) => ({
+      id: b.id.slice(0, 8),
+      client: b.user.name ?? "User",
+      freelancer: b.freelancer.user.name ?? "Freelancer",
+      courseTitle: b.course.title,
+      amount: b.course.price,
+      createdAt: b.createdAt,
+    }));
 
     return NextResponse.json({
       stats: {
         totalUsers,
         totalFreelancers,
         totalCourses,
-        totalBookings: bookings.length,
-        pendingBookings,
-        confirmedBookings: confirmedCount,
-        cancelledBookings: cancelledCount,
         totalRevenue,
       },
       revenueByDay,
       newUsersByDay,
+      paidBookings: formattedBookings,
     });
   } catch (error) {
-    console.error("REPORTS API ERROR:", error);
-    return NextResponse.json({ message: "Server error" }, { status: 500 });
+    console.error(error);
+
+    return NextResponse.json(
+      { message: "Server error" },
+      { status: 500 }
+    );
   }
 }

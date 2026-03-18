@@ -1,157 +1,131 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
+type DayPoint = {
+  day: string;
+  value: number;
+};
+
+function formatDay(date: Date) {
+  return date.toISOString().slice(5, 10); // MM-DD
+}
+
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
-
     const days = Number(searchParams.get("days") ?? 7);
-    const search = searchParams.get("search") ?? "";
 
     const fromDate = new Date();
-    fromDate.setDate(fromDate.getDate() - days);
+    fromDate.setDate(fromDate.getDate() - days + 1);
+    fromDate.setHours(0, 0, 0, 0);
 
-    // ── Stats ─────────────────────────────
-    const [totalUsers, totalFreelancers, totalCourses] =
+    const [totalUsers, totalFreelancers, totalCourses, bookings, newUsers] =
       await Promise.all([
         prisma.user.count(),
         prisma.freelancerProfile.count(),
         prisma.course.count(),
-      ]);
-
-    // ── Bookings ──────────────────────────
-    const bookings = await prisma.booking.findMany({
-      where: {
-        status: "CONFIRMED",
-        createdAt: {
-          gte: fromDate,
-        },
-        ...(search && {
-          user: {
-            name: {
-              contains: search,
-              mode: "insensitive",
+        prisma.booking.findMany({
+          where: {
+            createdAt: {
+              gte: fromDate,
             },
           },
+          select: {
+            id: true,
+            userId: true,
+            courseId: true,
+            freelancerId: true,
+            startAt: true,
+            endAt: true,
+            status: true,
+            isApproved: true,
+            createdAt: true,
+            updatedAt: true,
+            course: {
+              select: {
+                price: true,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: "asc",
+          },
         }),
-      },
-      include: {
-        course: true,
-      },
-    });
+        prisma.user.findMany({
+          where: {
+            createdAt: {
+              gte: fromDate,
+            },
+          },
+          select: {
+            createdAt: true,
+          },
+          orderBy: {
+            createdAt: "asc",
+          },
+        }),
+      ]);
 
-    // ── Total Revenue ─────────────────────
-    const totalRevenue = bookings.reduce(
-      (sum, b) => sum + (b.course?.price ?? 0),
-      0
+    const confirmedBookings = bookings.filter(
+      (b) => b.status === "CONFIRMED"
     );
 
-    // ── Revenue by day ────────────────────
+    const totalRevenue = confirmedBookings.reduce((sum, booking) => {
+      return sum + booking.course.price;
+    }, 0);
+
+    const pendingBookings = bookings.filter((b) => b.status === "PENDING").length;
+    const confirmedCount = bookings.filter((b) => b.status === "CONFIRMED").length;
+    const cancelledCount = bookings.filter((b) => b.status === "CANCELLED").length;
+
     const revenueMap: Record<string, number> = {};
+    const usersMap: Record<string, number> = {};
 
-    bookings.forEach((b) => {
-      const day = new Date(b.createdAt)
-        .toLocaleDateString("en-CA") // YYYY-MM-DD
-        .slice(5); // MM-DD
+    for (const booking of confirmedBookings) {
+      const key = formatDay(new Date(booking.createdAt));
+      revenueMap[key] = (revenueMap[key] ?? 0) + booking.course.price;
+    }
 
-      revenueMap[day] =
-        (revenueMap[day] ?? 0) + (b.course?.price ?? 0);
-    });
+    for (const user of newUsers) {
+      const key = formatDay(new Date(user.createdAt));
+      usersMap[key] = (usersMap[key] ?? 0) + 1;
+    }
 
-    // бүх өдрийг fill хийнэ
-    const revenueByDay = [];
+    const revenueByDay: DayPoint[] = [];
+    const newUsersByDay: DayPoint[] = [];
+
     for (let i = days - 1; i >= 0; i--) {
       const d = new Date();
       d.setDate(d.getDate() - i);
-
-      const key = d.toLocaleDateString("en-CA").slice(5);
+      const key = formatDay(d);
 
       revenueByDay.push({
         day: key,
         value: revenueMap[key] ?? 0,
       });
-    }
-
-    // ── New users ─────────────────────────
-    const users = await prisma.user.findMany({
-      where: {
-        createdAt: {
-          gte: fromDate,
-        },
-      },
-      select: { createdAt: true },
-    });
-
-    const userMap: Record<string, number> = {};
-
-    users.forEach((u) => {
-      const day = new Date(u.createdAt)
-        .toLocaleDateString("en-CA")
-        .slice(5);
-
-      userMap[day] = (userMap[day] ?? 0) + 1;
-    });
-
-    const newUsersByDay = [];
-    for (let i = days - 1; i >= 0; i--) {
-      const d = new Date();
-      d.setDate(d.getDate() - i);
-
-      const key = d.toLocaleDateString("en-CA").slice(5);
 
       newUsersByDay.push({
         day: key,
-        value: userMap[key] ?? 0,
+        value: usersMap[key] ?? 0,
       });
     }
-
-    // ── Paid bookings table ───────────────
-    const paidBookings = await prisma.booking.findMany({
-      where: {
-        status: "CONFIRMED",
-        createdAt: {
-          gte: fromDate,
-        },
-      },
-      include: {
-        user: true,
-        freelancer: {
-          include: { user: true },
-        },
-        course: true,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-      take: 10,
-    });
-
-    const formattedBookings = paidBookings.map((b) => ({
-      id: b.id.slice(0, 8),
-      client: b.user.name ?? "User",
-      freelancer: b.freelancer.user.name ?? "Freelancer",
-      courseTitle: b.course.title,
-      amount: b.course.price,
-      createdAt: b.createdAt,
-    }));
 
     return NextResponse.json({
       stats: {
         totalUsers,
         totalFreelancers,
         totalCourses,
+        totalBookings: bookings.length,
+        pendingBookings,
+        confirmedBookings: confirmedCount,
+        cancelledBookings: cancelledCount,
         totalRevenue,
       },
       revenueByDay,
       newUsersByDay,
-      paidBookings: formattedBookings,
     });
   } catch (error) {
-    console.error(error);
-
-    return NextResponse.json(
-      { message: "Server error" },
-      { status: 500 }
-    );
+    console.error("REPORTS API ERROR:", error);
+    return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 }

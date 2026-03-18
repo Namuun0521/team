@@ -47,12 +47,33 @@ export async function GET(req: Request) {
             ],
           }
         : {},
-      include: {
-        user: true,
-        course: true,
+      select: {
+        id: true,
+        status: true,
+        isApproved: true,
+        startAt: true,
+        endAt: true,
+        createdAt: true,
+        user: {
+          select: {
+            name: true,
+            email: true,
+          },
+        },
+        course: {
+          select: {
+            title: true,
+            price: true,
+          },
+        },
         freelancer: {
-          include: {
-            user: true,
+          select: {
+            user: {
+              select: {
+                name: true,
+                email: true,
+              },
+            },
           },
         },
       },
