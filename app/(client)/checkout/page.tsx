@@ -49,7 +49,7 @@ export default function CheckoutPage() {
 
   return (
     <div className="flex h-screen items-center justify-center">
-      <p className="text-lg">Төлбөрийн хуудас руу шилжиж байна...</p>
+      <p className="text-lg">hog...</p>
     </div>
   );
 }
