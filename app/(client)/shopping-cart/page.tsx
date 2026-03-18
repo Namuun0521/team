@@ -424,6 +424,299 @@
 //   );
 // }
 
+// "use client";
+
+// import { useEffect, useState } from "react";
+// import { Card, CardContent } from "@/components/ui/card";
+// import { Button } from "@/components/ui/button";
+// import {
+//   ShoppingCart,
+//   Loader2,
+//   Calendar,
+//   Clock,
+//   User,
+//   CheckCircle2,
+//   XCircle,
+//   AlertCircle,
+//   Trash2,
+// } from "lucide-react";
+// import { useRouter } from "next/navigation";
+
+// type Booking = {
+//   id: string;
+//   status: "PENDING" | "CONFIRMED" | "CANCELLED";
+//   isApproved: boolean | null;
+//   startAt: string;
+//   endAt: string;
+//   createdAt: string;
+//   course: {
+//     id: string;
+//     title: string;
+//     price: number;
+//     freelancer: {
+//       user: {
+//         firstName: string | null;
+//         lastName: string | null;
+//       };
+//     };
+//   };
+//   freelancer: {
+//     user: {
+//       firstName: string | null;
+//       lastName: string | null;
+//     };
+//   };
+// };
+
+// export default function ShoppingCartPage() {
+//   const router = useRouter();
+//   const [bookings, setBookings] = useState<Booking[]>([]);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     fetchBookings();
+//   }, []);
+
+//   const fetchBookings = async () => {
+//     try {
+//       const res = await fetch("/api/shopping-cart");
+//       const data = await res.json();
+//       setBookings(data.bookings || []);
+//     } catch (err) {
+//       console.error("Failed to fetch bookings:", err);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const getStatusBadge = (booking: Booking) => {
+//     if (booking.status === "CANCELLED" || booking.isApproved === false) {
+//       return (
+//         <div className="flex items-center gap-2 rounded-lg bg-red-100 px-3 py-1.5 text-sm font-medium text-red-700">
+//           <XCircle className="h-4 w-4" />
+//           Freelancer татгалзсан
+//         </div>
+//       );
+//     }
+
+//     if (booking.status === "CONFIRMED" && booking.isApproved === true) {
+//       return (
+//         <div className="flex items-center gap-2 rounded-lg bg-green-100 px-3 py-1.5 text-sm font-medium text-green-700">
+//           <CheckCircle2 className="h-4 w-4" />
+//           Баталгаажсан
+//         </div>
+//       );
+//     }
+
+//     return (
+//       <div className="flex items-center gap-2 rounded-lg bg-yellow-100 px-3 py-1.5 text-sm font-medium text-yellow-700">
+//         <AlertCircle className="h-4 w-4" />
+//         Хүлээгдэж байна
+//       </div>
+//     );
+//   };
+
+//   const formatDate = (dateString: string) => {
+//     const date = new Date(dateString);
+//     return date.toLocaleDateString("mn-MN", {
+//       year: "numeric",
+//       month: "long",
+//       day: "numeric",
+//     });
+//   };
+
+//   const formatTime = (dateString: string) => {
+//     const date = new Date(dateString);
+//     return date.toLocaleTimeString("mn-MN", {
+//       hour: "2-digit",
+//       minute: "2-digit",
+//     });
+//   };
+
+//   const confirmedBookings = bookings.filter(
+//     (b) => b.status === "CONFIRMED" && b.isApproved === true,
+//   );
+
+//   const pendingBookings = bookings.filter(
+//     (b) => b.status === "PENDING" && b.isApproved !== false,
+//   );
+
+//   const rejectedBookings = bookings.filter(
+//     (b) => b.status === "CANCELLED" || b.isApproved === false,
+//   );
+
+//   const totalPrice = confirmedBookings.reduce(
+//     (sum, b) => sum + b.course.price,
+//     0,
+//   );
+
+//   // Can checkout if at least one booking is confirmed
+//   const canCheckout = confirmedBookings.length > 0;
+
+//   const hasPending = pendingBookings.length > 0;
+//   const hasRejected = rejectedBookings.length > 0;
+
+//   if (loading) {
+//     return (
+//       <div className="flex min-h-screen items-center justify-center">
+//         <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <div className="mx-auto max-w-4xl px-4 py-8">
+//       {/* Header */}
+//       <div className="mb-8 flex items-center gap-4">
+//         <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-100">
+//           <ShoppingCart className="h-7 w-7 text-[#135BEC]" />
+//         </div>
+//         <div>
+//           <h1 className="text-3xl font-bold text-[#0F172A]">Миний сагс</h1>
+//           <p className="text-sm text-[#64748B]">{bookings.length} хичээл</p>
+//         </div>
+//       </div>
+
+//       {/* Empty state */}
+//       {bookings.length === 0 && (
+//         <Card className="rounded-2xl">
+//           <CardContent className="py-16 text-center">
+//             <ShoppingCart className="mx-auto mb-4 h-16 w-16 text-gray-300" />
+//             <h2 className="text-xl font-semibold text-gray-700">
+//               Сагс хоосон байна
+//             </h2>
+//             <p className="mt-2 text-sm text-gray-500">
+//               Хичээл сонгож захиалга өгнө үү
+//             </p>
+//             <Button
+//               onClick={() => router.push("/")}
+//               className="mt-6 rounded-xl bg-[#135BEC] px-6"
+//             >
+//               Хичээл үзэх
+//             </Button>
+//           </CardContent>
+//         </Card>
+//       )}
+
+//       {/* Bookings list */}
+//       {bookings.length > 0 && (
+//         <div className="space-y-4">
+//           {bookings.map((booking) => {
+//             const freelancerName =
+//               `${booking.course.freelancer.user.firstName || ""} ${booking.course.freelancer.user.lastName || ""}`.trim() ||
+//               "Багш";
+
+//             return (
+//               <Card
+//                 key={booking.id}
+//                 className="overflow-hidden rounded-2xl transition-shadow hover:shadow-md"
+//               >
+//                 <CardContent className="p-6">
+//                   <div className="flex items-start justify-between gap-4">
+//                     {/* Content */}
+//                     <div className="flex-1 space-y-3">
+//                       <div className="flex items-start justify-between">
+//                         <div>
+//                           <h3 className="text-lg font-semibold text-[#0F172A]">
+//                             {booking.course.title}
+//                           </h3>
+//                           <div className="mt-1 flex items-center gap-2 text-sm text-[#64748B]">
+//                             <User className="h-4 w-4" />
+//                             {freelancerName}
+//                           </div>
+//                         </div>
+//                         {getStatusBadge(booking)}
+//                       </div>
+
+//                       <div className="flex flex-wrap gap-4 text-sm text-[#64748B]">
+//                         <div className="flex items-center gap-2">
+//                           <Calendar className="h-4 w-4" />
+//                           {formatDate(booking.startAt)}
+//                         </div>
+//                         <div className="flex items-center gap-2">
+//                           <Clock className="h-4 w-4" />
+//                           {formatTime(booking.startAt)} -{" "}
+//                           {formatTime(booking.endAt)}
+//                         </div>
+//                       </div>
+
+//                       <div className="text-xl font-bold text-[#135BEC]">
+//                         ₮{booking.course.price.toLocaleString()}
+//                       </div>
+//                     </div>
+//                   </div>
+//                 </CardContent>
+//               </Card>
+//             );
+//           })}
+//         </div>
+//       )}
+
+//       {/* Summary and Checkout */}
+//       {bookings.length > 0 && (
+//         <Card className="mt-6 rounded-2xl bg-gray-50">
+//           <CardContent className="p-6">
+//             <div className="space-y-4">
+//               {/* Status summary */}
+//               {(hasPending || hasRejected) && (
+//                 <div className="rounded-lg bg-blue-50 p-4 text-sm text-blue-800">
+//                   <div className="flex items-start gap-3">
+//                     <AlertCircle className="h-5 w-5 shrink-0" />
+//                     <div>
+//                       <p className="font-semibold">Мэдээлэл</p>
+//                       <p className="mt-1">
+//                         Та баталгаажсан хичээлүүдэд төлбөр төлөх боломжтой.
+//                         {hasPending &&
+//                           " Хүлээгдэж байгаа захиалгууд багш баталгаажуулах болно."}
+//                         {hasRejected &&
+//                           " Татгалзсан захиалгууд төлбөрт тооцогдохгүй."}
+//                       </p>
+//                     </div>
+//                   </div>
+//                 </div>
+//               )}
+
+//               {/* Total */}
+//               <div className="flex items-center justify-between border-t pt-4">
+//                 <div>
+//                   <p className="text-sm text-[#64748B]">
+//                     Нийт ({confirmedBookings.length} хичээл)
+//                   </p>
+//                   <p className="text-2xl font-bold text-[#0F172A]">
+//                     ₮{totalPrice.toLocaleString()}
+//                   </p>
+//                 </div>
+
+//                 <Button
+//                   onClick={() => {
+//                     if (canCheckout) {
+//                       router.push("/checkout");
+//                     }
+//                   }}
+//                   disabled={!canCheckout}
+//                   className="h-12 rounded-xl bg-[#135BEC] px-8 font-semibold disabled:bg-gray-300 disabled:text-gray-500"
+//                 >
+//                   {canCheckout
+//                     ? `Төлбөр төлөх (${confirmedBookings.length})`
+//                     : "Баталгаажсан хичээл байхгүй"}
+//                 </Button>
+//               </div>
+
+//               {/* Info text */}
+//               {canCheckout && (
+//                 <p className="text-xs text-[#64748B]">
+//                   Та {confirmedBookings.length} баталгаажсан хичээл
+//                   {confirmedBookings.length > 1 ? "үүдэд" : "д"} төлбөр төлөх
+//                   боломжтой
+//                 </p>
+//               )}
+//             </div>
+//           </CardContent>
+//         </Card>
+//       )}
+//     </div>
+//   );
+// }
 "use client";
 
 import { useEffect, useState } from "react";
@@ -438,7 +731,6 @@ import {
   CheckCircle2,
   XCircle,
   AlertCircle,
-  Trash2,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -489,16 +781,19 @@ export default function ShoppingCartPage() {
     }
   };
 
+  // ✅ ЗАСВАР: status-г ЭХЛЭЭД шалгана, isApproved-г зөвхөн CONFIRMED/CANCELLED үед л харна
   const getStatusBadge = (booking: Booking) => {
-    if (booking.status === "CANCELLED" || booking.isApproved === false) {
+    // 1. PENDING → ямар ч тохиолдолд "Хүлээгдэж байна"
+    if (booking.status === "PENDING") {
       return (
-        <div className="flex items-center gap-2 rounded-lg bg-red-100 px-3 py-1.5 text-sm font-medium text-red-700">
-          <XCircle className="h-4 w-4" />
-          Freelancer татгалзсан
+        <div className="flex items-center gap-2 rounded-lg bg-yellow-100 px-3 py-1.5 text-sm font-medium text-yellow-700">
+          <AlertCircle className="h-4 w-4" />
+          Хүлээгдэж байна
         </div>
       );
     }
 
+    // 2. CONFIRMED + isApproved === true → "Баталгаажсан"
     if (booking.status === "CONFIRMED" && booking.isApproved === true) {
       return (
         <div className="flex items-center gap-2 rounded-lg bg-green-100 px-3 py-1.5 text-sm font-medium text-green-700">
@@ -508,6 +803,17 @@ export default function ShoppingCartPage() {
       );
     }
 
+    // 3. CANCELLED эсвэл isApproved === false → "Татгалзсан"
+    if (booking.status === "CANCELLED") {
+      return (
+        <div className="flex items-center gap-2 rounded-lg bg-red-100 px-3 py-1.5 text-sm font-medium text-red-700">
+          <XCircle className="h-4 w-4" />
+          Freelancer татгалзсан
+        </div>
+      );
+    }
+
+    // Fallback
     return (
       <div className="flex items-center gap-2 rounded-lg bg-yellow-100 px-3 py-1.5 text-sm font-medium text-yellow-700">
         <AlertCircle className="h-4 w-4" />
@@ -537,22 +843,17 @@ export default function ShoppingCartPage() {
     (b) => b.status === "CONFIRMED" && b.isApproved === true,
   );
 
-  const pendingBookings = bookings.filter(
-    (b) => b.status === "PENDING" && b.isApproved !== false,
-  );
+  // ✅ PENDING бол isApproved хамаагүй
+  const pendingBookings = bookings.filter((b) => b.status === "PENDING");
 
-  const rejectedBookings = bookings.filter(
-    (b) => b.status === "CANCELLED" || b.isApproved === false,
-  );
+  const rejectedBookings = bookings.filter((b) => b.status === "CANCELLED");
 
   const totalPrice = confirmedBookings.reduce(
     (sum, b) => sum + b.course.price,
     0,
   );
 
-  // Can checkout if at least one booking is confirmed
   const canCheckout = confirmedBookings.length > 0;
-
   const hasPending = pendingBookings.length > 0;
   const hasRejected = rejectedBookings.length > 0;
 
@@ -613,7 +914,6 @@ export default function ShoppingCartPage() {
               >
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between gap-4">
-                    {/* Content */}
                     <div className="flex-1 space-y-3">
                       <div className="flex items-start justify-between">
                         <div>
@@ -657,7 +957,6 @@ export default function ShoppingCartPage() {
         <Card className="mt-6 rounded-2xl bg-gray-50">
           <CardContent className="p-6">
             <div className="space-y-4">
-              {/* Status summary */}
               {(hasPending || hasRejected) && (
                 <div className="rounded-lg bg-blue-50 p-4 text-sm text-blue-800">
                   <div className="flex items-start gap-3">
@@ -676,7 +975,6 @@ export default function ShoppingCartPage() {
                 </div>
               )}
 
-              {/* Total */}
               <div className="flex items-center justify-between border-t pt-4">
                 <div>
                   <p className="text-sm text-[#64748B]">
@@ -702,7 +1000,6 @@ export default function ShoppingCartPage() {
                 </Button>
               </div>
 
-              {/* Info text */}
               {canCheckout && (
                 <p className="text-xs text-[#64748B]">
                   Та {confirmedBookings.length} баталгаажсан хичээл
