@@ -63,6 +63,7 @@
 // }
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { clerkClient } from "@clerk/nextjs/server";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
@@ -108,10 +109,24 @@ export async function GET(req: NextRequest) {
       where: { userId },
       include: {
         user: { select: { name: true } },
+        courses: {
+          orderBy: { createdAt: "desc" },
+        },
       },
     });
 
-    return NextResponse.json(profile);
+    if (!profile) {
+      return NextResponse.json(null);
+    }
+
+    const client = await clerkClient();
+    const clerkUser = await client.users.getUser(userId);
+
+    return NextResponse.json({
+      ...profile,
+      clerkEmail: clerkUser.emailAddresses[0]?.emailAddress || null,
+      clerkName: clerkUser.fullName || null,
+    });
   } catch (error) {
     console.error("GET PROFILE ERROR:", error);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
