@@ -115,7 +115,7 @@
 
 "use client";
 
-import { Menu, Bell, ShoppingCart, User, BookOpen } from "lucide-react";
+import { Menu, Bell, ShoppingCart, User, BookOpen, Star } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Filter } from "./Filter";
 import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs";
@@ -253,6 +253,12 @@ export const Header = ({ cartCount }: HeaderProps) => {
                   <UserButton>
                     {isFreelancer && (
                       <UserButton.MenuItems>
+                        <UserButton.Link
+                          label="Миний захиалгууд"
+                          href="/my-bookings"
+                          labelIcon={<BookOpen className="h-4 w-4" />}
+                        />
+
                         <UserButton.Link
                           label="Profile үзэх"
                           href="/freelancer/profile"
