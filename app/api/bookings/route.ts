@@ -122,6 +122,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    console.log("1");
+
     const course = await prisma.course.findUnique({
       where: { id: courseId },
     });
@@ -134,6 +136,8 @@ export async function POST(req: NextRequest) {
       where: { id: userId },
     });
 
+    console.log("2");
+
     if (!dbUser) {
       dbUser = await prisma.user.create({
         data: {
@@ -143,6 +147,11 @@ export async function POST(req: NextRequest) {
       });
     }
 
+    console.log("jafgja;kdgja;djgfk;", {
+      freelancerId,
+      startAt: new Date(startAt),
+    });
+
     // 🔒 Double booking protection
     const existing = await prisma.booking.findFirst({
       where: {
@@ -150,6 +159,8 @@ export async function POST(req: NextRequest) {
         startAt: new Date(startAt),
       },
     });
+
+    console.log("3");
 
     if (existing) {
       return NextResponse.json(

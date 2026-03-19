@@ -113,6 +113,68 @@
 //     );
 //   }
 // }
+// import { NextRequest, NextResponse } from "next/server";
+// import { prisma } from "@/lib/prisma";
+// import { auth } from "@clerk/nextjs/server";
+
+// export async function GET(req: NextRequest) {
+//   try {
+//     const { userId } = await auth();
+
+//     if (!userId) {
+//       return NextResponse.json(
+//         { error: "Нэвтрэх шаардлагатай" },
+//         { status: 401 },
+//       );
+//     }
+
+//     // Get user's bookings with course and freelancer details
+//     const bookings = await prisma.booking.findMany({
+//       where: {
+//         userId: userId,
+//       },
+//       include: {
+//         course: {
+//           include: {
+//             freelancer: {
+//               include: {
+//                 user: {
+//                   select: {
+//                     name: true,
+//                     // firstName: true,
+//                     // lastName: true,
+//                   },
+//                 },
+//               },
+//             },
+//           },
+//         },
+//         freelancer: {
+//           include: {
+//             user: {
+//               select: {
+//                 name: true,
+//                 // firstName: true,
+//                 // lastName: true,
+//               },
+//             },
+//           },
+//         },
+//       },
+//       orderBy: {
+//         createdAt: "desc",
+//       },
+//     });
+
+//     return NextResponse.json({ bookings });
+//   } catch (error) {
+//     console.error("Shopping cart fetch error:", error);
+//     return NextResponse.json(
+//       { error: "Сагс ачаалахад алдаа гарлаа" },
+//       { status: 500 },
+//     );
+//   }
+// }
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
@@ -128,10 +190,10 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // Get user's bookings with course and freelancer details
     const bookings = await prisma.booking.findMany({
       where: {
         userId: userId,
+        paymentStatus: { not: "PAID" }, // ✅ төлөгдсөн захиалга харуулахгүй
       },
       include: {
         course: {
@@ -141,8 +203,6 @@ export async function GET(req: NextRequest) {
                 user: {
                   select: {
                     name: true,
-                    // firstName: true,
-                    // lastName: true,
                   },
                 },
               },
@@ -154,8 +214,6 @@ export async function GET(req: NextRequest) {
             user: {
               select: {
                 name: true,
-                // firstName: true,
-                // lastName: true,
               },
             },
           },
