@@ -15,6 +15,7 @@ import {
   Loader2,
   BookOpen,
   Plus,
+  MessageCircle,
 } from "lucide-react";
 
 type Course = {
@@ -37,6 +38,7 @@ type Review = {
 };
 
 type Profile = {
+  id?: string;
   userId: string;
   imageUrl?: string | null;
   clerkEmail?: string | null;
@@ -64,6 +66,7 @@ export default function FreelancerPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [navLoading, setNavLoading] = useState(false);
+  const [chatLoading, setChatLoading] = useState(false);
 
   const displayName = profile?.user?.name || user?.fullName || "Нэргүй";
 
@@ -92,6 +95,31 @@ export default function FreelancerPage() {
 
     fetchProfile();
   }, [id]);
+
+  const handleStartChat = async () => {
+    if (!profile?.id) return;
+
+    try {
+      setChatLoading(true);
+
+      const res = await fetch("/api/chat/start", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          freelancerId: profile.id,
+        }),
+      });
+
+      const convo = await res.json();
+      router.push(`/chat/${convo.id}`);
+    } catch (error) {
+      console.error("Chat start error:", error);
+    } finally {
+      setChatLoading(false);
+    }
+  };
 
   if (loading || !isLoaded) {
     return (
@@ -124,104 +152,103 @@ export default function FreelancerPage() {
     <div className="min-h-screen bg-slate-50">
       <div className="mx-auto max-w-7xl px-4 py-8 md:px-6 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-[340px_minmax(0,1fr)]">
-          {/* Left Profile Card */}
-          <Card className="h-fit overflow-hidden rounded-3xl border-0 bg-white p-0 shadow-[0_10px_40px_rgba(15,23,42,0.08)]">
-            <div className="relative h-28 bg-gradient-to-r from-blue-600 to-blue-500" />
+          {/* Left Side */}
+          <div className="space-y-6">
+            <Card className="h-fit overflow-hidden rounded-3xl border-0 bg-white p-0 shadow-[0_10px_40px_rgba(15,23,42,0.08)]">
+              <div className="relative h-28 bg-gradient-to-r from-blue-600 to-blue-500" />
 
-            <div className="relative px-6 pb-6">
-              <div className="-mt-14 mb-4 flex justify-center">
-                <img
-                  src={
-                    profile?.imageUrl || user?.imageUrl || "/placeholder.png"
-                  }
-                  alt={displayName}
-                  className="h-28 w-28 rounded-2xl border-4 border-white object-cover shadow-md"
-                />
-              </div>
+              <div className="relative px-6 pb-6">
+                <div className="-mt-14 mb-4 flex justify-center">
+                  <img
+                    src={
+                      profile?.imageUrl || user?.imageUrl || "/placeholder.png"
+                    }
+                    alt={displayName}
+                    className="h-28 w-28 rounded-2xl border-4 border-white object-cover shadow-md"
+                  />
+                </div>
 
-              <div className="text-center">
-                <h1 className="text-2xl font-bold text-slate-900">
-                  {displayName}
-                </h1>
-                <p className="mt-1 text-sm text-slate-500">
-                  Freelancer profile
-                </p>
-              </div>
+                <div className="text-center">
+                  <h1 className="text-2xl font-bold text-slate-900">
+                    {displayName}
+                  </h1>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Freelancer profile
+                  </p>
+                </div>
 
-              <div className="mt-6 space-y-3">
-                <div className="flex items-center gap-3 rounded-2xl bg-slate-50 px-4 py-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50">
-                    <Mail size={18} className="text-[#135BEC]" />
+                <div className="mt-6 space-y-3">
+                  <div className="flex items-center gap-3 rounded-2xl bg-slate-50 px-4 py-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50">
+                      <Mail size={18} className="text-[#135BEC]" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-xs text-slate-500">И-мэйл</p>
+                      <p className="truncate text-sm font-medium text-slate-700">
+                        {profile?.clerkEmail || "—"}
+                      </p>
+                    </div>
                   </div>
-                  <div className="min-w-0">
-                    <p className="text-xs text-slate-500">И-мэйл</p>
-                    <p className="truncate text-sm font-medium text-slate-700">
-                      {profile?.clerkEmail || "—"}
-                    </p>
+
+                  <div className="flex items-center gap-3 rounded-2xl bg-slate-50 px-4 py-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50">
+                      <Phone size={18} className="text-[#135BEC]" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-500">Утас</p>
+                      <p className="text-sm font-medium text-slate-700">
+                        {profile?.phone || "—"}
+                      </p>
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 rounded-2xl bg-slate-50 px-4 py-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50">
-                    <Phone size={18} className="text-[#135BEC]" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-slate-500">Утас</p>
-                    <p className="text-sm font-medium text-slate-700">
-                      {profile?.phone || "—"}
-                    </p>
-                  </div>
+                <div className="mt-6 space-y-3">
+                  {!isOwner && isSignedIn && (
+                    <Button
+                      className="w-full rounded-2xl bg-[#135BEC] py-6 text-base font-semibold hover:bg-blue-700"
+                      onClick={handleStartChat}
+                      disabled={chatLoading}
+                    >
+                      <MessageCircle className="mr-2 h-4 w-4" />
+                      {chatLoading ? "Ачаалж байна..." : "Чат бичих"}
+                    </Button>
+                  )}
+
+                  {isOwner && (
+                    <Button
+                      className="w-full rounded-2xl bg-[#135BEC] py-6 text-base font-semibold hover:bg-blue-700"
+                      onClick={() => {
+                        setNavLoading(true);
+                        router.push("/create-course");
+                      }}
+                      disabled={navLoading}
+                    >
+                      <Plus className="mr-2 h-4 w-4" />
+                      {navLoading ? "Шилжүүлж байна..." : "Хичээл нэмэх"}
+                    </Button>
+                  )}
                 </div>
               </div>
+            </Card>
+          </div>
 
-              {isOwner && (
-                <div className="mt-6">
-                  <Button
-                    className="w-full rounded-2xl bg-[#135BEC] py-6 text-base font-semibold hover:bg-blue-700"
-                    onClick={() => {
-                      setNavLoading(true);
-                      router.push("/create-course");
-                    }}
-                  >
-                    <Plus className="mr-2 h-4 w-4" />
-                    {navLoading ? "Шилжүүлж байна..." : "Хичээл нэмэх"}
-                  </Button>
+          {/* Right Content */}
+          <div className="space-y-6">
+            {/* Bio */}
+            <Card className="rounded-3xl border-0 bg-white p-6 shadow-[0_10px_40px_rgba(15,23,42,0.06)] md:p-8">
+              <div className="mb-4 flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-50">
+                  <UserSearch className="h-5 w-5 text-[#135BEC]" />
                 </div>
-              )}
-            </div>
-          </Card>
-
-          {!isOwner && isSignedIn && (
-            <Button
-              className="bg-[#135BEC] hover:bg-blue-500 cursor-pointer"
-              onClick={async () => {
-                const res = await fetch("/api/chat/start", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    freelancerId: profile.id,
-                  }),
-                });
-
-                const convo = await res.json();
-
-                router.push(`/chat/${convo.id}`);
-              }}
-            >
-              Чат бичих
-            </Button>
-          )}
-          <div className="flex mt-24 justify-end">
-            {isOwner && (
-              <div className="flex justify-end">
-                <Button
-                  className="bg-[#135BEC] hover:bg-blue-500 cursor-pointer"
-                  onClick={() => router.push("/create-course")}
-                >
-                  {navLoading ? "Шилжүүлж байна..." : "Хичээл нэмэх"}
-                </Button>
+                <div>
+                  <h2 className="text-xl font-bold text-slate-900">
+                    Танилцуулга
+                  </h2>
+                  <p className="text-sm text-slate-500">
+                    Freelancer-ийн тухай мэдээлэл
+                  </p>
+                </div>
               </div>
 
               <div className="rounded-2xl bg-slate-50 p-5">
