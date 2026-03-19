@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useState, useRef, useEffect } from "react";
 import {
   LayoutDashboard,
   Users,
@@ -13,6 +13,9 @@ import {
   Search,
   Bell,
   Star,
+  ChevronDown,
+  User,
+  LogOut,
 } from "lucide-react";
 
 const navItems = [
@@ -30,7 +33,40 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
+
   const [search, setSearch] = useState("");
+  const [openProfileMenu, setOpenProfileMenu] = useState(false);
+
+  const profileRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (
+        profileRef.current &&
+        !profileRef.current.contains(e.target as Node)
+      ) {
+        setOpenProfileMenu(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      // Хэрвээ custom auth ашиглаж байгаа бол logout API дуудаарай
+      await fetch("/api/logout", {
+        method: "POST",
+      });
+
+      router.push("/login");
+      router.refresh();
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
 
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden">
@@ -105,14 +141,55 @@ export default function AdminLayout({
             <Bell className="w-4 h-4 text-gray-600" />
           </button>
 
-          <div className="flex items-center gap-3 pl-3 border-l border-gray-100">
-            <div className="text-right">
-              <p className="text-xs font-semibold text-gray-900">Админ</p>
-              <p className="text-[10px] text-gray-400">Ерөнхий админ</p>
-            </div>
-            <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold">
-              А
-            </div>
+          <div
+            ref={profileRef}
+            className="relative flex items-center gap-3 pl-3 border-l border-gray-100"
+          >
+            <button
+              onClick={() => setOpenProfileMenu((prev) => !prev)}
+              className="flex items-center gap-3 hover:bg-gray-50 rounded-xl px-2 py-1.5 transition"
+            >
+              <div className="text-right">
+                <p className="text-xs font-semibold text-gray-900">Админ</p>
+                <p className="text-[10px] text-gray-400">Ерөнхий админ</p>
+              </div>
+              <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold">
+                А
+              </div>
+              <ChevronDown className="w-4 h-4 text-gray-500" />
+            </button>
+
+            {openProfileMenu && (
+              <div className="absolute right-0 top-14 w-56 bg-white border border-gray-100 rounded-2xl shadow-lg p-2 z-50">
+                <Link
+                  href="/admin/profile"
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-gray-700 hover:bg-gray-50"
+                  onClick={() => setOpenProfileMenu(false)}
+                >
+                  <User className="w-4 h-4" />
+                  Профайл
+                </Link>
+
+                <Link
+                  href="/admin/settings"
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-gray-700 hover:bg-gray-50"
+                  onClick={() => setOpenProfileMenu(false)}
+                >
+                  <Settings className="w-4 h-4" />
+                  Тохиргоо
+                </Link>
+
+                <div className="my-2 h-px bg-gray-100" />
+
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-red-600 hover:bg-red-50"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Гарах
+                </button>
+              </div>
+            )}
           </div>
         </header>
 

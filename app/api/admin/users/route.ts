@@ -4,24 +4,14 @@ import { NextResponse } from "next/server";
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
-    const search = searchParams.get("search") ?? "";
+    const search = searchParams.get("search")?.trim() || "";
 
     const users = await prisma.user.findMany({
       where: search
         ? {
             OR: [
-              {
-                name: {
-                  contains: search,
-                  mode: "insensitive",
-                },
-              },
-              {
-                email: {
-                  contains: search,
-                  mode: "insensitive",
-                },
-              },
+              { name: { contains: search, mode: "insensitive" } },
+              { email: { contains: search, mode: "insensitive" } },
             ],
           }
         : {},
@@ -39,7 +29,7 @@ export async function GET(req: Request) {
 
     return NextResponse.json(users);
   } catch (error) {
-    console.error("USERS API ERROR:", error);
-    return NextResponse.json({ message: "Server error" }, { status: 500 });
+    console.error(error);
+    return NextResponse.json({ error: "Failed to fetch users" }, { status: 500 });
   }
 }

@@ -4,36 +4,26 @@ import { NextResponse } from "next/server";
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
-    const search = searchParams.get("search") ?? "";
+    const search = searchParams.get("search")?.trim() || "";
 
     const courses = await prisma.course.findMany({
       where: search
         ? {
-            OR: [
-              {
-                title: {
-                  contains: search,
-                  mode: "insensitive",
-                },
-              },
-              {
-                description: {
-                  contains: search,
-                  mode: "insensitive",
-                },
-              },
-            ],
+            title: {
+              contains: search,
+              mode: "insensitive",
+            },
           }
         : {},
+      orderBy: {
+        createdAt: "desc",
+      },
       include: {
         freelancer: {
           include: {
             user: true,
           },
         },
-      },
-      orderBy: {
-        createdAt: "desc",
       },
     });
 
@@ -43,15 +33,12 @@ export async function GET(req: Request) {
       price: course.price,
       category: course.category,
       createdAt: course.createdAt,
-      instructor:
-        course.freelancer.user.name ??
-        course.freelancer.user.email ??
-        "Freelancer",
+      instructor: course.freelancer?.user?.name ?? "No name",
     }));
 
     return NextResponse.json(formatted);
   } catch (error) {
-    console.error("COURSES API ERROR:", error);
-    return NextResponse.json({ message: "Server error" }, { status: 500 });
+    console.error(error);
+    return NextResponse.json({ error: "Failed to fetch courses" }, { status: 500 });
   }
 }
