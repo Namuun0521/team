@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,6 +5,137 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String             @id @default(uuid())
+  name              String?
+  email             String             @unique
+  role              Role               @default(USER)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  bookings          Booking[]
+  freelancerProfile FreelancerProfile?
+  reviews           Review[]
+}
+
+model FreelancerProfile {
+  id            String         @id @default(uuid())
+  userId        String         @unique
+  bio           String?
+  skills        String?
+  category      String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  imageUrl      String?
+  phone         String?
+  availability  Availability[]
+  bookings      Booking[]
+  courses       Course[]
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  notifications Notification[]
+}
+
+model Course {
+  id           String            @id @default(uuid())
+  title        String
+  description  String
+  price        Float
+  freelancerId String
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  category     Category
+  imageUrl     String?
+  bookings     Booking[]
+  freelancer   FreelancerProfile @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
+  reviews      Review[]
+
+  @@index([freelancerId])
+  @@index([category])
+}
+
+model Availability {
+  id           String            @id @default(uuid())
+  freelancerId String
+  dayOfWeek    Int
+  startTime    String
+  endTime      String
+  slotDuration Int
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  freelancer   FreelancerProfile @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
+
+  @@unique([freelancerId, dayOfWeek])
+  @@index([freelancerId])
+}
+
+model Booking {
+  id            String            @id @default(uuid())
+  userId        String
+  courseId      String
+  freelancerId  String
+  startAt       DateTime
+  endAt         DateTime
+  status        BookingStatus     @default(PENDING)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  isApproved    Boolean           @default(false)
+  paymentStatus String            @default("UNPAID")
+  course        Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  freelancer    FreelancerProfile @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
+  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  notifications Notification[]
+
+  @@index([freelancerId])
+  @@index([courseId])
+  @@index([startAt])
+  @@index([endAt])
+  @@index([userId])
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  userId    String
+  courseId  String
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
+  @@index([courseId])
+}
+
+model Notification {
+  id           String            @id @default(uuid())
+  freelancerId String
+  bookingId    String
+  message      String
+  isRead       Boolean           @default(false)
+  createdAt    DateTime          @default(now())
+  booking      Booking           @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  freelancer   FreelancerProfile @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
+
+  @@index([freelancerId])
+  @@index([isRead])
+}
+
+model Conversation {
+  id           String    @id @default(uuid())
+  userId       String
+  freelancerId String
+  createdAt    DateTime  @default(now())
+  messages     Message[]
+}
+
+model Message {
+  id             String       @id @default(uuid())
+  conversationId String
+  senderId       String
+  text           String
+  createdAt      DateTime     @default(now())
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 }
 
 enum Role {
@@ -32,143 +157,4 @@ enum BookingStatus {
   PENDING
   CONFIRMED
   CANCELLED
-}
-
-model User {
-  id        String   @id @default(uuid())
-  name      String?
-  email     String   @unique
-  role      Role     @default(USER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  freelancerProfile FreelancerProfile?
-  bookings          Booking[]
-  reviews           Review[]
-}
-
-model FreelancerProfile {
-  id        String   @id @default(uuid())
-  userId    String   @unique
-  bio       String?
-  skills    String?
-  category  String?
-  phone     String? // шинэ
-  imageUrl  String? // profile зураг
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  courses       Course[]
-  availability  Availability[]
-  bookings      Booking[]
-  notifications Notification[]
-}
-
-model Course {
-  id           String   @id @default(uuid())
-  title        String
-  description  String
-  price        Float
-  category     Category
-  imageUrl     String?
-  freelancerId String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  freelancer FreelancerProfile @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
-  bookings   Booking[]
-  reviews    Review[]
-
-  @@index([freelancerId])
-  @@index([category])
-}
-
-model Availability {
-  id           String   @id @default(uuid())
-  freelancerId String
-  dayOfWeek    Int
-  startTime    String
-  endTime      String
-  slotDuration Int
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  freelancer FreelancerProfile @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
-
-  @@unique([freelancerId, dayOfWeek])
-  @@index([freelancerId])
-}
-
-model Booking {
-  id            String        @id @default(uuid())
-  userId        String
-  courseId      String
-  freelancerId  String
-  startAt       DateTime
-  endAt         DateTime
-  status        BookingStatus @default(PENDING)
-  isApproved    Boolean       @default(false)
-  paymentStatus String        @default("UNPAID")
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-
-  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  course        Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  freelancer    FreelancerProfile @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
-  notifications Notification[]
-
-  @@index([freelancerId])
-  @@index([courseId])
-  @@index([startAt])
-  @@index([endAt])
-  @@index([userId])
-}
-
-model Review {
-  id        String   @id @default(uuid())
-  userId    String
-  courseId  String
-  rating    Int
-  comment   String?
-  createdAt DateTime @default(now())
-
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, courseId])
-  @@index([courseId])
-}
-
-model Notification {
-  id           String   @id @default(uuid())
-  freelancerId String
-  bookingId    String
-  message      String
-  isRead       Boolean  @default(false)
-  createdAt    DateTime @default(now())
-
-  freelancer FreelancerProfile @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
-  booking    Booking           @relation(fields: [bookingId], references: [id], onDelete: Cascade)
-
-  @@index([freelancerId])
-  @@index([isRead])
-}
-model Conversation {
-  id           String   @id @default(uuid())
-  userId       String
-  freelancerId String
-  createdAt    DateTime @default(now())
-
-  messages Message[]
-}
-
-model Message {
-  id             String   @id @default(uuid())
-  conversationId String
-  senderId       String
-  text           String
-  createdAt      DateTime @default(now())
-
-  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 }
