@@ -180,11 +180,33 @@ export default function FreelancerPage() {
             </div>
           </Card>
 
+          {!isOwner && isSignedIn && (
+            <Button
+              className="bg-[#135BEC] hover:bg-blue-500 cursor-pointer"
+              onClick={async () => {
+                const res = await fetch("/api/chat/start", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    freelancerId: profile.id,
+                  }),
+                });
+
+                const convo = await res.json();
+
+                router.push(`/chat/${convo.id}`);
+              }}
+            >
+              Чат бичих
+            </Button>
+          )}
           <div className="flex mt-24 justify-end">
             {isOwner && (
               <div className="flex justify-end">
                 <Button
-                  className="bg-[#135BEC]"
+                  className="bg-[#135BEC] hover:bg-blue-500 cursor-pointer"
                   onClick={() => router.push("/create-course")}
                 >
                   {navLoading ? "Шилжүүлж байна..." : "Хичээл нэмэх"}
