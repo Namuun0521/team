@@ -125,9 +125,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import SearchPage from "../search/page";
 import Link from "next/link";
-
-import ChatList from "../chat/page";
-import ChatDropdown from "../chat/page";
+import ChatDropdown from "../(client)/chat/page";
 
 type HeaderProps = {
   cartCount: number;
@@ -211,7 +209,6 @@ export const Header = ({ cartCount }: HeaderProps) => {
                 Бидний тухай
               </Button>
 
-              {/* Shopping Car.  */}
               <Link href="/shopping-cart" className="relative inline-block">
                 <ShoppingCart className="h-6 w-6 text-gray-700 transition hover:text-blue-600" />
                 {cartCount > 0 && (
@@ -220,9 +217,8 @@ export const Header = ({ cartCount }: HeaderProps) => {
                   </span>
                 )}
               </Link>
-
               <ChatDropdown />
-              {/* Notification Bell - only for freelancers */}
+
               {isFreelancer && (
                 <button
                   onClick={() => router.push("/notifications")}
@@ -237,6 +233,7 @@ export const Header = ({ cartCount }: HeaderProps) => {
                   )}
                 </button>
               )}
+
               {!isSignedIn && (
                 <>
                   <SignInButton>
