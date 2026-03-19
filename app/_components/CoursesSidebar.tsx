@@ -14,23 +14,23 @@ export const CoursesSidebar = ({
   onSelectSub,
 }: Props) => {
   return (
-    <aside className="rounded-xl bg-white p-5 shadow-sm">
+    <aside className="rounded-xl bg-white p-5 shadow-sm  lg:top-6 lg:max-h-[calc(100vh-3rem)] lg:self-start lg:overflow-hidden">
       <h3 className="text-sm font-semibold text-gray-900">Дэд ангилал</h3>
 
-      <div className="mt-4 space-y-2">
+      <div className="mt-4 space-y-2 lg:max-h-[min(45vh,28rem)] lg:overflow-y-auto lg:pr-1">
         <button
           onClick={() => onSelectSub(null)}
           className={[
-            "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm",
+            "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm",
             !activeSub
               ? "bg-blue-600 text-white"
               : "text-gray-700 hover:bg-gray-100",
           ].join(" ")}
         >
-          <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white/20">
+          <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/20">
             ▦
           </span>
-          <span>{categoryLabel} - Бүгд</span>
+          <span className="min-w-0 break-words">{categoryLabel} - Бүгд</span>
         </button>
 
         {subcats.map((s) => {
@@ -40,16 +40,16 @@ export const CoursesSidebar = ({
               key={s}
               onClick={() => onSelectSub(s)}
               className={[
-                "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm",
+                "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm",
                 active
                   ? "bg-blue-600 text-white"
                   : "text-gray-700 hover:bg-gray-100",
               ].join(" ")}
             >
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white/20">
+              <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/20">
                 ▦
               </span>
-              <span>{s}</span>
+              <span className="min-w-0 break-words">{s}</span>
             </button>
           );
         })}
