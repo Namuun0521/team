@@ -6,6 +6,7 @@ import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { CoursesGrid } from "../../_components/CoursesGrid";
 import { CoursesToolbar } from "../../_components/CoursesToolbar";
 import { CoursesSidebar } from "../../_components/CoursesSidebar";
+import { Loader2 } from "lucide-react";
 
 type Course = {
   id: string;
@@ -109,10 +110,8 @@ export default function CoursesPage() {
   if (loading) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50">
-        <div className="h-105 w-105">
-          <DotLottieReact src="/loading.lottie" loop autoplay speed={0.6} />
-        </div>
-        <p className="-mt-8 text-sm text-gray-500">
+        <Loader2 className="h-10 w-10 animate-spin text-blue-600" />
+        <p className="mt-4 text-sm text-gray-500">
           Хичээлүүдийг ачааллаж байна...
         </p>
       </div>

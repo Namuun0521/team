@@ -49,8 +49,8 @@ export async function POST(req: NextRequest) {
         bookingIds: JSON.stringify(bookingIds),
       },
 
-      success_url: `${process.env.NEXT_PUBLIC_URL}/shopping-cart`,
-      cancel_url: `${process.env.NEXT_PUBLIC_URL}/`,
+      success_url: `${process.env.NEXT_PUBLIC_URL}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_URL}/shopping-cart`,
     });
 
     console.log(" Stripe session created:", session.id);

@@ -112,6 +112,7 @@
 //     </>
 //   );
 // };
+
 "use client";
 
 import { Menu, Bell, ShoppingCart, User, BookOpen } from "lucide-react";
@@ -136,6 +137,17 @@ export const Header = ({ cartCount }: HeaderProps) => {
   const [isFreelancer, setIsFreelancer] = useState(false);
   const [notificationCount, setNotificationCount] = useState(0);
 
+  const fetchNotificationCount = async () => {
+    try {
+      const res = await fetch("/api/notifications/count");
+      if (!res.ok) return;
+      const data = await res.json();
+      setNotificationCount(data.count || 0);
+    } catch {
+      // silent fail
+    }
+  };
+
   useEffect(() => {
     if (!isSignedIn) {
       setIsFreelancer(false);
@@ -148,33 +160,14 @@ export const Header = ({ cartCount }: HeaderProps) => {
       .then((data) => {
         const freelancer = data?.role === "FREELANCER";
         setIsFreelancer(freelancer);
-
-        if (freelancer) {
-          fetchNotificationCount();
-        }
+        if (freelancer) fetchNotificationCount();
       })
-      .catch(() => {
-        setIsFreelancer(false);
-      });
+      .catch(() => setIsFreelancer(false));
   }, [isSignedIn]);
-
-  const fetchNotificationCount = async () => {
-    try {
-      const res = await fetch("/api/notifications/count");
-      const data = await res.json();
-      setNotificationCount(data.count || 0);
-    } catch (error) {
-      console.error("Failed to fetch notification count:", error);
-    }
-  };
 
   useEffect(() => {
     if (!isFreelancer) return;
-
-    const interval = setInterval(() => {
-      fetchNotificationCount();
-    }, 30000);
-
+    const interval = setInterval(fetchNotificationCount, 30000);
     return () => clearInterval(interval);
   }, [isFreelancer]);
 

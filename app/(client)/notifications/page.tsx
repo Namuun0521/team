@@ -42,15 +42,17 @@ export default function NotificationsPage() {
   useEffect(() => {
     fetchNotifications();
   }, []);
-
   const fetchNotifications = async () => {
     try {
       setLoading(true);
       const res = await fetch("/api/notifications");
       const data = await res.json();
-      setNotifications(data);
+
+      // ✅ Массив эсэхийг шалгах
+      setNotifications(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Failed to fetch notifications:", error);
+      setNotifications([]);
     } finally {
       setLoading(false);
     }
