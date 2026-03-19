@@ -1,9 +1,19 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-const isPublicRoute = createRouteMatcher(["/", "/sign-in(.*)", "/sign-up(.*)"]);
+const isPublicRoute = createRouteMatcher([
+  "/",
+  "/sign-in(.*)",
+  "/sign-up(.*)",
+  "/api/courses(.*)",
+  "/api/availability(.*)",
+  "/api/webhook(.*)",
+  "/about(.*)",
+  "/courses(.*)",
+  "/course-details(.*)",
+  "/freelancers(.*)",
+]);
 
 export default clerkMiddleware((auth, req) => {
-  // Public биш бүх route дээр login шаардана
   if (!isPublicRoute(req)) auth.protect();
 });
 
