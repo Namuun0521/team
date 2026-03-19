@@ -13,6 +13,9 @@ type Course = {
   title: string;
   description: string;
   price: number;
+  avgRating?: number;
+  imageUrl?: string | null;
+  _count?: { reviews: number };
   freelancer?: { user?: { name?: string } };
 };
 
@@ -42,6 +45,11 @@ const ITEMS_PER_PAGE = 9;
 const PRICE_MIN = 0;
 const PRICE_MAX = 500000;
 
+function matchesRatingBand(rating: number, selectedRating: number) {
+  if (selectedRating === 5) return rating === 5;
+  return rating >= selectedRating && rating < selectedRating + 1;
+}
+
 export default function CoursesPage() {
   const searchParams = useSearchParams();
   const category = searchParams.get("category");
@@ -57,6 +65,7 @@ export default function CoursesPage() {
     PRICE_MIN,
     PRICE_MAX,
   ]);
+  const [minRating, setMinRating] = useState<number | null>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -94,7 +103,7 @@ export default function CoursesPage() {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [category, sort, activeSub, priceRange]);
+  }, [category, sort, activeSub, priceRange, minRating]);
 
   const heading = useMemo(() => {
     if (!category) return "Бүх хичээлүүд";
@@ -123,17 +132,21 @@ export default function CoursesPage() {
       });
     }
 
-    // Price filter
     arr = arr.filter(
       (course) =>
         course.price >= priceRange[0] && course.price <= priceRange[1],
     );
 
+    if (minRating !== null) {
+      arr = arr.filter((course) =>
+        matchesRatingBand(course.avgRating ?? 0, minRating),
+      );
+    }
+
     if (sort === "priceAsc") arr.sort((a, b) => a.price - b.price);
     if (sort === "priceDesc") arr.sort((a, b) => b.price - a.price);
-
     return arr;
-  }, [courses, sort, activeSub, priceRange]);
+  }, [courses, sort, activeSub, priceRange, minRating]);
 
   const totalPages = Math.max(
     1,
@@ -185,6 +198,8 @@ export default function CoursesPage() {
             onPriceChange={setPriceRange}
             priceMin={PRICE_MIN}
             priceMax={PRICE_MAX}
+            minRating={minRating}
+            onRatingChange={setMinRating}
           />
 
           <section>

@@ -9,11 +9,21 @@ type Props = {
   onPriceChange: (v: [number, number]) => void;
   priceMin: number;
   priceMax: number;
+  minRating: number | null;
+  onRatingChange: (v: number | null) => void;
 };
 
 function formatMNT(n: number) {
   return n.toLocaleString("mn-MN");
 }
+
+const RATINGS = [
+  { value: 5, stars: "★★★★★", label: "5.0" },
+  { value: 4, stars: "★★★★☆", label: "4.0 - 4.9" },
+  { value: 3, stars: "★★★☆☆", label: "3.0 - 3.9" },
+  { value: 2, stars: "★★☆☆☆", label: "2.0 - 2.9" },
+  { value: 1, stars: "★☆☆☆☆", label: "1.0 - 1.9" },
+];
 
 export const CoursesSidebar = ({
   categoryLabel,
@@ -24,6 +34,8 @@ export const CoursesSidebar = ({
   onPriceChange,
   priceMin,
   priceMax,
+  minRating,
+  onRatingChange,
 }: Props) => {
   const [low, high] = priceRange;
 
@@ -82,19 +94,13 @@ export const CoursesSidebar = ({
       {/* Price range */}
       <div className="mt-8">
         <h4 className="text-sm font-semibold text-gray-900">Үнийн хүрээ (₮)</h4>
-
         <div className="mt-4 px-1">
           <div className="relative h-5 flex items-center">
-            {/* Track background */}
             <div className="absolute inset-x-0 h-1.5 rounded-full bg-gray-200" />
-
-            {/* Active track */}
             <div
               className="absolute h-1.5 rounded-full bg-blue-500"
               style={{ left: `${lowPct}%`, right: `${100 - highPct}%` }}
             />
-
-            {/* Low thumb */}
             <input
               type="range"
               min={priceMin}
@@ -108,8 +114,6 @@ export const CoursesSidebar = ({
               style={{ zIndex: low >= high - 1000 ? 5 : 3 }}
               className={thumbClass}
             />
-
-            {/* High thumb */}
             <input
               type="range"
               min={priceMin}
@@ -124,8 +128,6 @@ export const CoursesSidebar = ({
               className={thumbClass}
             />
           </div>
-
-          {/* Labels */}
           <div className="mt-3 flex items-center justify-between text-xs">
             <span className="font-medium text-blue-600">{formatMNT(low)}₮</span>
             <span className="font-medium text-blue-600">
@@ -135,24 +137,35 @@ export const CoursesSidebar = ({
         </div>
       </div>
 
-      {/* Rating */}
+      {/* Rating filter */}
       <div className="mt-8">
-        <h4 className="text-sm font-semibold text-gray-900">Үнэлгээ</h4>
-        <div className="mt-3 space-y-3 text-sm text-gray-700">
-          <label className="flex items-center gap-3 cursor-pointer">
-            <input type="checkbox" className="h-4 w-4 accent-blue-600" />
-            <span>
-              <span className="text-yellow-500">★★★★★</span>{" "}
-              <span className="text-gray-500">5.0</span>
-            </span>
-          </label>
-          <label className="flex items-center gap-3 cursor-pointer">
-            <input type="checkbox" className="h-4 w-4 accent-blue-600" />
-            <span>
-              <span className="text-yellow-500">★★★★☆</span>{" "}
-              <span className="text-gray-500">4.0+</span>
-            </span>
-          </label>
+        <div className="flex items-center justify-between">
+          <h4 className="text-sm font-semibold text-gray-900">Үнэлгээ</h4>
+          {minRating !== null && (
+            <button
+              onClick={() => onRatingChange(null)}
+              className="text-xs text-blue-500 hover:underline"
+            >
+              Цэвэрлэх
+            </button>
+          )}
+        </div>
+        <div className="mt-3 space-y-2">
+          {RATINGS.map(({ value, stars, label }) => (
+            <button
+              key={value}
+              onClick={() => onRatingChange(minRating === value ? null : value)}
+              className={[
+                "flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm transition",
+                minRating === value
+                  ? "bg-blue-50 border border-blue-200 text-blue-700"
+                  : "text-gray-700 hover:bg-gray-100",
+              ].join(" ")}
+            >
+              <span className="text-yellow-500 text-base">{stars}</span>
+              <span className="text-gray-500 text-xs">{label}</span>
+            </button>
+          ))}
         </div>
       </div>
     </aside>
