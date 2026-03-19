@@ -27,6 +27,15 @@ type Course = {
   freelancer?: { user?: { name?: string | null } | null } | null;
 };
 
+type Review = {
+  id: string;
+  rating: number;
+  comment?: string | null;
+  user?: {
+    name?: string | null;
+  } | null;
+};
+
 type Profile = {
   userId: string;
   imageUrl?: string | null;
@@ -34,6 +43,8 @@ type Profile = {
   phone?: string | null;
   bio?: string | null;
   skills?: string | null;
+  avgRating?: number | null;
+  reviews?: Review[];
   user?: {
     name?: string | null;
   } | null;
