@@ -139,7 +139,7 @@ export const Header = ({ cartCount }: HeaderProps) => {
 
   const fetchNotificationCount = async () => {
     try {
-      const res = await fetch("/api/notifications/counts");
+      const res = await fetch("/api/notifications/count");
       if (!res.ok) return;
       const data = await res.json();
       setNotificationCount(data.count || 0);
