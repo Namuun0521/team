@@ -1,6 +1,7 @@
 // "use client";
 
 // import { Heart, Star } from "lucide-react";
+// import { useRouter } from "next/navigation";
 
 // const fallbackImg =
 //   "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop";
@@ -23,6 +24,8 @@
 // }
 
 // export const CoursesGrid = ({ courses }: Props) => {
+//   const router = useRouter();
+
 //   return (
 //     <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
 //       {courses.map((c) => {
@@ -31,7 +34,8 @@
 //         return (
 //           <div
 //             key={c.id}
-//             className="overflow-hidden rounded-2xl bg-white shadow-sm transition hover:shadow-md"
+//             onClick={() => router.push(`/course-details/${c.id}`)}
+//             className="cursor-pointer overflow-hidden rounded-2xl bg-white shadow-sm transition hover:shadow-md"
 //           >
 //             <div className="relative h-[160px] overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
 //               <img
@@ -39,13 +43,12 @@
 //                 alt={c.title}
 //                 className="absolute inset-0 h-full w-full object-cover"
 //               />
-
 //               <span className="absolute left-3 top-3 rounded-md bg-blue-600 px-2 py-1 text-xs font-semibold text-white">
 //                 СУРГАЛТ
 //               </span>
-
 //               <button
 //                 type="button"
+//                 onClick={(e) => e.stopPropagation()}
 //                 className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-white/90 hover:bg-white"
 //                 aria-label="wishlist"
 //               >
@@ -59,7 +62,7 @@
 //                   👤
 //                 </span>
 //                 <span className="truncate">
-//                   {c.freelancer?.user?.name ?? "Нэргүй багш"}
+//                   {c.freelancer?.user?.name ?? "Freelancer"}
 //                 </span>
 //               </div>
 
@@ -77,10 +80,9 @@
 //                 <div className="text-lg font-bold text-blue-700">
 //                   ₮{formatMNT(c.price)}
 //                 </div>
-
-//                 <button className="rounded-lg bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-800 hover:bg-gray-200">
+//                 <span className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white">
 //                   Захиалах
-//                 </button>
+//                 </span>
 //               </div>
 //             </div>
 //           </div>
@@ -103,6 +105,8 @@ type Course = {
   description: string;
   price: number;
   imageUrl?: string | null;
+  avgRating?: number;
+  _count?: { reviews: number };
   freelancer?: { user?: { name?: string | null } };
 };
 
@@ -121,6 +125,8 @@ export const CoursesGrid = ({ courses }: Props) => {
     <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
       {courses.map((c) => {
         const heroImage = c.imageUrl || fallbackImg;
+        const rating = c.avgRating ?? 0;
+        const reviewCount = c._count?.reviews ?? 0;
 
         return (
           <div
@@ -162,9 +168,21 @@ export const CoursesGrid = ({ courses }: Props) => {
               </h3>
 
               <div className="mt-3 flex items-center gap-2 text-sm text-gray-600">
-                <Star className="h-4 w-4 fill-yellow-500 text-yellow-500" />
-                <span className="font-medium">4.9</span>
-                <span className="text-gray-400">(42)</span>
+                <Star
+                  className={`h-4 w-4 ${
+                    rating > 0
+                      ? "fill-yellow-500 text-yellow-500"
+                      : "fill-gray-200 text-gray-200"
+                  }`}
+                />
+                {rating > 0 ? (
+                  <>
+                    <span className="font-medium">{rating}</span>
+                    <span className="text-gray-400">({reviewCount})</span>
+                  </>
+                ) : (
+                  <span className="text-gray-400 text-xs">Үнэлгээ байхгүй</span>
+                )}
               </div>
 
               <div className="mt-5 flex items-center justify-between">
