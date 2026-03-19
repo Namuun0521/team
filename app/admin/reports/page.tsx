@@ -5,7 +5,6 @@ import {
   Download,
   Users,
   BookOpen,
-  ShoppingCart,
   BarChart2,
 } from "lucide-react";
 import {
@@ -105,16 +104,19 @@ export default function AdminReportsPage() {
 
   useEffect(() => {
     setLoading(true);
+    setError(null);
 
     fetch(`/api/admin/reports?days=${range}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Тайлан ачаалж чадсангүй");
+      .then(async (res) => {
+        if (!res.ok) {
+          throw new Error("Тайлан ачаалж чадсангүй");
+        }
         return res.json();
       })
-      .then(setData)
+      .then((json) => setData(json))
       .catch((err) => {
         console.error(err);
-        setError(err.message);
+        setError(err.message || "Алдаа гарлаа");
       })
       .finally(() => setLoading(false));
   }, [range]);
@@ -224,21 +226,25 @@ export default function AdminReportsPage() {
         <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
           <p className="text-sm text-gray-500 mb-1">Нийт захиалга</p>
           <p className="text-2xl font-bold text-gray-900">
-            {(data?.stats.totalBookings ?? 0).toLocaleString()}
+            {loading ? "..." : (data?.stats.totalBookings ?? 0).toLocaleString()}
           </p>
         </div>
 
         <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
           <p className="text-sm text-gray-500 mb-1">Баталгаажсан</p>
           <p className="text-2xl font-bold text-green-600">
-            {(data?.stats.confirmedBookings ?? 0).toLocaleString()}
+            {loading
+              ? "..."
+              : (data?.stats.confirmedBookings ?? 0).toLocaleString()}
           </p>
         </div>
 
         <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
           <p className="text-sm text-gray-500 mb-1">Хүлээгдэж буй</p>
           <p className="text-2xl font-bold text-yellow-600">
-            {(data?.stats.pendingBookings ?? 0).toLocaleString()}
+            {loading
+              ? "..."
+              : (data?.stats.pendingBookings ?? 0).toLocaleString()}
           </p>
         </div>
       </div>

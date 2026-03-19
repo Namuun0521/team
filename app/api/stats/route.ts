@@ -32,23 +32,33 @@ export async function GET(req: Request) {
           },
           select: {
             id: true,
-            userId: true,
-            courseId: true,
-            freelancerId: true,
-            startAt: true,
-            endAt: true,
             status: true,
-            isApproved: true,
             createdAt: true,
-            updatedAt: true,
+            user: {
+              select: {
+                name: true,
+                email: true,
+              },
+            },
             course: {
               select: {
+                title: true,
                 price: true,
+                freelancer: {
+                  select: {
+                    user: {
+                      select: {
+                        name: true,
+                        email: true,
+                      },
+                    },
+                  },
+                },
               },
             },
           },
           orderBy: {
-            createdAt: "asc",
+            createdAt: "desc",
           },
         }),
         prisma.user.findMany({
@@ -71,19 +81,23 @@ export async function GET(req: Request) {
     );
 
     const totalRevenue = confirmedBookings.reduce((sum, booking) => {
-      return sum + booking.course.price;
+      return sum + (booking.course?.price ?? 0);
     }, 0);
 
-    const pendingBookings = bookings.filter((b) => b.status === "PENDING").length;
-    const confirmedCount = bookings.filter((b) => b.status === "CONFIRMED").length;
-    const cancelledCount = bookings.filter((b) => b.status === "CANCELLED").length;
+    const pendingBookings = bookings.filter(
+      (b) => b.status === "PENDING"
+    ).length;
+    const confirmedCount = confirmedBookings.length;
+    const cancelledCount = bookings.filter(
+      (b) => b.status === "CANCELLED"
+    ).length;
 
     const revenueMap: Record<string, number> = {};
     const usersMap: Record<string, number> = {};
 
     for (const booking of confirmedBookings) {
       const key = formatDay(new Date(booking.createdAt));
-      revenueMap[key] = (revenueMap[key] ?? 0) + booking.course.price;
+      revenueMap[key] = (revenueMap[key] ?? 0) + (booking.course?.price ?? 0);
     }
 
     for (const user of newUsers) {
@@ -110,6 +124,18 @@ export async function GET(req: Request) {
       });
     }
 
+    const paidBookings = confirmedBookings.map((b) => ({
+      id: b.id.slice(0, 8),
+      client: b.user?.name || b.user?.email || "Хэрэглэгч",
+      freelancer:
+        b.course?.freelancer?.user?.name ||
+        b.course?.freelancer?.user?.email ||
+        "Фрилансер",
+      courseTitle: b.course?.title || "Хичээл",
+      amount: b.course?.price ?? 0,
+      createdAt: b.createdAt,
+    }));
+
     return NextResponse.json({
       stats: {
         totalUsers,
@@ -123,6 +149,7 @@ export async function GET(req: Request) {
       },
       revenueByDay,
       newUsersByDay,
+      paidBookings,
     });
   } catch (error) {
     console.error("REPORTS API ERROR:", error);
