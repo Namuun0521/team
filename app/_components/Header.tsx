@@ -115,7 +115,7 @@
 
 "use client";
 
-import { Menu, Bell, ShoppingCart, User, BookOpen } from "lucide-react";
+import { Menu, Bell, ShoppingCart, User, BookOpen, Star } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Filter } from "./Filter";
 import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs";
@@ -125,6 +125,9 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import SearchPage from "../search/page";
 import Link from "next/link";
+
+import ChatList from "../chat/page";
+import ChatDropdown from "../chat/page";
 
 type HeaderProps = {
   cartCount: number;
@@ -213,6 +216,7 @@ export const Header = ({ cartCount }: HeaderProps) => {
                 Бидний тухай
               </Button>
 
+              {/* Shopping Car.  */}
               <Link href="/shopping-cart" className="relative inline-block">
                 <ShoppingCart className="h-6 w-6 text-gray-700 transition hover:text-blue-600" />
                 {cartCount > 0 && (
@@ -222,6 +226,8 @@ export const Header = ({ cartCount }: HeaderProps) => {
                 )}
               </Link>
 
+              <ChatDropdown />
+              {/* Notification Bell - only for freelancers */}
               {isFreelancer && (
                 <button
                   onClick={() => router.push("/notifications")}
@@ -236,7 +242,6 @@ export const Header = ({ cartCount }: HeaderProps) => {
                   )}
                 </button>
               )}
-
               {!isSignedIn && (
                 <>
                   <SignInButton>
@@ -258,6 +263,12 @@ export const Header = ({ cartCount }: HeaderProps) => {
                   <UserButton>
                     {isFreelancer && (
                       <UserButton.MenuItems>
+                        <UserButton.Link
+                          label="Миний захиалгууд"
+                          href="/my-bookings"
+                          labelIcon={<BookOpen className="h-4 w-4" />}
+                        />
+
                         <UserButton.Link
                           label="Profile үзэх"
                           href="/freelancer/profile"
