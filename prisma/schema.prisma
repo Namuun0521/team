@@ -154,7 +154,6 @@ model Notification {
   @@index([freelancerId])
   @@index([isRead])
 }
-
 model Conversation {
   id           String   @id @default(uuid())
   userId       String
