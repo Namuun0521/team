@@ -18,6 +18,7 @@ const isPublicRoute = createRouteMatcher([
   "/course-details(.*)",
   "/freelancers(.*)",
   "/payment-success(.*)",
+  "/api/ably-auth(.*)",
 ]);
 
 const isAdminRoute = createRouteMatcher(["/admin(.*)"]);

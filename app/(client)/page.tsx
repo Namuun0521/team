@@ -302,7 +302,8 @@ export default function Home() {
           const ratingDiff = (b.avgRating ?? 0) - (a.avgRating ?? 0);
           if (ratingDiff !== 0) return ratingDiff;
 
-          const reviewDiff = (b._count?.reviews ?? 0) - (a._count?.reviews ?? 0);
+          const reviewDiff =
+            (b._count?.reviews ?? 0) - (a._count?.reviews ?? 0);
           if (reviewDiff !== 0) return reviewDiff;
 
           return 0;
