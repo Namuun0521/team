@@ -226,6 +226,7 @@ import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import {
   BadgeCheck,
+  BookOpen,
   Mail,
   Phone,
   UserSearch,
@@ -236,16 +237,31 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 
+type Course = {
+  id: string;
+  category: string;
+  title: string;
+  description?: string | null;
+  price: number;
+  imageUrl?: string | null;
+};
+
 type Profile = {
   userId: string;
   imageUrl?: string | null;
+  clerkEmail?: string | null;
   phone?: string | null;
   bio?: string | null;
   skills?: string | null;
   user?: {
     name?: string | null;
   } | null;
+  courses?: Course[];
 };
+
+function formatMNT(n: number) {
+  return n.toLocaleString("mn-MN");
+}
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -362,7 +378,9 @@ export default function ProfilePage() {
                   <div className="min-w-0">
                     <p className="text-xs text-slate-500">И-мэйл</p>
                     <p className="truncate text-sm font-medium text-slate-700">
-                      {user?.primaryEmailAddress?.emailAddress || "—"}
+                      {profile?.clerkEmail ||
+                        user?.primaryEmailAddress?.emailAddress ||
+                        "—"}
                     </p>
                   </div>
                 </div>
@@ -453,7 +471,77 @@ export default function ProfilePage() {
               )}
             </Card>
 
-            <div className="flex justify-end"></div>
+            <Card className="rounded-3xl border-0 bg-white p-6 shadow-[0_10px_40px_rgba(15,23,42,0.06)] md:p-8">
+              <div className="mb-5 flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-50">
+                    <BookOpen className="h-5 w-5 text-[#135BEC]" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold text-slate-900">
+                      Миний хичээлүүд
+                    </h2>
+                    <p className="text-sm text-slate-500">
+                      Таны оруулсан нийт хичээлүүд
+                    </p>
+                  </div>
+                </div>
+
+                <div className="rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-600">
+                  {profile?.courses?.length || 0}
+                </div>
+              </div>
+
+              {profile?.courses?.length === 0 ? (
+                <div className="rounded-2xl bg-slate-50 p-8 text-center text-slate-500">
+                  Одоогоор хичээл оруулаагүй байна
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                  {profile?.courses?.map((course) => (
+                    <div
+                      key={course.id}
+                      onClick={() => router.push(`/course-details/${course.id}`)}
+                      className="group cursor-pointer overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg"
+                    >
+                      <div className="relative h-44 w-full overflow-hidden bg-slate-100">
+                        {course.imageUrl ? (
+                          <img
+                            src={course.imageUrl}
+                            alt={course.title}
+                            className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-sm text-slate-400">
+                            Зураггүй
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="space-y-3 p-4">
+                        <span className="inline-flex rounded-full bg-blue-50 px-3 py-1 text-[11px] font-semibold text-blue-700">
+                          {course.category?.replaceAll("_", " ")}
+                        </span>
+
+                        <h3 className="line-clamp-2 min-h-[48px] text-base font-bold text-slate-900">
+                          {course.title}
+                        </h3>
+
+                        <div className="flex items-center justify-between border-t pt-3">
+                          <span className="truncate text-sm text-slate-500">
+                            {displayName}
+                          </span>
+
+                          <span className="text-base font-bold text-[#135BEC]">
+                            {formatMNT(course.price)}₮
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Card>
           </div>
         </div>
       </div>

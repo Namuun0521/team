@@ -151,6 +151,7 @@ export async function GET(req: NextRequest) {
         category: true,
         freelancer: {
           select: {
+            imageUrl: true,
             user: { select: { name: true } },
           },
         },

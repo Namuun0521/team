@@ -132,7 +132,7 @@ export const CoursesGrid = ({ courses }: Props) => {
           <div
             key={c.id}
             onClick={() => router.push(`/course-details/${c.id}`)}
-            className="cursor-pointer overflow-hidden rounded-2xl bg-white shadow-sm transition hover:shadow-md"
+            className="flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl bg-white shadow-sm transition hover:shadow-md"
           >
             <div className="relative h-[160px] overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
               <img
@@ -153,7 +153,7 @@ export const CoursesGrid = ({ courses }: Props) => {
               </button>
             </div>
 
-            <div className="p-4">
+            <div className="flex flex-1 flex-col p-4">
               <div className="flex items-center gap-2 text-sm text-gray-500">
                 <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-gray-100">
                   👤
@@ -167,7 +167,12 @@ export const CoursesGrid = ({ courses }: Props) => {
                 {c.title}
               </h3>
 
-              <div className="mt-3 flex items-center gap-2 text-sm text-gray-600">
+              <p className="mt-2 line-clamp-2 min-h-10 text-sm leading-5 text-gray-500">
+                {c.description || "Тайлбар оруулаагүй байна."}
+              </p>
+
+              <div className="mt-auto pt-4">
+                <div className="flex items-center gap-2 text-sm text-gray-600">
                 <Star
                   className={`h-4 w-4 ${
                     rating > 0
@@ -183,15 +188,16 @@ export const CoursesGrid = ({ courses }: Props) => {
                 ) : (
                   <span className="text-gray-400 text-xs">Үнэлгээ байхгүй</span>
                 )}
-              </div>
-
-              <div className="mt-5 flex items-center justify-between">
-                <div className="text-lg font-bold text-blue-700">
-                  ₮{formatMNT(c.price)}
                 </div>
-                <span className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white">
-                  Захиалах
-                </span>
+
+                <div className="mt-5 flex items-center justify-between">
+                  <div className="text-lg font-bold text-blue-700">
+                    ₮{formatMNT(c.price)}
+                  </div>
+                  <span className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white">
+                    Захиалах
+                  </span>
+                </div>
               </div>
             </div>
           </div>
