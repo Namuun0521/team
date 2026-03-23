@@ -19,26 +19,6 @@ type Course = {
   freelancer?: { user?: { name?: string } };
 };
 
-const SUBCATS: Record<string, string[]> = {
-  Дизайн: [
-    "График дизайн",
-    "Вэб дизайн",
-    "UI/UX Дизайн",
-    "Интерьер",
-    "Анимейшн",
-  ],
-  Маркетинг: [
-    "Дижитал маркетинг",
-    "Нийгмийн сүлжээ",
-    "SEO",
-    "Контент маркетинг",
-  ],
-  Фитнес: ["Йог", "Бясалгал", "Хүч", "Кардио"],
-  ХӨГЖҮҮЛЭГЧ: ["Frontend", "Backend", "Mobile", "AI/ML"],
-  Ерөнхий_эрдэм: ["Математик", "Физик", "Хими", "Биологи"],
-  Хэл_сурах: ["Англи", "Япон", "Солонгос", "Хятад"],
-};
-
 type Sort = "new" | "priceAsc" | "priceDesc";
 
 const ITEMS_PER_PAGE = 9;
@@ -115,10 +95,7 @@ export default function CoursesPage() {
     return `${heading} чиглэлээрх бүх төрлийн сургалт, үйлчилгээ`;
   }, [category, heading]);
 
-  const subcats = useMemo(
-    () => (category ? (SUBCATS[category] ?? []) : []),
-    [category],
-  );
+  const subcats: string[] = [];
 
   const visibleCourses = useMemo(() => {
     let arr = [...courses];
