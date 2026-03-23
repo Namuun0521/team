@@ -124,7 +124,7 @@ export default function RecommendedCourses({ courses }: Props) {
   return (
     <div className="mt-8">
       <h2 className="mb-4 text-xl font-semibold text-[#0F172A]">
-        Санал болгох хичээлүүд
+        Санал болгох үйлчилгээнүүд
       </h2>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {courses.map((course) => {

@@ -232,7 +232,7 @@ const CourseCard = ({ c }: { c: Course }) => {
 const CourseRow = ({
   title,
   items,
-  emptyText = "Хичээл олдсонгүй",
+  emptyText = "Таны ажил олдсонгүй",
 }: {
   title: string;
   items: Course[];
@@ -297,7 +297,7 @@ export default function Home() {
           <CourseRow
             title="Шинээр нэмэгдсэн үйлчилгээнүүд"
             items={newCourses}
-            emptyText="Шинэ хичээл олдсонгүй"
+            emptyText="Таны хайсан үйлчилгээ олдсонгүй"
           />
         )}
       </main>

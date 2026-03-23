@@ -706,7 +706,7 @@ export default function CreateCoursePage() {
           <CardContent className="p-7 space-y-6">
             <div>
               <label className="text-[11px] font-bold text-[#64748b] uppercase tracking-wider mb-1.5 block">
-                Хичээлийн гарчиг
+                Ажлын гарчиг оруулна уу.
               </label>
               <Input
                 value={title}
@@ -761,7 +761,7 @@ export default function CreateCoursePage() {
               <Textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Энэхүү хичээлээр суралцагч юу сурч мэдэх вэ? Таны туршлага юу вэ?"
+                placeholder="Энэхүү ажлаар та юу сурч мэдэх вэ? Таны туршлага юу вэ?"
                 className="min-h-[120px] rounded-xl"
               />
             </div>

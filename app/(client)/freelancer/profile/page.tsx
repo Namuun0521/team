@@ -369,7 +369,7 @@ export default function ProfilePage() {
                 router.push("/create-course");
               }}
             >
-              {navLoading ? "Шилжүүлж байна..." : "Хичээл үүсгэх"}
+              {navLoading ? "Шилжүүлж байна..." : "Ажил үүсгэх"}
             </Button>
           </div>
         </div>

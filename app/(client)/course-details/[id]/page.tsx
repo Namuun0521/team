@@ -377,13 +377,13 @@ export default function CourseDetailPage() {
       <div className="flex min-h-screen items-center justify-center bg-[#f8f8fb]">
         <div className="rounded-xl border bg-white p-10 text-center shadow-sm">
           <p className="text-lg font-semibold text-gray-900">
-            {error || "Хичээл олдсонгүй"}
+            {error || "Үйлчилгээ олдсонгүй"}
           </p>
           <Link
             href="/courses"
             className="mt-4 inline-block text-sm text-blue-600 hover:underline"
           >
-            Хичээлүүд рүү буцах
+            Үйлчилгээ рүү буцах
           </Link>
         </div>
       </div>
@@ -456,7 +456,7 @@ export default function CourseDetailPage() {
 
             {isOwner ? (
               <span className="rounded-xl bg-slate-100 px-5 py-2.5 text-sm font-semibold text-slate-500">
-                Миний хичээл
+                Миний ажил
               </span>
             ) : (
               <Button
