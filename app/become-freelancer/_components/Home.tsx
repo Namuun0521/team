@@ -2,7 +2,6 @@
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Title } from "./Title";
 import { Container } from "./Container";
-
 export const HomePage = () => {
   return (
     <div className="flex w-full min-h-screen">
