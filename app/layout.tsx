@@ -1,5 +1,4 @@
 import { ClerkProvider } from "@clerk/nextjs";
-import { Header } from "./_components/Header";
 import "./globals.css";
 import { Suspense } from "react";
 import { StepProvider } from "./become-freelancer/_components/Provider";

@@ -100,6 +100,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
+import { BookingStatus, NotificationType } from "@prisma/client";
 
 export async function POST(req: NextRequest) {
   try {
@@ -126,10 +127,16 @@ export async function POST(req: NextRequest) {
 
     const course = await prisma.course.findUnique({
       where: { id: courseId },
+      include: {
+        freelancer: true,
+      },
     });
 
     if (!course) {
-      return NextResponse.json({ error: "Хичээл олдсонгүй" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Хичээл олдсонгүй" },
+        { status: 404 },
+      );
     }
 
     let dbUser = await prisma.user.findUnique({
@@ -147,12 +154,6 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    console.log("jafgja;kdgja;djgfk;", {
-      freelancerId,
-      startAt: new Date(startAt),
-    });
-
-    // 🔒 Double booking protection
     const existing = await prisma.booking.findFirst({
       where: {
         freelancerId,
@@ -169,40 +170,38 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ✅ Booking + Notification хамт үүсгэх
-    const booking = await prisma.$transaction(async (tx) => {
-      const newBooking = await tx.booking.create({
-        data: {
-          userId: dbUser.id,
-          courseId,
-          freelancerId,
-          startAt: new Date(startAt),
-          endAt: new Date(endAt),
-          status: "PENDING",
-          // isApproved = false (schema default) → хамаагүй, status="PENDING"-г л шалгана
-        },
-      });
+    const booking = await prisma.booking.create({
+      data: {
+        userId: dbUser.id,
+        courseId,
+        freelancerId,
+        startAt: new Date(startAt),
+        endAt: new Date(endAt),
+        status: BookingStatus.PENDING,
+      },
+    });
 
-      // 🔔 Freelancer-т notification илгээх
-      await tx.notification.create({
-        data: {
-          freelancerId,
-          bookingId: newBooking.id,
-          message: `"${course.title}" хичээлд шинэ захиалга ирлээ`,
-          isRead: false,
-        },
-      });
-
-      return newBooking;
+    await prisma.notification.create({
+      data: {
+        receiverId: course.freelancer.userId,
+        senderId: dbUser.id,
+        bookingId: booking.id,
+        title: "Шинэ захиалга",
+        message: `${dbUser.email} шинэ захиалга илгээлээ`,
+        type: NotificationType.BOOKING_REQUEST,
+        isRead: false,
+      },
     });
 
     return NextResponse.json(booking, { status: 201 });
-  } catch (error) {
-    console.error("Booking error:", error);
+} catch (error: any) {
+  console.error("Booking error message:", error?.message);
+  console.error("Booking error code:", error?.code);
+  console.error("Booking error meta:", error?.meta);
 
-    return NextResponse.json(
-      { error: "Захиалга үүсгэхэд алдаа гарлаа" },
-      { status: 500 },
-    );
-  }
+  return NextResponse.json(
+    { error: "Захиалга үүсгэхэд алдаа гарлаа" },
+    { status: 500 },
+  );
+}
 }
