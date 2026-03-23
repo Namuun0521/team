@@ -150,6 +150,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { HeroSection } from "../_components/HeroSection";
 import { Star } from "lucide-react";
+import { HowItWorks } from "../_components/HowItWorks";
 
 type Course = {
   id: string;
@@ -317,6 +318,7 @@ export default function Home() {
       <HeroSection />
 
       <main className="mx-auto max-w-6xl px-4 py-6">
+        <HowItWorks />
         {loading ? (
           <div className="rounded-xl border bg-white p-10 text-center text-sm text-gray-500">
             Ачааллаж байна...
