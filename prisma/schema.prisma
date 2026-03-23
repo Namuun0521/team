@@ -138,6 +138,16 @@ model Message {
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 }
 
+model HelpRequest {
+  id          String   @id @default(cuid())
+  issueType   String
+  description String
+  email       String
+  status      String   @default("pending") // pending | resolved
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 enum Role {
   USER
   FREELANCER
