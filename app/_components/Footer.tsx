@@ -51,7 +51,7 @@ export const Footer = () => {
                   className="group inline-flex items-center gap-2 transition hover:text-blue-600"
                 >
                   <ChevronRight className="h-4 w-4 text-gray-400 transition group-hover:text-blue-600" />
-                  Бүх хичээлүүд
+                  Бүх үйлчилгээнүүд
                 </Link>
               </li>
               <li>
@@ -112,7 +112,7 @@ export const Footer = () => {
             </h4>
 
             <p className="mt-4 text-sm leading-6 text-gray-600">
-              Бидэнтэй сошиал сувгуудаар холбогдож, шинэ хичээл болон
+              Бидэнтэй сошиал сувгуудаар холбогдож, шинэ ажилууд болон үйлчилгээ
               боломжуудыг цаг алдалгүй аваарай.
             </p>
 

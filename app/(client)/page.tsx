@@ -244,7 +244,7 @@ const CourseCard = ({ c }: { c: Course }) => {
 const CourseRow = ({
   title,
   items,
-  emptyText = "Хичээл олдсонгүй",
+  emptyText = "Таны ажил олдсонгүй",
 }: {
   title: string;
   items: Course[];

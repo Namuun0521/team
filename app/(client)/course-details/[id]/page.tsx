@@ -388,13 +388,13 @@ export default function CourseDetailPage() {
       <div className="flex min-h-screen items-center justify-center bg-[#f8f8fb] px-4">
         <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-10 text-center shadow-sm">
           <p className="text-lg font-semibold text-gray-900">
-            {error || "Хичээл олдсонгүй"}
+            {error || "Үйлчилгээ олдсонгүй"}
           </p>
           <Link
             href="/courses"
             className="mt-4 inline-block text-sm font-medium text-blue-600 hover:underline"
           >
-            Хичээлүүд рүү буцах
+            Үйлчилгээ рүү буцах
           </Link>
         </div>
       </div>
