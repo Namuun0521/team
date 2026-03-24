@@ -147,7 +147,7 @@ export default function ShoppingCartPage() {
         </div>
         <div>
           <h1 className="text-3xl font-bold text-[#0F172A]">Миний сагс</h1>
-          <p className="text-sm text-[#64748B]">{bookings.length} хичээл</p>
+          <p className="text-sm text-[#64748B]">{bookings.length} үйлчилгээ</p>
         </div>
       </div>
 
@@ -159,13 +159,13 @@ export default function ShoppingCartPage() {
               Сагс хоосон байна
             </h2>
             <p className="mt-2 text-sm text-gray-500">
-              Хичээл сонгож захиалга өгнө үү
+              Үйлчилгээгээ сонгож захиалга өгнө үү
             </p>
             <Button
               onClick={() => router.push("/")}
               className="mt-6 rounded-xl bg-[#135BEC] px-6"
             >
-              Хичээл үзэх
+              Үйлчилгээ үзэх
             </Button>
           </CardContent>
         </Card>
@@ -175,7 +175,7 @@ export default function ShoppingCartPage() {
         <div className="space-y-4">
           {bookings.map((booking) => {
             const freelancerName =
-              booking.course.freelancer.user.name || "Багш";
+              booking.course.freelancer.user.name || "FREELANCER";
 
             return (
               <Card
@@ -233,9 +233,9 @@ export default function ShoppingCartPage() {
                     <div>
                       <p className="font-semibold">Мэдээлэл</p>
                       <p className="mt-1">
-                        Та баталгаажсан хичээлүүдэд төлбөр төлөх боломжтой.
+                        Та баталгаажсан үйлчилгээд төлбөр төлөх боломжтой.
                         {hasPending &&
-                          " Хүлээгдэж байгаа захиалгууд багш баталгаажуулах болно."}
+                          " Хүлээгдэж байгаа захиалгууд FREELANCER баталгаажуулах болно."}
                         {hasRejected &&
                           " Татгалзсан захиалгууд төлбөрт тооцогдохгүй."}
                       </p>
@@ -247,7 +247,7 @@ export default function ShoppingCartPage() {
               <div className="flex items-center justify-between border-t pt-4">
                 <div>
                   <p className="text-sm text-[#64748B]">
-                    Нийт ({confirmedBookings.length} хичээл)
+                    Нийт ({confirmedBookings.length} үйлчилгээ)
                   </p>
                   <p className="text-2xl font-bold text-[#0F172A]">
                     ₮{totalPrice.toLocaleString()}
@@ -263,13 +263,13 @@ export default function ShoppingCartPage() {
                 >
                   {canCheckout
                     ? `Төлбөр төлөх (${confirmedBookings.length})`
-                    : "Баталгаажсан хичээл байхгүй"}
+                    : "Баталгаажсан үйлчилгээ байхгүй"}
                 </Button>
               </div>
 
               {canCheckout && (
                 <p className="text-xs text-[#64748B]">
-                  Та {confirmedBookings.length} баталгаажсан хичээл
+                  Та {confirmedBookings.length} баталгаажсан үйлчилгээ
                   {confirmedBookings.length > 1 ? "үүдэд" : "д"} төлбөр төлөх
                   боломжтой
                 </p>

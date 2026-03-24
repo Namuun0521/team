@@ -163,7 +163,7 @@ export const Header = ({ cartCount }: HeaderProps) => {
                       labelIcon={<User className="h-4 w-4" />}
                     />
                     <UserButton.Link
-                      label="Миний хичээлүүд"
+                      label="Миний ажилууд"
                       href="/my-courses"
                       labelIcon={<BookOpen className="h-4 w-4" />}
                     />

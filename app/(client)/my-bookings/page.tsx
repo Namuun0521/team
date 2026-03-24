@@ -196,7 +196,7 @@ export default function MyBookingsPage() {
               Миний захиалгууд
             </h1>
             <p className="text-sm text-[#64748B]">
-              Авсан хичээлүүд болон үнэлгээ өгөх
+              Авсан үйлчилгээний жагсаалт болон үнэлгээ өгөх
             </p>
           </div>
         </div>
@@ -216,7 +216,7 @@ export default function MyBookingsPage() {
           <div className="mb-8">
             <h2 className="mb-4 flex items-center gap-2 text-lg font-bold text-[#0F172A]">
               <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-              Дууссан хичээлүүд
+              Дууссан үйлчилгээнүүд
             </h2>
 
             <div className="space-y-4">
@@ -227,7 +227,7 @@ export default function MyBookingsPage() {
                 const isOpen = openReviewId === booking.id;
                 const review = getReview(booking.id, booking.course.id);
                 const freelancerName =
-                  booking.course.freelancer.user.name || "Багш";
+                  booking.course.freelancer.user.name || "FREELANCER";
 
                 return (
                   <Card
@@ -258,7 +258,7 @@ export default function MyBookingsPage() {
                               {booking.course.title}
                             </h3>
                             <p className="text-sm text-[#64748B]">
-                              Багш: {freelancerName}
+                              Freelancer: {freelancerName}
                             </p>
                           </div>
 
@@ -306,10 +306,10 @@ export default function MyBookingsPage() {
                           {!alreadyReviewed && !isOpen && (
                             <div className="rounded-xl border border-yellow-200 bg-yellow-50 px-4 py-3">
                               <p className="text-sm font-semibold text-yellow-800">
-                                🌟 Та энэ хичээлд үнэлгээ өгөхгүй юу?
+                                🌟 Та энэ үйлчилгээд үнэлгээ өгөхгүй юу?
                               </p>
                               <p className="mt-0.5 text-xs text-yellow-700">
-                                Таны санал бодол бусад суралцагчдад маш их тус
+                                Таны санал бодол бусад  маш их тус
                                 болно.
                               </p>
                               <Button
@@ -348,7 +348,7 @@ export default function MyBookingsPage() {
                               </div>
 
                               <Textarea
-                                placeholder="Хичээлийн талаар сэтгэгдлээ бичнэ үү... (заавал биш)"
+                                placeholder="Үйлчилгээний талаар сэтгэгдлээ бичнэ үү... (заавал биш)"
                                 value={review.comment}
                                 onChange={(e) =>
                                   setReview(booking.id, {
@@ -391,7 +391,7 @@ export default function MyBookingsPage() {
           <div>
             <h2 className="mb-4 flex items-center gap-2 text-lg font-bold text-[#0F172A]">
               <CheckCircle2 className="h-5 w-5 text-blue-600" />
-              Явагдаж байгаа хичээлүүд
+              Явагдаж байгаа ажилууд
             </h2>
 
             <div className="space-y-3">

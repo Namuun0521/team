@@ -143,13 +143,13 @@ export default function CourseDetailPage() {
       <div className="flex min-h-screen items-center justify-center bg-[#f8f8fb] px-4">
         <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-10 text-center shadow-sm">
           <p className="text-lg font-semibold text-gray-900">
-            {error || "Хичээл олдсонгүй"}
+            {error || "Үйлчилгээ олдсонгүй"}
           </p>
           <Link
             href="/courses"
             className="mt-4 inline-block text-sm font-medium text-blue-600 hover:underline"
           >
-            Хичээлүүд рүү буцах
+            Үйлчилгээ рүү буцах
           </Link>
         </div>
       </div>
@@ -260,10 +260,10 @@ export default function CourseDetailPage() {
                 </div>
                 <div>
                   <h2 className="text-xl font-bold text-slate-900">
-                    Хичээлийн тайлбар
+                  Үйлчилгээний тайлбар
                   </h2>
                   <p className="text-sm text-slate-500">
-                    Энэ хичээлээр юу сурах талаар
+                    Энэ үйлчилгээгээр юу олж авах талаар
                   </p>
                 </div>
               </div>
@@ -303,7 +303,7 @@ export default function CourseDetailPage() {
                 </div>
                 <div>
                   <h2 className="text-xl font-bold text-slate-900">
-                    Багшийн тухай
+                    FREELANCER-ын тухай
                   </h2>
                   <p className="text-sm text-slate-500">
                     Туршлага болон танилцуулга
@@ -372,7 +372,7 @@ export default function CourseDetailPage() {
 
                 {isOwner ? (
                   <div className="rounded-2xl bg-slate-100 px-4 py-3 text-center text-sm font-semibold text-slate-500">
-                    Энэ бол таны өөрийн хичээл
+                    Энэ бол таны өөрийн үйлчилгээ
                   </div>
                 ) : (
                   <Button
@@ -436,7 +436,7 @@ export default function CourseDetailPage() {
                 <div>
                   <h3 className="font-bold text-slate-900">Ур чадвар</h3>
                   <p className="text-sm text-slate-500">
-                    Багшийн үндсэн чиглэлүүд
+                    FREELANCER-ын үндсэн чиглэлүүд
                   </p>
                 </div>
               </div>
@@ -486,7 +486,7 @@ export default function CourseDetailPage() {
                   Одоогоор үнэлгээ байхгүй байна
                 </p>
                 <p className="mt-1 text-xs text-gray-400">
-                  Хичээлийг дуусгасан суралцагчид үнэлгээ өгөх боломжтой
+                  Ажлыг дуусгасан Freelancer-т үнэлгээ өгөх боломжтой
                 </p>
               </div>
             ) : (

@@ -204,7 +204,7 @@ export default function AdminReportsPage() {
           icon={<BookOpen className="w-5 h-5" />}
           iconBg="bg-orange-50"
           iconColor="text-orange-500"
-          label="Нийт хичээлүүд"
+          label="Нийт үйлчилгээнүүд"
           value={(data?.stats.totalCourses ?? 0).toLocaleString()}
         />
         <StatCard

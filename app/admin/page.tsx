@@ -258,7 +258,7 @@ export default function AdminDashboard() {
           icon={<BookOpen className="w-5 h-5" />}
           iconBg="bg-orange-50"
           iconColor="text-orange-500"
-          label="Нийт хичээлүүд"
+          label="Нийт үйлчилгээнүүд"
           value={(data?.stats.totalCourses ?? 0).toLocaleString()}
           change=""
           positive={false}
@@ -427,15 +427,7 @@ export default function AdminDashboard() {
           <table className="w-full">
             <thead>
               <tr className="border-b border-gray-50">
-                {[
-                  "ID",
-                  "ЗАХИАЛАГЧ",
-                  "ФРИЛАНСЕР",
-                  "ХИЧЭЭЛ",
-                  "ДҮН",
-                  "ОГНОО",
-                  "",
-                ].map((h) => (
+                {["ID", "ЗАХИАЛАГЧ", "ФРИЛАНСЕР", "ҮЙЛЧИЛГЭЭ", "ДҮН", "ОГНОО", ""].map((h) => (
                   <th
                     key={h}
                     className="px-5 py-3 text-left text-[11px] font-bold text-gray-400 tracking-wider uppercase"
