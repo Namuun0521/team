@@ -1,6 +1,6 @@
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 via-white to-white">
+    <div className="min-h-screen bg-linear-to-b from-blue-50 via-white to-white">
       <div className="mx-auto max-w-6xl px-6 py-16">
         <div className="mb-12 text-center">
           <div className="mb-4 inline-flex rounded-full bg-blue-100 px-4 py-1 text-sm font-medium text-blue-600">

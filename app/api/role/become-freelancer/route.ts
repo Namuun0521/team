@@ -11,14 +11,12 @@ export async function POST() {
   const email = u?.emailAddresses?.[0]?.emailAddress;
   if (!email) return NextResponse.json({ error: "No email" }, { status: 400 });
 
-  // Ensure USER exists first
   const dbUser = await prisma.user.upsert({
     where: { email },
     update: {},
     create: { email, role: "USER" },
   });
 
-  // Update role -> FREELANCER
   const updated = await prisma.user.update({
     where: { id: dbUser.id },
     data: { role: "FREELANCER" },

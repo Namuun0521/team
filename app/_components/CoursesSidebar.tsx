@@ -66,7 +66,9 @@ export const CoursesSidebar = ({
           <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/20">
             ▦
           </span>
-          <span className="min-w-0 break-words">{categoryLabel} - Бүгд</span>
+          <span className="min-w-0 wrap-break-words">
+            {categoryLabel} - Бүгд
+          </span>
         </button>
 
         {subcats.map((s) => {
@@ -85,13 +87,12 @@ export const CoursesSidebar = ({
               <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/20">
                 ▦
               </span>
-              <span className="min-w-0 break-words">{s}</span>
+              <span className="min-w-0 wrap-break-words">{s}</span>
             </button>
           );
         })}
       </div>
 
-      {/* Price range */}
       <div className="mt-8">
         <h4 className="text-sm font-semibold text-gray-900">Үнийн хүрээ (₮)</h4>
         <div className="mt-4 px-1">
@@ -137,7 +138,6 @@ export const CoursesSidebar = ({
         </div>
       </div>
 
-      {/* Rating filter */}
       <div className="mt-8">
         <div className="flex items-center justify-between">
           <h4 className="text-sm font-semibold text-gray-900">Үнэлгээ</h4>

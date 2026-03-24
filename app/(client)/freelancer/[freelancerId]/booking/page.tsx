@@ -16,7 +16,7 @@ export default async function Page({
 
   return (
     <div className="min-h-screen bg-[#f8f9fb] py-10">
-      <div className="mx-auto max-w-[700px] px-4">
+      <div className="mx-auto max-w-175 px-4">
         <AvailabilityBooking freelancerId={freelancerId} courseId={courseId} />
       </div>
     </div>

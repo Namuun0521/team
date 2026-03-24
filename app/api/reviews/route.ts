@@ -1,4 +1,3 @@
-// app/api/reviews/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
@@ -23,7 +22,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Verify user actually has a completed booking for this course
     const completedBooking = await prisma.booking.findFirst({
       where: {
         userId,
@@ -39,7 +37,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Upsert review (one per user per course)
     const review = await prisma.review.upsert({
       where: { userId_courseId: { userId, courseId } },
       update: { rating, comment: comment || null },

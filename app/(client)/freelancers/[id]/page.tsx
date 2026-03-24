@@ -155,7 +155,7 @@ export default function FreelancerPage() {
           {/* Left Side */}
           <div className="space-y-6">
             <Card className="h-fit overflow-hidden rounded-3xl border-0 bg-white p-0 shadow-[0_10px_40px_rgba(15,23,42,0.08)]">
-              <div className="relative h-28 bg-gradient-to-r from-blue-600 to-blue-500" />
+              <div className="relative h-28 bg-linear-to-r from-blue-600 to-blue-500" />
 
               <div className="relative px-6 pb-6">
                 <div className="-mt-14 mb-4 flex justify-center">
@@ -233,9 +233,7 @@ export default function FreelancerPage() {
             </Card>
           </div>
 
-          {/* Right Content */}
           <div className="space-y-6">
-            {/* Bio */}
             <Card className="rounded-3xl border-0 bg-white p-6 shadow-[0_10px_40px_rgba(15,23,42,0.06)] md:p-8">
               <div className="mb-4 flex items-center gap-3">
                 <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-50">
@@ -258,7 +256,6 @@ export default function FreelancerPage() {
               </div>
             </Card>
 
-            {/* Skills */}
             <Card className="rounded-3xl border-0 bg-white p-6 shadow-[0_10px_40px_rgba(15,23,42,0.06)] md:p-8">
               <div className="mb-5 flex items-center gap-3">
                 <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-50">
@@ -290,7 +287,6 @@ export default function FreelancerPage() {
               )}
             </Card>
 
-            {/* Courses */}
             <Card className="rounded-3xl border-0 bg-white p-6 shadow-[0_10px_40px_rgba(15,23,42,0.06)] md:p-8">
               <div className="mb-5 flex items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
@@ -345,7 +341,7 @@ export default function FreelancerPage() {
                           {course.category?.replaceAll("_", " ")}
                         </span>
 
-                        <h3 className="line-clamp-2 min-h-[48px] text-base font-bold text-slate-900">
+                        <h3 className="line-clamp-2 min-h-12 text-base font-bold text-slate-900">
                           {course.title}
                         </h3>
 

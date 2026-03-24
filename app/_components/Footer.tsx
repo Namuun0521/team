@@ -13,7 +13,7 @@ import {
 
 export const Footer = () => {
   return (
-    <footer className="w-full border-t bg-gradient-to-b from-white to-slate-50">
+    <footer className="w-full border-t bg-linear-to-b from-white to-slate-50">
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="max-w-sm">

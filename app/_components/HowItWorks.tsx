@@ -13,8 +13,6 @@ import {
   Wallet,
   ArrowRight,
   ChevronRight,
-  ShoppingCart,
-  ClipboardList,
   MapPin,
 } from "lucide-react";
 
@@ -122,7 +120,6 @@ export const HowItWorks = () => {
 
   return (
     <section className="mt-14 mb-4">
-      {/* Header */}
       <div className="mb-8 text-center">
         <p className="mb-2 inline-flex rounded-full bg-blue-50 px-4 py-1 text-sm font-semibold text-blue-600">
           Хэрхэн ажилладаг вэ?
@@ -135,7 +132,6 @@ export const HowItWorks = () => {
         </p>
       </div>
 
-      {/* Tab toggle */}
       <div className="mb-8 flex justify-center">
         <div className="inline-flex rounded-2xl border border-gray-200 bg-white p-1 shadow-sm">
           <button
@@ -164,14 +160,12 @@ export const HowItWorks = () => {
         </div>
       </div>
 
-      {/* Steps */}
       <div className="relative grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {steps.map((step, i) => {
           const Icon = step.icon;
 
           return (
             <div key={`${activeTab}-${i}`} className="group relative">
-              {/* Connector arrow */}
               {i < steps.length - 1 && (
                 <div className="absolute -right-3.5 top-1/2 z-10 hidden -translate-y-1/2 lg:block">
                   <ChevronRight className="h-5 w-5 text-gray-300" />
@@ -182,14 +176,12 @@ export const HowItWorks = () => {
                 onClick={() => router.push(step.link)}
                 className={`relative flex h-full cursor-pointer flex-col rounded-2xl border bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md ${step.borderColor}`}
               >
-                {/* Step number */}
                 <div className="absolute -top-3 left-5">
                   <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#135BEC] text-xs font-bold text-white shadow-sm">
                     {i + 1}
                   </span>
                 </div>
 
-                {/* Icon */}
                 <div className="mb-3 mt-3">
                   <div
                     className={`inline-flex h-11 w-11 items-center justify-center rounded-2xl ${step.color}`}
@@ -198,7 +190,6 @@ export const HowItWorks = () => {
                   </div>
                 </div>
 
-                {/* Title & Description */}
                 <h3 className="mb-1.5 text-base font-bold text-gray-900">
                   {step.title}
                 </h3>
@@ -206,7 +197,6 @@ export const HowItWorks = () => {
                   {step.description}
                 </p>
 
-                {/* WHERE hint */}
                 <div className="mt-auto pt-3">
                   <div className="rounded-xl border border-dashed border-gray-200 bg-gray-50 px-3 py-2.5">
                     <div className="mb-1 flex items-center gap-1.5">
@@ -220,7 +210,6 @@ export const HowItWorks = () => {
                     </p>
                   </div>
 
-                  {/* Link button */}
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
@@ -237,7 +226,6 @@ export const HowItWorks = () => {
         })}
       </div>
 
-      {/* CTA */}
       <div className="mt-8 flex justify-center">
         <button
           onClick={() =>

@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    // database connection test
     await prisma.$queryRaw`SELECT 1`;
 
     return NextResponse.json({

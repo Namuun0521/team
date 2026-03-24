@@ -111,7 +111,6 @@ export default function SetAvailabilityPage() {
       return;
     }
 
-    // Validate start < end
     for (const slot of enabledSlots) {
       if (slot.startTime >= slot.endTime) {
         const dayLabel = DAYS.find((d) => d.id === slot.dayOfWeek)?.label;
@@ -134,7 +133,6 @@ export default function SetAvailabilityPage() {
 
       setSuccess(true);
 
-      // 3 секундийн дараа нүүр хуудас руу шилжих
       setTimeout(() => {
         window.location.href = "/";
       }, 3000);
@@ -145,7 +143,6 @@ export default function SetAvailabilityPage() {
     }
   };
 
-  // ── Амжилттай дууссан UI ──
   if (success) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#f8f9fb]">
@@ -183,17 +180,14 @@ export default function SetAvailabilityPage() {
     );
   }
 
-  // ── Цагийн хуваарь тохируулах UI ──
   return (
     <div className="min-h-screen bg-[#f8f9fb] py-10">
-      <div className="mx-auto flex max-w-[600px] flex-col gap-8 px-4">
-        {/* Breadcrumb */}
+      <div className="mx-auto flex max-w-150 flex-col gap-8 px-4">
         <div className="text-sm text-[#94A3B8]">
           Профайл үүсгэх {" > "} Хичээл оруулах {" > "}
           <span className="font-medium text-[#135BEC]">Цагийн хуваарь</span>
         </div>
 
-        {/* Title */}
         <div>
           <div className="mb-3 flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-100">
@@ -216,7 +210,6 @@ export default function SetAvailabilityPage() {
           </div>
         )}
 
-        {/* Steps indicator */}
         <div className="flex items-center gap-2">
           <div className="flex h-7 w-7 items-center justify-center rounded-full bg-green-500 text-xs font-bold text-white">
             ✓
@@ -236,7 +229,6 @@ export default function SetAvailabilityPage() {
           <span className="font-semibold text-[#135BEC]">Хуваарь</span>
         </div>
 
-        {/* Day selector cards */}
         <Card className="rounded-2xl border-[#E5E7EB] bg-white shadow-sm">
           <CardContent className="p-6 space-y-4">
             <div className="mb-2">
@@ -248,7 +240,6 @@ export default function SetAvailabilityPage() {
               </p>
             </div>
 
-            {/* Day toggle buttons */}
             <div className="flex justify-center gap-2">
               {DAYS.map((day) => {
                 const isActive = schedule[day.id].enabled;
@@ -281,7 +272,6 @@ export default function SetAvailabilityPage() {
           </CardContent>
         </Card>
 
-        {/* Time settings for each enabled day */}
         <Card className="rounded-2xl border-[#E5E7EB] bg-white shadow-sm">
           <CardContent className="p-6 space-y-1">
             <div className="mb-4">
@@ -319,7 +309,7 @@ export default function SetAvailabilityPage() {
                       value={daySchedule.startTime}
                       onValueChange={(v) => updateTime(day.id, "startTime", v)}
                     >
-                      <SelectTrigger className="h-9 w-[100px] rounded-lg text-sm">
+                      <SelectTrigger className="h-9 w-25 rounded-lg text-sm">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -337,7 +327,7 @@ export default function SetAvailabilityPage() {
                       value={daySchedule.endTime}
                       onValueChange={(v) => updateTime(day.id, "endTime", v)}
                     >
-                      <SelectTrigger className="h-9 w-[100px] rounded-lg text-sm">
+                      <SelectTrigger className="h-9 w-25 rounded-lg text-sm">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -364,7 +354,6 @@ export default function SetAvailabilityPage() {
           </CardContent>
         </Card>
 
-        {/* Actions */}
         <div className="flex items-center justify-between">
           <button
             type="button"
@@ -394,7 +383,6 @@ export default function SetAvailabilityPage() {
           </Button>
         </div>
 
-        {/* Tip */}
         <div className="flex items-start gap-3 rounded-xl bg-[#1E293B] p-5 text-sm">
           <CalendarCheck className="mt-0.5 h-5 w-5 shrink-0 text-blue-400" />
           <span className="text-[#CBD5E1]">

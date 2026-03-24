@@ -21,7 +21,7 @@ const CATEGORY_MAP: Record<string, string | null> = {
 
 export const SkillSelect = ({ form }: any) => {
   const skillsList = Object.keys(CATEGORY_MAP);
-  const [open, setOpen] = useState(false); // ✔ энд байх ёстой
+  const [open, setOpen] = useState(false);
 
   return (
     <FormField

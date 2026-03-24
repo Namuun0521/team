@@ -82,7 +82,7 @@ export const HeroSection = () => {
           <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-3xl bg-white/10" />
           <div className="pointer-events-none absolute right-10 top-10 h-24 w-24 rounded-3xl bg-white/10" />
 
-          <div className="relative z-10 flex min-h-[460px] items-center px-6 py-14 md:min-h-[520px] md:px-12 md:py-20">
+          <div className="relative z-10 flex min-h-115 items-center px-6 py-14 md:min-h-130 md:px-12 md:py-20">
             <div className="max-w-3xl text-white">
               <h1 className="whitespace-pre-line text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
                 {currentSlide.title}

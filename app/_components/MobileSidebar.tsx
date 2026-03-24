@@ -19,7 +19,7 @@ export const MobileSidebar = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/40 lg:hidden">
-      <div className="h-full w-[280px] overflow-y-auto bg-white p-6">
+      <div className="h-full w-70 overflow-y-auto bg-white p-6">
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-lg font-bold">Menu</h2>
           <button onClick={() => setOpen(false)}>
