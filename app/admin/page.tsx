@@ -116,10 +116,14 @@ function StatCard({
   return (
     <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 flex flex-col gap-3">
       <div className="flex items-center justify-between">
-        <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${iconBg}`}>
+        <div
+          className={`w-10 h-10 rounded-xl flex items-center justify-center ${iconBg}`}
+        >
           <span className={iconColor}>{icon}</span>
         </div>
-        <span className={`text-xs font-semibold ${positive ? "text-green-500" : "text-gray-400"}`}>
+        <span
+          className={`text-xs font-semibold ${positive ? "text-green-500" : "text-gray-400"}`}
+        >
           {change}
         </span>
       </div>
@@ -423,7 +427,15 @@ export default function AdminDashboard() {
           <table className="w-full">
             <thead>
               <tr className="border-b border-gray-50">
-                {["ID", "ЗАХИАЛАГЧ", "ФРИЛАНСЕР", "ХИЧЭЭЛ", "ДҮН", "ОГНОО", ""].map((h) => (
+                {[
+                  "ID",
+                  "ЗАХИАЛАГЧ",
+                  "ФРИЛАНСЕР",
+                  "ХИЧЭЭЛ",
+                  "ДҮН",
+                  "ОГНОО",
+                  "",
+                ].map((h) => (
                   <th
                     key={h}
                     className="px-5 py-3 text-left text-[11px] font-bold text-gray-400 tracking-wider uppercase"
@@ -459,7 +471,9 @@ export default function AdminDashboard() {
                     <div className="flex items-center gap-2.5">
                       <div
                         className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
-                        style={{ backgroundColor: avatarColor(b.freelancer + "x") }}
+                        style={{
+                          backgroundColor: avatarColor(b.freelancer + "x"),
+                        }}
                       >
                         {initials(b.freelancer)}
                       </div>
@@ -468,7 +482,7 @@ export default function AdminDashboard() {
                       </span>
                     </div>
                   </td>
-                  <td className="px-5 py-3.5 text-sm text-gray-600 max-w-[180px] truncate">
+                  <td className="px-5 py-3.5 text-sm text-gray-600 max-w-45 truncate">
                     {b.courseTitle}
                   </td>
                   <td className="px-5 py-3.5 text-sm font-bold text-gray-900">

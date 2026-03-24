@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 
-// GET - Get all notifications for current freelancer
 export async function GET() {
   try {
     const { userId } = await auth();
@@ -14,7 +13,6 @@ export async function GET() {
       );
     }
 
-    // Check if user is a freelancer
     const profile = await prisma.freelancerProfile.findUnique({
       where: { userId },
     });

@@ -7,7 +7,7 @@ type DayPoint = {
 };
 
 function formatDay(date: Date) {
-  return date.toISOString().slice(5, 10); // MM-DD
+  return date.toISOString().slice(5, 10);
 }
 
 export async function GET(req: Request) {
@@ -76,20 +76,18 @@ export async function GET(req: Request) {
         }),
       ]);
 
-    const confirmedBookings = bookings.filter(
-      (b) => b.status === "CONFIRMED"
-    );
+    const confirmedBookings = bookings.filter((b) => b.status === "CONFIRMED");
 
     const totalRevenue = confirmedBookings.reduce((sum, booking) => {
       return sum + (booking.course?.price ?? 0);
     }, 0);
 
     const pendingBookings = bookings.filter(
-      (b) => b.status === "PENDING"
+      (b) => b.status === "PENDING",
     ).length;
     const confirmedCount = confirmedBookings.length;
     const cancelledCount = bookings.filter(
-      (b) => b.status === "CANCELLED"
+      (b) => b.status === "CANCELLED",
     ).length;
 
     const revenueMap: Record<string, number> = {};

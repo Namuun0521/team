@@ -1,12 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  Download,
-  Users,
-  BookOpen,
-  BarChart2,
-} from "lucide-react";
+import { Download, Users, BookOpen, BarChart2 } from "lucide-react";
 import {
   AreaChart,
   Area,
@@ -226,7 +221,9 @@ export default function AdminReportsPage() {
         <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
           <p className="text-sm text-gray-500 mb-1">Нийт захиалга</p>
           <p className="text-2xl font-bold text-gray-900">
-            {loading ? "..." : (data?.stats.totalBookings ?? 0).toLocaleString()}
+            {loading
+              ? "..."
+              : (data?.stats.totalBookings ?? 0).toLocaleString()}
           </p>
         </div>
 
@@ -270,7 +267,13 @@ export default function AdminReportsPage() {
                 margin={{ top: 0, right: 0, left: -20, bottom: 0 }}
               >
                 <defs>
-                  <linearGradient id="reportRevGrad" x1="0" y1="0" x2="0" y2="1">
+                  <linearGradient
+                    id="reportRevGrad"
+                    x1="0"
+                    y1="0"
+                    x2="0"
+                    y2="1"
+                  >
                     <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.15} />
                     <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
                   </linearGradient>

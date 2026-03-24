@@ -7,7 +7,7 @@ type Props = {
 
 export function CourseHero({ image, category, title, subtitle }: Props) {
   return (
-    <div className="relative overflow-hidden rounded-3xl min-h-[360px]">
+    <div className="relative overflow-hidden rounded-3xl min-h-90">
       <img
         src={image}
         alt={title}

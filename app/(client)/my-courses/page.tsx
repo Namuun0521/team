@@ -96,7 +96,6 @@ export default function MyCoursesPage() {
   return (
     <div className="min-h-screen bg-[#f8f9fb] py-10">
       <div className="mx-auto max-w-4xl px-4">
-        {/* Header */}
         <div className="mb-8 flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100">
             <BookOpen className="h-6 w-6 text-blue-600" />
@@ -111,7 +110,6 @@ export default function MyCoursesPage() {
           </div>
         </div>
 
-        {/* Empty state */}
         {bookings.length === 0 && (
           <Card className="rounded-2xl">
             <CardContent className="py-16 text-center">
@@ -126,7 +124,6 @@ export default function MyCoursesPage() {
           </Card>
         )}
 
-        {/* Booking cards */}
         <div className="space-y-4">
           {bookings.map((booking) => {
             const isCompleted = completedIds.has(booking.id);
@@ -139,7 +136,6 @@ export default function MyCoursesPage() {
               >
                 <CardContent className="p-0">
                   <div className="flex flex-col sm:flex-row">
-                    {/* Course image */}
                     {booking.course.imageUrl ? (
                       <img
                         src={booking.course.imageUrl}
@@ -147,15 +143,13 @@ export default function MyCoursesPage() {
                         className="h-40 w-full object-cover sm:h-auto sm:w-48"
                       />
                     ) : (
-                      <div className="flex h-40 w-full items-center justify-center bg-gradient-to-br from-blue-100 to-blue-200 sm:h-auto sm:w-48">
+                      <div className="flex h-40 w-full items-center justify-center bg-linear-to-br from-blue-100 to-blue-200 sm:h-auto sm:w-48">
                         <BookOpen className="h-10 w-10 text-blue-400" />
                       </div>
                     )}
 
-                    {/* Content */}
                     <div className="flex flex-1 flex-col justify-between p-6">
                       <div className="space-y-3">
-                        {/* Category + title */}
                         <div>
                           <span className="inline-flex rounded-full bg-blue-50 px-2 py-1 text-[10px] font-semibold text-blue-700">
                             {CAT_LABEL[booking.course.category] ||
@@ -166,7 +160,6 @@ export default function MyCoursesPage() {
                           </h3>
                         </div>
 
-                        {/* Student info */}
                         <div className="flex items-center gap-2 text-sm text-[#64748B]">
                           <User className="h-4 w-4" />
                           <span>
@@ -177,7 +170,6 @@ export default function MyCoursesPage() {
                           </span>
                         </div>
 
-                        {/* Time info */}
                         <div className="flex flex-wrap gap-4 text-sm text-[#64748B]">
                           <div className="flex items-center gap-1.5">
                             <Calendar className="h-4 w-4 text-[#94A3B8]" />
@@ -190,16 +182,13 @@ export default function MyCoursesPage() {
                           </div>
                         </div>
 
-                        {/* Price */}
                         <p className="text-xl font-bold text-blue-600">
                           {booking.course.price.toLocaleString()}₮
                         </p>
                       </div>
 
-                      {/* Status / Action */}
                       <div className="mt-4">
                         {isCompleted ? (
-                          /* Completed success state */
                           <div className="rounded-xl border border-green-200 bg-green-50 p-4">
                             <div className="flex items-center gap-2 text-green-700">
                               <PartyPopper className="h-5 w-5" />
@@ -216,7 +205,6 @@ export default function MyCoursesPage() {
                             </div>
                           </div>
                         ) : (
-                          /* Active work state */
                           <div className="space-y-3">
                             <div className="flex items-center gap-2 rounded-xl border border-blue-200 bg-blue-50 px-4 py-3">
                               <CheckCircle2 className="h-4 w-4 text-blue-600" />

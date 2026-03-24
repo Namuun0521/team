@@ -3,14 +3,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  Bell,
-  CheckCircle2,
-  XCircle,
-  Loader2,
-  Calendar,
-  Clock,
-} from "lucide-react";
+import { Bell, CheckCircle2, XCircle, Loader2, Calendar } from "lucide-react";
 
 type Notification = {
   id: string;
@@ -48,7 +41,6 @@ export default function NotificationsPage() {
       const res = await fetch("/api/notifications");
       const data = await res.json();
 
-      // ✅ Массив эсэхийг шалгах
       setNotifications(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Failed to fetch notifications:", error);
@@ -73,7 +65,6 @@ export default function NotificationsPage() {
 
       if (!res.ok) throw new Error("Action failed");
 
-      // Refresh notifications
       await fetchNotifications();
 
       alert(
@@ -109,7 +100,6 @@ export default function NotificationsPage() {
   return (
     <div className="min-h-screen bg-[#f8f9fb] py-10">
       <div className="mx-auto max-w-4xl px-4">
-        {/* Header */}
         <div className="mb-8 flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100">
             <Bell className="h-6 w-6 text-blue-600" />
@@ -122,7 +112,6 @@ export default function NotificationsPage() {
           </div>
         </div>
 
-        {/* Notifications List */}
         {notifications.length === 0 ? (
           <Card className="rounded-2xl border-[#E5E7EB] bg-white shadow-sm">
             <CardContent className="py-16 text-center">
@@ -154,7 +143,6 @@ export default function NotificationsPage() {
                 >
                   <CardContent className="p-6">
                     <div className="flex items-start justify-between gap-4">
-                      {/* Left side - Info */}
                       <div className="flex-1">
                         <div className="mb-3 flex items-center gap-2">
                           <h3 className="text-lg font-bold text-[#0F172A]">
@@ -199,7 +187,6 @@ export default function NotificationsPage() {
                           </div>
                         </div>
 
-                        {/* Status badges */}
                         {isConfirmed && (
                           <div className="mt-4 inline-flex items-center gap-2 rounded-lg bg-green-50 px-3 py-2 text-sm font-semibold text-green-700">
                             <CheckCircle2 className="h-4 w-4" />
@@ -214,7 +201,6 @@ export default function NotificationsPage() {
                         )}
                       </div>
 
-                      {/* Right side - Actions */}
                       {isPending && (
                         <div className="flex flex-col gap-2">
                           <Button

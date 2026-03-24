@@ -18,7 +18,7 @@ export async function POST(
 
     const { id } = await params;
     const body = await req.json();
-    const { action } = body; // "approve" or "reject"
+    const { action } = body;
 
     if (!action || !["approve", "reject"].includes(action)) {
       return NextResponse.json(
@@ -27,7 +27,6 @@ export async function POST(
       );
     }
 
-    // Check if user is freelancer
     const profile = await prisma.freelancerProfile.findUnique({
       where: { userId },
     });
@@ -39,7 +38,6 @@ export async function POST(
       );
     }
 
-    // Get booking
     const booking = await prisma.booking.findUnique({
       where: { id },
       include: { notifications: true },
@@ -52,12 +50,10 @@ export async function POST(
       );
     }
 
-    // Check if this booking belongs to this freelancer
     if (booking.freelancerId !== profile.id) {
       return NextResponse.json({ error: "Хандах эрхгүй" }, { status: 403 });
     }
 
-    // Update booking and notification
     const result = await prisma.$transaction(async (tx) => {
       const updatedBooking = await tx.booking.update({
         where: { id },
@@ -67,7 +63,6 @@ export async function POST(
         },
       });
 
-      // Mark notification as read
       await tx.notification.updateMany({
         where: { bookingId: id },
         data: { isRead: true },

@@ -30,7 +30,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Хуучин хуваарийг устгаад шинээр бичих
     await prisma.availability.deleteMany({
       where: { freelancerId: profile.id },
     });
