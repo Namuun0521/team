@@ -158,7 +158,7 @@ export default function SetAvailabilityPage() {
             Та амжилттай Freelancer боллоо!
           </p>
           <p className="mb-6 text-[#64748B]">
-            Хичээл үүсгэгдэж, цагийн хуваарь тохируулагдлаа. Одоо суралцагчид
+            Үйлчилгээ үүсгэгдэж, цагийн хуваарь тохируулагдлаа. Одоо захиалагчид
             таныг олж захиалга өгөх боломжтой.
           </p>
 
@@ -166,7 +166,7 @@ export default function SetAvailabilityPage() {
             <div className="flex items-center justify-center gap-3">
               <CheckCircle2 className="h-5 w-5 text-green-600" />
               <span className="text-sm font-medium text-green-800">
-                Профайл, хичээл, цагийн хуваарь бүгд бэлэн!
+                Профайл, үйлчилгээ, цагийн хуваарь бүгд бэлэн!
               </span>
             </div>
           </div>
@@ -184,7 +184,7 @@ export default function SetAvailabilityPage() {
     <div className="min-h-screen bg-[#f8f9fb] py-10">
       <div className="mx-auto flex max-w-150 flex-col gap-8 px-4">
         <div className="text-sm text-[#94A3B8]">
-          Профайл үүсгэх {" > "} Хичээл оруулах {" > "}
+          Профайл үүсгэх {" > "} Ажил оруулах {" > "}
           <span className="font-medium text-[#135BEC]">Цагийн хуваарь</span>
         </div>
 
@@ -198,7 +198,7 @@ export default function SetAvailabilityPage() {
                 Цагийн хуваарь тохируулах
               </h1>
               <p className="text-[14px] text-[#64748B]">
-                Суралцагчид таныг хэзээ захиалах боломжтойг тохируулна уу
+                Захиалагчид таныг хэзээ захиалах боломжтойг тохируулна уу
               </p>
             </div>
           </div>
@@ -225,7 +225,7 @@ export default function SetAvailabilityPage() {
         </div>
         <div className="flex justify-between text-xs text-[#94A3B8] -mt-5">
           <span>Профайл</span>
-          <span>Хичээл</span>
+          <span>Үйлчилгээ</span>
           <span className="font-semibold text-[#135BEC]">Хуваарь</span>
         </div>
 
@@ -386,14 +386,14 @@ export default function SetAvailabilityPage() {
         <div className="flex items-start gap-3 rounded-xl bg-[#1E293B] p-5 text-sm">
           <CalendarCheck className="mt-0.5 h-5 w-5 shrink-0 text-blue-400" />
           <span className="text-[#CBD5E1]">
-            <b className="text-white">Зөвлөгөө:</b> Суралцагчид таны идэвхтэй
+            <b className="text-white">Зөвлөгөө:</b> Захиалагч таны идэвхтэй
             өдрүүдэд захиалга өгөх боломжтой. Та дараа нь хуваариа хэдийд ч
             өөрчлөх боломжтой.
           </span>
         </div>
 
         <p className="pb-4 text-center text-xs text-[#94A3B8]">
-          © 2024 Freelancer.mn. Залууст зориулсан боломжийн талбар.
+          © 2026 Freelancer.mn. Залууст зориулсан боломжийн талбар.
         </p>
       </div>
     </div>

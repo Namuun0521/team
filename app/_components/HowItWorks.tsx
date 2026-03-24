@@ -80,7 +80,7 @@ const FREELANCER_STEPS = [
     title: "Үйлчилгээ нэмэх",
     description:
       'Профайл дотроос "Үйлчилгээ нэмэх" товч дарж, үнэ болон цагийн хуваарь тохируулна.',
-    where: 'Profile → "Хичээл үүсгэх" товч',
+    where: 'Profile → "Ажил үүсгэх" товч',
     link: "/freelancer/profile",
     linkLabel: "Профайл →",
     color: "bg-purple-50 text-purple-600",
@@ -102,7 +102,7 @@ const FREELANCER_STEPS = [
     title: "Ажил дуусгаж орлого олох",
     description:
       'Төлбөр төлөгдсөний дараа "Миний ажлууд" хуудаснаас "Ажил дуусгах" товч дарна.',
-    where: 'Profile → "Миний хичээлүүд"',
+    where: 'Profile → "Миний үйлчилгээнүүд"',
     link: "/my-courses",
     linkLabel: "Миний ажлууд →",
     color: "bg-amber-50 text-amber-600",

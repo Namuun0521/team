@@ -86,7 +86,7 @@ export default function CoursesPage() {
   }, [category, sort, activeSub, priceRange, minRating]);
 
   const heading = useMemo(() => {
-    if (!category) return "Бүх хичээлүүд";
+    if (!category) return "Бүх үйлчилгээнүүд";
     return category.replaceAll("_", " ");
   }, [category]);
 
@@ -145,7 +145,7 @@ export default function CoursesPage() {
       <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50">
         <Loader2 className="h-10 w-10 animate-spin text-blue-600" />
         <p className="mt-4 text-sm text-gray-500">
-          Хичээлүүдийг ачааллаж байна...
+          Үйлчилгээг ачааллаж байна...
         </p>
       </div>
     );
@@ -190,7 +190,7 @@ export default function CoursesPage() {
 
             {!error && visibleCourses.length === 0 && (
               <p className="mt-10 text-gray-500">
-                Энэ ангилалд хичээл олдсонгүй.
+                Энэ ангилалд үйлчилгээ олдсонгүй.
               </p>
             )}
 

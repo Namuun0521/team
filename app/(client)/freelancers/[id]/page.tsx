@@ -225,7 +225,7 @@ export default function FreelancerPage() {
                       disabled={navLoading}
                     >
                       <Plus className="mr-2 h-4 w-4" />
-                      {navLoading ? "Шилжүүлж байна..." : "Хичээл нэмэх"}
+                      {navLoading ? "Шилжүүлж байна..." : "Үйлчилгээ нэмэх"}
                     </Button>
                   )}
                 </div>
@@ -295,10 +295,10 @@ export default function FreelancerPage() {
                   </div>
                   <div>
                     <h2 className="text-xl font-bold text-slate-900">
-                      Бусад хичээлүүд
+                      Бусад үйлчилгээний жагсаалт
                     </h2>
                     <p className="text-sm text-slate-500">
-                      Энэ freelancer-ийн нийт хичээлүүд
+                      Энэ freelancer-ийн нийт ажилууд
                     </p>
                   </div>
                 </div>
@@ -310,7 +310,7 @@ export default function FreelancerPage() {
 
               {profile?.courses?.length === 0 ? (
                 <div className="rounded-2xl bg-slate-50 p-8 text-center text-slate-500">
-                  Одоогоор хичээл оруулаагүй байна
+                  Одоогоор ажил оруулаагүй байна
                 </div>
               ) : (
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">

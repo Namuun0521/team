@@ -88,7 +88,7 @@ export function BookingCard({ hourlyPrice, freelancerId }: Props) {
         <h2 className="text-xl font-semibold">Хүсэлт амжилттай илгээгдлээ</h2>
 
         <p className="mt-2 text-sm text-slate-500">
-          Багш таны захиалгыг шалгаж баталгаажуулна.
+          FREELANCER таны захиалгыг шалгаж баталгаажуулна.
         </p>
       </aside>
     );
@@ -193,7 +193,7 @@ export function BookingCard({ hourlyPrice, freelancerId }: Props) {
             <AlertDialogTitle>Захиалга баталгаажуулах</AlertDialogTitle>
 
             <AlertDialogDescription>
-              Та энэ хичээлийг захиалах гэж байна.
+              Та энэ үйлчилгээг захиалах гэж байна.
             </AlertDialogDescription>
           </AlertDialogHeader>
 

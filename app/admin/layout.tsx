@@ -15,7 +15,7 @@ import {
 const navItems = [
   { icon: LayoutDashboard, label: "Хянах самбар", path: "/admin" },
   { icon: Users, label: "Хэрэглэгчид", path: "/admin/users" },
-  { icon: BookOpen, label: "Хичээлүүд", path: "/admin/courses" },
+  { icon: BookOpen, label: "Үйлчилгээнүүд", path: "/admin/courses" },
   { icon: ShoppingCart, label: "Захиалгууд", path: "/admin/orders" },
   { icon: BarChart2, label: "Тайлан", path: "/admin/reports" },
 ];

@@ -102,7 +102,7 @@ export default function MyCoursesPage() {
           </div>
           <div>
             <h1 className="text-3xl font-bold text-[#0F172A]">
-              Миний хичээлүүд
+              Миний ажилууд
             </h1>
             <p className="text-sm text-[#64748B]">
               Төлөгдсөн захиалгууд — ажил эхэлсэн
@@ -118,7 +118,7 @@ export default function MyCoursesPage() {
                 Одоогоор төлөгдсөн захиалга байхгүй байна
               </h3>
               <p className="mt-2 text-sm text-gray-500">
-                Суралцагч захиалга төлсний дараа энд харагдана
+                Захиалагч захиалга төлсний дараа энд харагдана
               </p>
             </CardContent>
           </Card>
@@ -163,7 +163,7 @@ export default function MyCoursesPage() {
                         <div className="flex items-center gap-2 text-sm text-[#64748B]">
                           <User className="h-4 w-4" />
                           <span>
-                            Суралцагч:{" "}
+                            Захиалагч:{" "}
                             <span className="font-medium text-[#0F172A]">
                               {studentName}
                             </span>

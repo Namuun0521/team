@@ -186,7 +186,7 @@ export default function AvailabilityBooking({
           <CheckCircle2 className="mx-auto mb-4 h-12 w-12 text-green-600" />
           <h2 className="text-xl font-semibold">Хүсэлт амжилттай илгээгдлээ</h2>
           <p className="mt-2 text-sm text-gray-500">
-            Багш таны захиалгыг шалгаж баталгаажуулна.
+            FREELANCER таны захиалгыг шалгаж баталгаажуулна.
           </p>
         </CardContent>
       </Card>
@@ -212,7 +212,7 @@ export default function AvailabilityBooking({
 
         <div>
           <h1 className="text-[26px] font-bold text-[#0F172A]">
-            Хичээлийн цаг сонгох
+            Үйлчилгээний цаг сонгох
           </h1>
           <p className="text-sm text-[#64748B]">
             Доорх боломжит цагуудаас өөрт тохирохыг сонгоно уу

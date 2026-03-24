@@ -113,7 +113,7 @@ export default function CreateCoursePage() {
   const handleSubmit = async () => {
     setError(null);
 
-    if (!title.trim()) return setError("Хичээлийн гарчиг оруулна уу");
+    if (!title.trim()) return setError("Үйлчилгээний гарчиг оруулна уу");
     if (!category) return setError("Ангилал сонгоно уу");
     if (!price || isNaN(Number(price)) || Number(price) <= 0)
       return setError("Үнэ зөв оруулна уу");
@@ -150,13 +150,13 @@ export default function CreateCoursePage() {
       <div className="mx-auto max-w-135 flex flex-col gap-8 px-4">
         <div className="text-sm text-[#94A3B8]">
           Профайл үүсгэх {" > "} Баталгаажуулалт {" > "}
-          <span className="font-medium text-[#135BEC]">Хичээл оруулах</span>
+          <span className="font-medium text-[#135BEC]">Ажил оруулах</span>
         </div>
 
         <div className="flex items-start justify-between">
           <div>
             <h1 className="text-[28px] font-bold text-[#0F172A] mb-1">
-              Анхны хичээлээ оруулах
+              Ажил оруулах
             </h1>
             <p className="text-[15px] text-[#64748B] leading-relaxed">
               Өөрийн ур чадвараа бусадтай хуваалцаж, орлого олж эхлээрэй.
@@ -184,7 +184,7 @@ export default function CreateCoursePage() {
           <CardContent className="p-7 space-y-6">
             <div>
               <label className="text-[11px] font-bold text-[#64748b] uppercase tracking-wider mb-1.5 block">
-                Хичээлийн гарчиг
+                Гарчиг
               </label>
               <Input
                 value={title}
@@ -239,14 +239,14 @@ export default function CreateCoursePage() {
               <Textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Энэхүү хичээлээр суралцагч юу сурч мэдэх вэ? Таны туршлага юу вэ?"
-                className="min-h-30 rounded-xl"
+                placeholder="Энэхүү үйлчилгээгээр захиалагч юу олж авах вэ? Таны туршлага юу вэ?"
+                className="min-h-[120px] rounded-xl"
               />
             </div>
 
             <div>
               <label className="text-[11px] font-bold text-[#64748b] uppercase tracking-wider mb-2 block">
-                Хичээлийн нүүр зураг
+                Үйлчилгээний нүүр зураг
               </label>
 
               {!imagePreview ? (
@@ -330,14 +330,14 @@ export default function CreateCoursePage() {
         <div className="bg-[#1E293B] rounded-xl p-5 text-sm flex gap-3 items-start">
           <OctagonAlert className="w-5 h-5 shrink-0 mt-0.5 text-yellow-400" />
           <span className="text-[#CBD5E1]">
-            <b className="text-white">Зөвлөгөө:</b> Хичээлийн гарчиг болон
-            тайлбар нь тодорхой, ойлгомжтой байх тусам суралцагчдын анхаарлыг
+            <b className="text-white">Зөвлөгөө:</b> Үйлчилгээний гарчиг болон
+            тайлбар нь тодорхой, ойлгомжтой байх тусам захиалагчийн анхаарлыг
             татах магадлал 40% илүү байдаг.
           </span>
         </div>
 
         <p className="text-center text-xs text-[#94A3B8] pb-4">
-          © 2025 Freelancer.mn. Залууст зориулсан боломжийн талбар.
+          © 2026 Freelancer.mn. Залууст зориулсан боломжийн талбар.
         </p>
       </div>
     </div>

@@ -185,7 +185,7 @@ export default function ProfilePage() {
                   }}
                 >
                   <Plus className="mr-2 h-4 w-4" />
-                  {navLoading ? "Шилжүүлж байна..." : "Хичээл үүсгэх"}
+                  {navLoading ? "Шилжүүлж байна..." : "Үйлчилгээ үүсгэх"}
                 </Button>
               </div>
             </div>
@@ -255,10 +255,10 @@ export default function ProfilePage() {
                   </div>
                   <div>
                     <h2 className="text-xl font-bold text-slate-900">
-                      Миний хичээлүүд
+                      Миний ажилууд
                     </h2>
                     <p className="text-sm text-slate-500">
-                      Таны оруулсан нийт хичээлүүд
+                      Таны оруулсан нийт ажилууд
                     </p>
                   </div>
                 </div>
@@ -270,7 +270,7 @@ export default function ProfilePage() {
 
               {profile?.courses?.length === 0 ? (
                 <div className="rounded-2xl bg-slate-50 p-8 text-center text-slate-500">
-                  Одоогоор хичээл оруулаагүй байна
+                 Та Одоогоор ажил оруулаагүй байна
                 </div>
               ) : (
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">

@@ -72,7 +72,7 @@ export default function AdminOrdersPage() {
           <div className="relative max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
-              placeholder="Хэрэглэгч, фрилансер эсвэл хичээлээр хайх..."
+              placeholder="Хэрэглэгч, фрилансер эсвэл үйлчилгээр хайх..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full bg-gray-50 rounded-xl pl-9 pr-4 py-2 text-sm border border-gray-100 outline-none"
@@ -92,7 +92,7 @@ export default function AdminOrdersPage() {
                   "ID",
                   "ЗАХИАЛАГЧ",
                   "ФРИЛАНСЕР",
-                  "ХИЧЭЭЛ",
+                  "ҮЙЛЧИЛГЭЭ",
                   "ДҮН",
                   "ТӨЛӨВ",
                   "БАТАЛСАН",
