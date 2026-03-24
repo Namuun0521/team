@@ -119,7 +119,7 @@ export const HowItWorks = () => {
   const steps = activeTab === "client" ? CLIENT_STEPS : FREELANCER_STEPS;
 
   return (
-    <section className="mt-14 mb-4">
+    <section className=" mb-15">
       <div className="mb-8 text-center">
         <p className="mb-2 inline-flex rounded-full bg-blue-50 px-4 py-1 text-sm font-semibold text-blue-600">
           Хэрхэн ажилладаг вэ?
