@@ -7,7 +7,6 @@ import {
   MoreHorizontal,
   Eye,
   Pencil,
-  Trash2,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -182,13 +181,6 @@ export default function AdminCoursesPage() {
                           Edit
                         </DropdownMenuItem>
 
-                        <DropdownMenuItem
-                          onClick={() => handleDelete(course.id)}
-                          className="cursor-pointer text-red-600 focus:text-red-600"
-                        >
-                          <Trash2 className="mr-2 h-4 w-4" />
-                          Delete
-                        </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </td>
