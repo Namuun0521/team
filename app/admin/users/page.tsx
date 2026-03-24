@@ -9,7 +9,6 @@ import {
   Eye,
   Pencil,
   RefreshCw,
-  Trash2,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -235,14 +234,6 @@ export default function AdminUsersPage() {
                         >
                           <RefreshCw className="mr-2 h-4 w-4" />
                           Change Role
-                        </DropdownMenuItem>
-
-                        <DropdownMenuItem
-                          onClick={() => handleDelete(user.id)}
-                          className="cursor-pointer text-red-600 focus:text-red-600"
-                        >
-                          <Trash2 className="mr-2 h-4 w-4" />
-                          Delete
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
