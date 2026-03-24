@@ -7,6 +7,7 @@ import {
   MoreHorizontal,
   Eye,
   Pencil,
+  Trash2,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -65,7 +66,7 @@ export default function AdminCoursesPage() {
   }, [search]);
 
   const handleDelete = async (id: string) => {
-    const ok = confirm("Энэ хичээлийг устгах уу?");
+    const ok = confirm("Энэ үйлчилгээ устгах уу?");
     if (!ok) return;
 
     try {
@@ -85,9 +86,9 @@ export default function AdminCoursesPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Хичээлүүд</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Үйлчилгээнүүд</h1>
         <p className="text-sm text-gray-400">
-          Платформ дээрх бүх хичээлийн жагсаалт
+          Платформ дээрх бүх үйлчилгээний жагсаалт
         </p>
       </div>
 
@@ -96,7 +97,7 @@ export default function AdminCoursesPage() {
           <div className="relative max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
-              placeholder="Хичээлээр хайх..."
+              placeholder="Үйлчилгээ хайх..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full bg-gray-50 rounded-xl pl-9 pr-4 py-2 text-sm border border-gray-100 outline-none"
@@ -107,12 +108,12 @@ export default function AdminCoursesPage() {
         {loading ? (
           <div className="p-5 text-sm text-gray-400">Уншиж байна...</div>
         ) : courses.length === 0 ? (
-          <div className="p-5 text-sm text-gray-400">Хичээл олдсонгүй</div>
+          <div className="p-5 text-sm text-gray-400">Үйлчилгээ олдсонгүй</div>
         ) : (
           <table className="w-full">
             <thead>
               <tr className="border-b border-gray-50">
-                {["ID", "ХИЧЭЭЛ", "АНГИЛАЛ", "БАГШ", "ҮНЭ", "ҮҮССЭН", ""].map((h) => (
+                {["ID", "АЖИЛ", "АНГИЛАЛ", "FREELANCER", "ҮНЭ", "ҮҮССЭН", ""].map((h) => (
                   <th
                     key={h}
                     className="px-5 py-3 text-left text-[11px] font-bold text-gray-400 tracking-wider uppercase"
@@ -181,6 +182,13 @@ export default function AdminCoursesPage() {
                           Edit
                         </DropdownMenuItem>
 
+                        <DropdownMenuItem
+                          onClick={() => handleDelete(course.id)}
+                          className="cursor-pointer text-red-600 focus:text-red-600"
+                        >
+                          <Trash2 className="mr-2 h-4 w-4" />
+                          Delete
+                        </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </td>

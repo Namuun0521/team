@@ -163,7 +163,7 @@ export default function MyCoursesPage() {
                         <div className="flex items-center gap-2 text-sm text-[#64748B]">
                           <User className="h-4 w-4" />
                           <span>
-                            Захиалагч:{" "}
+                            Захиалагч:{" "} 
                             <span className="font-medium text-[#0F172A]">
                               {studentName}
                             </span>
